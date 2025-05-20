@@ -8,10 +8,10 @@ import com.autohubreactive.dto.agency.EmployeeRequest;
 import com.autohubreactive.dto.agency.EmployeeResponse;
 import com.autohubreactive.dto.agency.RentalOfficeRequest;
 import com.autohubreactive.dto.agency.RentalOfficeResponse;
-import com.autohubreactive.model.agency.Branch;
-import com.autohubreactive.model.agency.Car;
-import com.autohubreactive.model.agency.Employee;
-import com.autohubreactive.model.agency.RentalOffice;
+import com.autohubreactive.agency.entity.Branch;
+import com.autohubreactive.agency.entity.Car;
+import com.autohubreactive.agency.entity.Employee;
+import com.autohubreactive.agency.entity.RentalOffice;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

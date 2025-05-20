@@ -1,7 +1,7 @@
 package com.autohubreactive.expense.mapper;
 
 import com.autohubreactive.dto.invoice.RevenueResponse;
-import com.autohubreactive.model.invoice.Revenue;
+import com.autohubreactive.expense.entity.Revenue;
 import org.apache.commons.lang3.ObjectUtils;
 import org.bson.types.ObjectId;
 import org.mapstruct.InjectionStrategy;

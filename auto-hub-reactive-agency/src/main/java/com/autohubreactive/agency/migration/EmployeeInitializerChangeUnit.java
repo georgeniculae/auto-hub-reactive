@@ -1,6 +1,6 @@
 package com.autohubreactive.agency.migration;
 
-import com.autohubreactive.model.agency.Employee;
+import com.autohubreactive.agency.entity.Employee;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertManyResult;
 import com.mongodb.reactivestreams.client.ClientSession;

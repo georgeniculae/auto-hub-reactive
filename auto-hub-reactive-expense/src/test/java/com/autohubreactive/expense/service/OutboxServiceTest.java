@@ -13,7 +13,7 @@ import com.autohubreactive.expense.producer.FailedInvoiceDlqProducerService;
 import com.autohubreactive.expense.producer.InvoiceProducerService;
 import com.autohubreactive.expense.repository.OutboxRepository;
 import com.autohubreactive.expense.util.TestUtil;
-import com.autohubreactive.model.invoice.Invoice;
+import com.autohubreactive.expense.entity.Invoice;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

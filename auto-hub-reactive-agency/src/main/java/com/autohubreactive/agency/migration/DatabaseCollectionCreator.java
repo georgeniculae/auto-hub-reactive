@@ -1,11 +1,11 @@
 package com.autohubreactive.agency.migration;
 
-import com.autohubreactive.model.agency.BodyType;
-import com.autohubreactive.model.agency.Branch;
-import com.autohubreactive.model.agency.Car;
-import com.autohubreactive.model.agency.CarStatus;
-import com.autohubreactive.model.agency.Employee;
-import com.autohubreactive.model.agency.RentalOffice;
+import com.autohubreactive.agency.entity.BodyType;
+import com.autohubreactive.agency.entity.Branch;
+import com.autohubreactive.agency.entity.Car;
+import com.autohubreactive.agency.entity.CarStatus;
+import com.autohubreactive.agency.entity.Employee;
+import com.autohubreactive.agency.entity.RentalOffice;
 import org.bson.types.ObjectId;
 
 import java.math.BigDecimal;

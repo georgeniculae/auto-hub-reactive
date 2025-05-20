@@ -1,6 +1,6 @@
 package com.autohubreactive.expense.model;
 
-import com.autohubreactive.model.invoice.Invoice;
+import com.autohubreactive.expense.entity.Invoice;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

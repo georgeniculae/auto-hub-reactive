@@ -4,7 +4,7 @@ import com.autohubreactive.dto.agency.BodyCategory;
 import com.autohubreactive.dto.agency.ExcelCarRequest;
 import com.autohubreactive.dto.common.CarState;
 import com.autohubreactive.exception.AutoHubException;
-import com.autohubreactive.model.agency.CarFields;
+import com.autohubreactive.agency.entity.CarFields;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;

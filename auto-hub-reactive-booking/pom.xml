@@ -21,12 +21,6 @@
     <dependencies>
         <dependency>
             <groupId>com.autohub</groupId>
-            <artifactId>auto-hub-reactive-common-model</artifactId>
-            <version>${auto-hub-common-reactive.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.autohub</groupId>
             <artifactId>auto-hub-reactive-common-lib</artifactId>
             <version>${auto-hub-common-reactive.version}</version>
         </dependency>

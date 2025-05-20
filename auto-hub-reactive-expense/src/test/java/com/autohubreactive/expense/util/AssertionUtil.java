@@ -4,8 +4,8 @@ import com.autohubreactive.dto.common.BookingResponse;
 import com.autohubreactive.dto.common.InvoiceResponse;
 import com.autohubreactive.dto.invoice.InvoiceReprocessRequest;
 import com.autohubreactive.dto.invoice.RevenueResponse;
-import com.autohubreactive.model.invoice.Invoice;
-import com.autohubreactive.model.invoice.Revenue;
+import com.autohubreactive.expense.entity.Invoice;
+import com.autohubreactive.expense.entity.Revenue;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -17,7 +17,6 @@
     <description>Auto Hub Reactive Common Parent</description>
 
     <modules>
-        <module>auto-hub-reactive-common-model</module>
         <module>auto-hub-reactive-common-dto</module>
         <module>auto-hub-reactive-common-exception</module>
         <module>auto-hub-reactive-common-lib</module>

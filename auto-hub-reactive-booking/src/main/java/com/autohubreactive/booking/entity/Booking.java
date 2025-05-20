@@ -1,4 +1,4 @@
-package com.autohubreactive.model.booking;
+package com.autohubreactive.booking.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

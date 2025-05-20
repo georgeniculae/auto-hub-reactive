@@ -2,7 +2,7 @@ package com.autohubreactive.booking.util;
 
 import com.autohubreactive.dto.booking.BookingRequest;
 import com.autohubreactive.dto.common.BookingResponse;
-import com.autohubreactive.model.booking.Booking;
+import com.autohubreactive.booking.entity.Booking;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

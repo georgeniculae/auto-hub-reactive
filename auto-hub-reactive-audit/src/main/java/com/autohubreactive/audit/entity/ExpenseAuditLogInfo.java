@@ -1,4 +1,4 @@
-package com.autohubreactive.model.audit;
+package com.autohubreactive.audit.entity;
 
 import lombok.Builder;
 import lombok.Getter;

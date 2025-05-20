@@ -3,7 +3,7 @@ package com.autohubreactive.audit.mapper;
 import com.autohubreactive.audit.util.AssertionUtil;
 import com.autohubreactive.audit.util.TestUtil;
 import com.autohubreactive.dto.common.AuditLogInfoRequest;
-import com.autohubreactive.model.audit.BookingAuditLogInfo;
+import com.autohubreactive.audit.entity.BookingAuditLogInfo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

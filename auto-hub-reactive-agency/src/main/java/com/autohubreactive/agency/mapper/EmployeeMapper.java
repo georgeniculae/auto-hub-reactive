@@ -2,8 +2,8 @@ package com.autohubreactive.agency.mapper;
 
 import com.autohubreactive.dto.agency.EmployeeRequest;
 import com.autohubreactive.dto.agency.EmployeeResponse;
-import com.autohubreactive.model.agency.Branch;
-import com.autohubreactive.model.agency.Employee;
+import com.autohubreactive.agency.entity.Branch;
+import com.autohubreactive.agency.entity.Employee;
 import org.apache.commons.lang3.ObjectUtils;
 import org.bson.types.ObjectId;
 import org.mapstruct.InjectionStrategy;
