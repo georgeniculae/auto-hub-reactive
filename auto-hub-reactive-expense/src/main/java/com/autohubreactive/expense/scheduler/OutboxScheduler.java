@@ -19,8 +19,7 @@ public class OutboxScheduler {
             lockAtMostFor = "10m"
     )
     public void pollOutboxCollection() {
-        outboxService.handleOutboxes()
-                .subscribe();
+        outboxService.handleOutboxes().blockLast();
     }
 
 }
