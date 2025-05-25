@@ -1,4 +1,4 @@
-package com.autohubreactive.requestvalidator.config;
+package com.autohubreactive.apigateway.cache;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

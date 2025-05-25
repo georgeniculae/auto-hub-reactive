@@ -1,7 +1,8 @@
 package com.autohubreactive.apigateway.filter.global;
 
-import com.autohubreactive.dto.common.RequestValidationReport;
-import com.autohubreactive.lib.retry.RetryHandler;
+import com.atlassian.oai.validator.OpenApiInteractionValidator;
+import com.autohubreactive.apigateway.cache.OpenApiCache;
+import com.autohubreactive.apigateway.util.TestUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,14 +12,9 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.http.MediaType;
 import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
 import org.springframework.mock.web.server.MockServerWebExchange;
-import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import reactor.util.retry.RetrySpec;
-
-import java.time.Duration;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -34,44 +30,24 @@ class RequestValidatorFilterTest {
     private GatewayFilterChain chain;
 
     @Mock
-    private WebClient webClient;
-
-    @Mock
-    private WebClient.RequestBodyUriSpec requestBodyUriSpec;
-
-    @Mock
-    private WebClient.RequestBodySpec requestBodySpec;
-
-    @Mock
-    @SuppressWarnings("rawtypes")
-    private WebClient.RequestHeadersSpec requestHeadersSpec;
-
-    @Mock
-    private WebClient.ResponseSpec responseSpec;
-
-    @Mock
-    private RetryHandler retryHandler;
+    private OpenApiCache openApiCache;
 
     @Test
-    @SuppressWarnings("unchecked")
     void filterTest_success() {
-        ReflectionTestUtils.setField(requestValidatorFilter, "requestValidatorUrl", "test");
-
         MockServerHttpRequest request = MockServerHttpRequest.get("/agency/rental-offices/{id}", 1)
                 .accept(MediaType.APPLICATION_JSON)
                 .build();
 
         ServerWebExchange exchange = MockServerWebExchange.builder(request).build();
 
-        RequestValidationReport requestValidationReport = new RequestValidationReport("");
+        String agencyContent =
+                TestUtil.getResourceAsJson("/data/AutoHubReactiveAgencySwagger.json", String.class);
 
-        when(webClient.post()).thenReturn(requestBodyUriSpec);
-        when(requestBodyUriSpec.uri(anyString())).thenReturn(requestBodySpec);
-        when(requestBodySpec.bodyValue(any())).thenReturn(requestHeadersSpec);
-        when(requestHeadersSpec.retrieve()).thenReturn(responseSpec);
-        when(responseSpec.bodyToMono(RequestValidationReport.class)).thenReturn(Mono.just(requestValidationReport));
+        OpenApiInteractionValidator validator =
+                OpenApiInteractionValidator.createForInlineApiSpecification(agencyContent).build();
+
+        when(openApiCache.get(anyString())).thenReturn(validator);
         when(chain.filter(any(ServerWebExchange.class))).thenReturn(Mono.empty());
-        when(retryHandler.retry()).thenReturn(RetrySpec.backoff(0, Duration.ofSeconds(0)));
 
         requestValidatorFilter.filter(exchange, chain)
                 .as(StepVerifier::create)
@@ -80,23 +56,20 @@ class RequestValidatorFilterTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void filterTest_validationReportWithErrors() {
-        ReflectionTestUtils.setField(requestValidatorFilter, "requestValidatorUrl", "test");
-
-        MockServerHttpRequest request = MockServerHttpRequest.get("/agency/rental-offices/{id}", 1)
+        MockServerHttpRequest request = MockServerHttpRequest.get("/agency/rental-offices/", 1)
                 .accept(MediaType.APPLICATION_JSON)
                 .build();
 
         ServerWebExchange exchange = MockServerWebExchange.builder(request).build();
 
-        RequestValidationReport requestValidationReport = new RequestValidationReport("error");
+        String agencyContent =
+                TestUtil.getResourceAsJson("/data/AutoHubReactiveAgencySwagger.json", String.class);
 
-        when(webClient.post()).thenReturn(requestBodyUriSpec);
-        when(requestBodyUriSpec.uri(anyString())).thenReturn(requestBodySpec);
-        when(requestBodySpec.bodyValue(any())).thenReturn(requestHeadersSpec);
-        when(requestHeadersSpec.retrieve()).thenReturn(responseSpec);
-        when(responseSpec.bodyToMono(RequestValidationReport.class)).thenReturn(Mono.just(requestValidationReport));
+        OpenApiInteractionValidator validator =
+                OpenApiInteractionValidator.createForInlineApiSpecification(agencyContent).build();
+
+        when(openApiCache.get(anyString())).thenReturn(validator);
 
         requestValidatorFilter.filter(exchange, chain)
                 .as(StepVerifier::create)

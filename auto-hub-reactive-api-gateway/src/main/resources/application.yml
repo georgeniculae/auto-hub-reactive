@@ -158,4 +158,21 @@ cors:
 
 apikey-secret: ${API_KEY_SECRET}
 
-request-validator-url: http://auto-hub-reactive-request-validator/validate
+swagger:
+  endpoints:
+    - identifier: agency
+      url: http://auto-hub-reactive-agency/agency/definition/v3/api-docs
+    - identifier: ai
+      url: http://auto-hub-reactive-ai/ai/definition/v3/api-docs
+    - identifier: bookings
+      url: http://auto-hub-reactive-booking/bookings/definition/v3/api-docs
+    - identifier: customers
+      url: http://auto-hub-reactive-customer/customers/definition/v3/api-docs
+    - identifier: expense
+      url: http://auto-hub-reactive-expense/expense/definition/v3/api-docs
+
+cache:
+  swagger-update-frequency: 0 0 5 * * *
+  expire-after-rewrite-duration: PT23H59M59.999S
+  initial-capacity: 5
+  maximum-size: 50

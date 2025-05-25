@@ -1,15 +1,16 @@
 package com.autohubreactive.apigateway.filter.global;
 
-import com.autohubreactive.dto.common.IncomingRequestDetails;
-import com.autohubreactive.dto.common.RequestValidationReport;
+import com.atlassian.oai.validator.OpenApiInteractionValidator;
+import com.atlassian.oai.validator.model.SimpleRequest;
+import com.atlassian.oai.validator.report.ValidationReport;
+import com.autohubreactive.apigateway.cache.OpenApiCache;
 import com.autohubreactive.exception.AutoHubResponseStatusException;
 import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
-import com.autohubreactive.lib.retry.RetryHandler;
+import com.autohubreactive.apigateway.util.Constants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -18,27 +19,18 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class RequestValidatorFilter implements GlobalFilter, Ordered {
 
-    private static final String DEFINITION = "definition";
-    private static final String ACTUATOR = "actuator";
-    private static final String FALLBACK = "fallback";
-    private final WebClient webClient;
-    private final RetryHandler retryHandler;
-
-    @Value("${request-validator-url}")
-    private String requestValidatorUrl;
+    private final OpenApiCache openApiCache;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -71,87 +63,64 @@ public class RequestValidatorFilter implements GlobalFilter, Ordered {
     private boolean isRequestValidatable(ServerHttpRequest serverHttpRequest) {
         String path = serverHttpRequest.getPath().value();
 
-        return !path.contains(DEFINITION) && !path.contains(ACTUATOR) && !path.contains(FALLBACK);
+        return !path.contains(Constants.DEFINITION) && !path.contains(Constants.ACTUATOR) && !path.contains(Constants.FALLBACK);
     }
 
     private Mono<Void> filterValidatedRequest(ServerWebExchange exchange, GatewayFilterChain chain) {
-        return getIncomingRequestDetails(exchange.getRequest())
-                .flatMap(this::getValidationReport)
-                .flatMap(requestValidationReport -> validateResponse(exchange, chain, requestValidationReport));
+        return getSimpleRequest(exchange.getRequest())
+                .flatMap(simpleRequest -> validateRequest(exchange, chain, simpleRequest));
     }
 
-    private Mono<IncomingRequestDetails> getIncomingRequestDetails(ServerHttpRequest request) {
+    private Mono<Void> validateRequest(ServerWebExchange exchange, GatewayFilterChain chain, SimpleRequest simpleRequest) {
+        String microserviceIdentifier = getMicroserviceIdentifier(simpleRequest);
+        OpenApiInteractionValidator openApiInteractionValidator = openApiCache.get(microserviceIdentifier);
+        ValidationReport validationReport = openApiInteractionValidator.validateRequest(simpleRequest);
+        String validationErrorMessage = getValidationErrorMessage(validationReport);
+
+        return validateResponse(exchange, chain, validationErrorMessage);
+    }
+
+    private String getMicroserviceIdentifier(SimpleRequest simpleRequest) {
+        return simpleRequest.getPath()
+                .replaceFirst(Constants.SEPARATOR_REGEX, StringUtils.EMPTY)
+                .split(Constants.SEPARATOR_REGEX)[0];
+    }
+
+    private Mono<SimpleRequest> getSimpleRequest(ServerHttpRequest request) {
         return request.getBody()
                 .map(dataBuffer -> dataBuffer.toString(StandardCharsets.UTF_8))
                 .reduce(StringUtils.EMPTY, (current, next) -> current + next)
-                .map(bodyAsString -> getIncomingRequestDetails(request, bodyAsString));
+                .map(bodyAsString -> buildSimpleRequest(request, bodyAsString));
     }
 
-    private IncomingRequestDetails getIncomingRequestDetails(ServerHttpRequest request, String bodyAsString) {
-        return IncomingRequestDetails.builder()
-                .path(request.getPath().value())
-                .method(request.getMethod().name())
-                .headers(getHeaders(request))
-                .queryParams(getQueryParams(request))
-                .body(bodyAsString)
-                .build();
+    private SimpleRequest buildSimpleRequest(ServerHttpRequest request, String bodyAsString) {
+        SimpleRequest.Builder simpleRequestBuilder = new SimpleRequest.Builder(request.getMethod().name(), request.getPath().value());
+
+        request.getHeaders()
+                .forEach(simpleRequestBuilder::withHeader);
+
+        request.getQueryParams()
+                .forEach(simpleRequestBuilder::withQueryParam);
+
+        simpleRequestBuilder.withBody(bodyAsString);
+
+        return simpleRequestBuilder.build();
     }
 
-    private List<IncomingRequestDetails.Header> getHeaders(ServerHttpRequest request) {
-        return request.getHeaders()
-                .entrySet()
+    private String getValidationErrorMessage(ValidationReport validationReport) {
+        return validationReport.getMessages()
                 .stream()
-                .map(this::getHeader)
-                .toList();
+                .filter(message -> ValidationReport.Level.IGNORE != message.getLevel())
+                .map(ValidationReport.Message::getMessage)
+                .collect(Collectors.joining());
     }
 
-    private IncomingRequestDetails.Header getHeader(Map.Entry<String, List<String>> headersMap) {
-        return IncomingRequestDetails.Header.builder()
-                .name(headersMap.getKey())
-                .values(headersMap.getValue())
-                .build();
-    }
-
-    private List<IncomingRequestDetails.QueryParam> getQueryParams(ServerHttpRequest request) {
-        return request.getQueryParams()
-                .entrySet()
-                .stream()
-                .map(this::getQueryParam)
-                .toList();
-    }
-
-    private IncomingRequestDetails.QueryParam getQueryParam(Map.Entry<String, List<String>> queryParamsMap) {
-        return IncomingRequestDetails.QueryParam.builder()
-                .name(queryParamsMap.getKey())
-                .value(queryParamsMap.getValue())
-                .build();
-    }
-
-    private Mono<RequestValidationReport> getValidationReport(IncomingRequestDetails incomingRequestDetails) {
-        return webClient.post()
-                .uri(requestValidatorUrl)
-                .bodyValue(incomingRequestDetails)
-                .retrieve()
-                .bodyToMono(RequestValidationReport.class)
-                .retryWhen(retryHandler.retry())
-                .onErrorMap(e -> {
-                    log.error("Error while sending request to validator: {}", e.getMessage());
-
-                    return ExceptionUtil.handleException(e);
-                });
-    }
-
-    private Mono<Void> validateResponse(ServerWebExchange exchange, GatewayFilterChain chain, RequestValidationReport requestValidationReport) {
-        if (ObjectUtils.isEmpty(requestValidationReport.errorMessage())) {
+    private Mono<Void> validateResponse(ServerWebExchange exchange, GatewayFilterChain chain, String validationMessage) {
+        if (ObjectUtils.isEmpty(validationMessage)) {
             return chain.filter(exchange);
         }
 
-        return Mono.error(
-                new AutoHubResponseStatusException(
-                        HttpStatus.BAD_REQUEST,
-                        requestValidationReport.errorMessage()
-                )
-        );
+        return Mono.error(new AutoHubResponseStatusException(HttpStatus.BAD_REQUEST, validationMessage));
     }
 
 }

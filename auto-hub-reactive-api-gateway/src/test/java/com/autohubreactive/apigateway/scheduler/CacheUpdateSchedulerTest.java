@@ -1,59 +1,65 @@
-package com.autohubreactive.requestvalidator.service;
+package com.autohubreactive.apigateway.scheduler;
 
+import com.autohubreactive.apigateway.cache.OpenApiCache;
+import com.autohubreactive.apigateway.cache.RegisteredEndpoints;
+import com.autohubreactive.apigateway.util.TestUtil;
 import com.autohubreactive.lib.retry.RetryHandler;
-import com.autohubreactive.requestvalidator.config.RegisteredEndpoints;
-import com.autohubreactive.requestvalidator.model.SwaggerFile;
-import com.autohubreactive.requestvalidator.util.AssertionUtil;
-import com.autohubreactive.requestvalidator.util.TestUtil;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 import reactor.util.retry.RetrySpec;
 
 import java.time.Duration;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
-class SwaggerExtractorServiceTest {
+@SpringBootTest
+@TestPropertySource(properties = "spring.cloud.consul.enabled=false")
+class CacheUpdateSchedulerTest {
 
     private static String agencyContent;
     private static String aiContent;
     private static String bookingsContent;
     private static String customersContent;
     private static String expenseContent;
-    private static SwaggerFile agencySwagger;
-    private static SwaggerFile aiSwagger;
-    private static SwaggerFile bookingsSwagger;
-    private static SwaggerFile customersSwagger;
-    private static SwaggerFile expenseSwagger;
     private static List<RegisteredEndpoints.RegisteredEndpoint> endpoints;
 
-    @InjectMocks
-    private SwaggerExtractorService swaggerExtractorService;
-    @Mock
+    @Autowired
+    private CacheUpdateScheduler cacheUpdateScheduler;
+
+    @Autowired
+    private OpenApiCache openApiCache;
+
+    @MockitoBean
     private WebClient webClient;
-    @Mock
+
+    @MockitoBean
     @SuppressWarnings("rawtypes")
     private WebClient.RequestHeadersUriSpec requestHeadersUriSpec;
-    @Mock
+
+    @MockitoBean
     @SuppressWarnings("rawtypes")
     private WebClient.RequestHeadersSpec requestHeadersSpec;
-    @Mock
+
+    @MockitoBean
     private WebClient.ResponseSpec responseSpec;
-    @Mock
+
+    @MockitoBean
     private RegisteredEndpoints registeredEndpoints;
-    @Mock
+
+    @MockitoBean
     private RetryHandler retryHandler;
 
     @BeforeAll
@@ -76,17 +82,16 @@ class SwaggerExtractorServiceTest {
                 new RegisteredEndpoints.RegisteredEndpoint("customers", "customers-url"),
                 new RegisteredEndpoints.RegisteredEndpoint("expense", "expense-url")
         );
+    }
 
-        agencySwagger = SwaggerFile.builder().identifier("agency").swaggerContent(agencyContent).build();
-        aiSwagger = SwaggerFile.builder().identifier("ai").swaggerContent(aiContent).build();
-        bookingsSwagger = SwaggerFile.builder().identifier("bookings").swaggerContent(bookingsContent).build();
-        customersSwagger = SwaggerFile.builder().identifier("customers").swaggerContent(customersContent).build();
-        expenseSwagger = SwaggerFile.builder().identifier("expense").swaggerContent(expenseContent).build();
+    @AfterEach
+    void tearDown() {
+        openApiCache.toMap().clear();
     }
 
     @Test
     @SuppressWarnings("all")
-    void getSwaggerFilesTest_success() {
+    void updateCacheTest_success() {
         when(registeredEndpoints.getEndpoints()).thenReturn(endpoints);
         when(webClient.get()).thenReturn(requestHeadersUriSpec);
         when(requestHeadersUriSpec.uri(anyString())).thenReturn(requestHeadersSpec);
@@ -112,19 +117,13 @@ class SwaggerExtractorServiceTest {
         });
         when(retryHandler.retry()).thenReturn(RetrySpec.backoff(0, Duration.ofSeconds(0)));
 
-        swaggerExtractorService.getSwaggerFiles()
-                .as(StepVerifier::create)
-                .assertNext(swaggerFile -> AssertionUtil.assertSwaggerFile(agencySwagger, swaggerFile))
-                .assertNext(swaggerFile -> AssertionUtil.assertSwaggerFile(aiSwagger, swaggerFile))
-                .assertNext(swaggerFile -> AssertionUtil.assertSwaggerFile(bookingsSwagger, swaggerFile))
-                .assertNext(swaggerFile -> AssertionUtil.assertSwaggerFile(customersSwagger, swaggerFile))
-                .assertNext(swaggerFile -> AssertionUtil.assertSwaggerFile(expenseSwagger, swaggerFile))
-                .verifyComplete();
+        assertDoesNotThrow(() -> cacheUpdateScheduler.updateCache());
+        assertEquals(5, openApiCache.toMap().size());
     }
 
     @Test
     @SuppressWarnings("all")
-    void getSwaggerFileForMicroservice_success() {
+    void updateCache_errorWhenGettingExpenseSwagger() {
         when(registeredEndpoints.getEndpoints()).thenReturn(endpoints);
         when(webClient.get()).thenReturn(requestHeadersUriSpec);
         when(requestHeadersUriSpec.uri(anyString())).thenReturn(requestHeadersSpec);
@@ -144,23 +143,19 @@ class SwaggerExtractorServiceTest {
                 } else if (count == 4) {
                     return Mono.just(customersContent);
                 } else {
-                    return Mono.just(expenseContent);
+                    return Mono.error(new RuntimeException("Test"));
                 }
             }
         });
         when(retryHandler.retry()).thenReturn(RetrySpec.backoff(0, Duration.ofSeconds(0)));
 
-        swaggerExtractorService.getSwaggerFileForMicroservice("expense")
-                .as(StepVerifier::create)
-                .expectNextMatches(actualExpenseSwagger ->
-                        expenseSwagger.getIdentifier().equals(actualExpenseSwagger.getIdentifier()) &&
-                                expenseSwagger.getSwaggerContent().equals(actualExpenseSwagger.getSwaggerContent()))
-                .verifyComplete();
+        assertDoesNotThrow(() -> cacheUpdateScheduler.updateCache());
+        assertEquals(4, openApiCache.toMap().size());
     }
 
     @Test
     @SuppressWarnings("all")
-    void getSwaggerFileForMicroservice_nonexistentMicroservice_error() {
+    void updateCache_emptyExpenseSwagger() {
         when(registeredEndpoints.getEndpoints()).thenReturn(endpoints);
         when(webClient.get()).thenReturn(requestHeadersUriSpec);
         when(requestHeadersUriSpec.uri(anyString())).thenReturn(requestHeadersSpec);
@@ -180,16 +175,14 @@ class SwaggerExtractorServiceTest {
                 } else if (count == 4) {
                     return Mono.just(customersContent);
                 } else {
-                    return Mono.just(expenseContent);
+                    return Mono.empty();
                 }
             }
         });
         when(retryHandler.retry()).thenReturn(RetrySpec.backoff(0, Duration.ofSeconds(0)));
 
-        swaggerExtractorService.getSwaggerFileForMicroservice("test")
-                .as(StepVerifier::create)
-                .expectError()
-                .verify();
+        assertDoesNotThrow(() -> cacheUpdateScheduler.updateCache());
+        assertEquals(4, openApiCache.toMap().size());
     }
 
 }

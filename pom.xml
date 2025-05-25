@@ -26,7 +26,6 @@
         <module>auto-hub-reactive-customer</module>
         <module>auto-hub-reactive-email-notification</module>
         <module>auto-hub-reactive-expense</module>
-        <module>auto-hub-reactive-request-validator</module>
     </modules>
 
     <repositories>
