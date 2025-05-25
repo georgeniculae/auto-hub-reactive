@@ -1,5 +1,6 @@
 package com.autohubreactive.booking.service.bookingprocessing;
 
+import com.autohubreactive.booking.util.Constants;
 import com.autohubreactive.dto.common.AuthenticationInfo;
 import com.autohubreactive.dto.common.AvailableCarInfo;
 import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
@@ -18,7 +19,6 @@ import reactor.core.scheduler.Schedulers;
 @Slf4j
 public class CarService {
 
-    private static final String SEPARATOR = "/";
     private final WebClient webClient;
 
     @Value("${webclient.url.auto-hub-agency-cars}")
@@ -26,7 +26,7 @@ public class CarService {
 
     public Mono<AvailableCarInfo> findAvailableCarById(AuthenticationInfo authenticationInfo, String carId) {
         return webClient.get()
-                .uri(url + SEPARATOR + "{id}" + SEPARATOR + "availability", carId)
+                .uri(url + Constants.SEPARATOR + "{id}" + Constants.SEPARATOR + "availability", carId)
                 .headers(WebClientUtil.setHttpHeaders(authenticationInfo.apikey(), authenticationInfo.roles()))
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()

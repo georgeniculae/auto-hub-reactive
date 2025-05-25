@@ -1,10 +1,13 @@
 package com.autohubreactive.booking.service.bookingprocessing;
 
+import com.autohubreactive.booking.entity.Booking;
+import com.autohubreactive.booking.entity.BookingStatus;
 import com.autohubreactive.booking.mapper.BookingMapper;
 import com.autohubreactive.booking.repository.BookingRepository;
 import com.autohubreactive.booking.service.outbox.CreatedOutboxService;
 import com.autohubreactive.booking.service.outbox.DeletedOutboxService;
 import com.autohubreactive.booking.service.outbox.UpdatedOutboxService;
+import com.autohubreactive.booking.util.Constants;
 import com.autohubreactive.dto.booking.BookingRequest;
 import com.autohubreactive.dto.common.AuthenticationInfo;
 import com.autohubreactive.dto.common.AvailableCarInfo;
@@ -16,8 +19,6 @@ import com.autohubreactive.exception.AutoHubResponseStatusException;
 import com.autohubreactive.lib.aspect.LogActivity;
 import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
 import com.autohubreactive.lib.util.MongoUtil;
-import com.autohubreactive.booking.entity.Booking;
-import com.autohubreactive.booking.entity.BookingStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
@@ -41,9 +42,6 @@ import java.util.Date;
 @Slf4j
 public class BookingService {
 
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
-    private static final String DATE_OF_BOOKING = "dateOfBooking";
-    private static final String LOCKED = "locked";
     private final BookingRepository bookingRepository;
     private final ReactiveMongoTemplate reactiveMongoTemplate;
     private final CarService carService;
@@ -202,7 +200,7 @@ public class BookingService {
     }
 
     private Mono<Boolean> lockCar(String carId) {
-        return redisOperations.opsForValue().setIfAbsent(carId, LOCKED, Duration.ofSeconds(30));
+        return redisOperations.opsForValue().setIfAbsent(carId, Constants.LOCKED, Duration.ofSeconds(30));
     }
 
     private AutoHubResponseStatusException getPastBookingException() {
@@ -272,11 +270,11 @@ public class BookingService {
 
         String format = LocalDate.parse(dateOfBooking)
                 .plusDays(1)
-                .format(DateTimeFormatter.ofPattern(DATE_FORMAT));
+                .format(DateTimeFormatter.ofPattern(Constants.DATE_FORMAT));
 
         Date dayAfterDateOfBookingAsDate = formatDate(format);
 
-        Criteria dateOfBookingCriteria = Criteria.where(DATE_OF_BOOKING)
+        Criteria dateOfBookingCriteria = Criteria.where(Constants.DATE_OF_BOOKING)
                 .gte(dateOfBookingAsDate)
                 .lt(dayAfterDateOfBookingAsDate);
 
@@ -285,7 +283,7 @@ public class BookingService {
 
     private Date formatDate(String dateOfBooking) {
         try {
-            return new SimpleDateFormat(DATE_FORMAT).parse(dateOfBooking);
+            return new SimpleDateFormat(Constants.DATE_FORMAT).parse(dateOfBooking);
         } catch (ParseException e) {
             throw new AutoHubException(e.getMessage());
         }

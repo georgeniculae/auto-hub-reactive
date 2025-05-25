@@ -2,6 +2,7 @@ package com.autohubreactive.booking.router;
 
 import com.autohubreactive.booking.handler.BookingHandler;
 import com.autohubreactive.booking.swaggeroperation.SwaggerBookingRouterOperations;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -17,7 +18,7 @@ public class BookingRouter {
     @SwaggerBookingRouterOperations
     public RouterFunction<ServerResponse> routeBooking(BookingHandler bookingHandler) {
         return RouterFunctions.nest(
-                RequestPredicates.path("").and(RequestPredicates.accept(MediaType.APPLICATION_JSON)),
+                RequestPredicates.path(StringUtils.EMPTY).and(RequestPredicates.accept(MediaType.APPLICATION_JSON)),
                 RouterFunctions.route(RequestPredicates.GET("/list"), bookingHandler::findAllBookings)
                         .andRoute(RequestPredicates.GET("/date/{date}"), bookingHandler::findBookingsByDateOfBooking)
                         .andRoute(RequestPredicates.GET("/count"), bookingHandler::countBookings)

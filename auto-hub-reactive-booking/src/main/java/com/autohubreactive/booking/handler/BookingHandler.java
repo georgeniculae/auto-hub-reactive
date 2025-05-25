@@ -1,6 +1,7 @@
 package com.autohubreactive.booking.handler;
 
 import com.autohubreactive.booking.service.bookingprocessing.BookingService;
+import com.autohubreactive.booking.util.Constants;
 import com.autohubreactive.booking.validator.BookingRequestValidator;
 import com.autohubreactive.dto.booking.BookingRequest;
 import com.autohubreactive.dto.common.AuthenticationInfo;
@@ -17,8 +18,6 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class BookingHandler {
 
-    private static final String ID = "id";
-    private static final String DATE = "date";
     private final BookingService bookingService;
     private final BookingRequestValidator bookingRequestValidator;
 
@@ -33,14 +32,14 @@ public class BookingHandler {
 
     @PreAuthorize("hasRole('user')")
     public Mono<ServerResponse> findBookingById(ServerRequest serverRequest) {
-        return bookingService.findBookingById(serverRequest.pathVariable(ID))
+        return bookingService.findBookingById(serverRequest.pathVariable(Constants.ID))
                 .flatMap(bookingResponse -> ServerResponse.ok().bodyValue(bookingResponse))
                 .switchIfEmpty(ServerResponse.notFound().build());
     }
 
     @PreAuthorize("hasRole('user')")
     public Mono<ServerResponse> findBookingsByDateOfBooking(ServerRequest serverRequest) {
-        return bookingService.findBookingsByDateOfBooking(serverRequest.pathVariable(DATE))
+        return bookingService.findBookingsByDateOfBooking(serverRequest.pathVariable(Constants.DATE))
                 .collectList()
                 .filter(ObjectUtils::isNotEmpty)
                 .flatMap(bookingResponses -> ServerResponse.ok().bodyValue(bookingResponses))
@@ -100,7 +99,7 @@ public class BookingHandler {
                                         .apikey(ServerRequestUtil.getApiKeyHeader(serverRequest))
                                         .roles(ServerRequestUtil.getRolesHeader(serverRequest))
                                         .build(),
-                                serverRequest.pathVariable(ID),
+                                serverRequest.pathVariable(Constants.ID),
                                 bookingRequest
                         )
                 )
