@@ -1,6 +1,6 @@
 package com.autohubreactive.apigateway.scheduler;
 
-import com.autohubreactive.apigateway.cache.CacheUpdateService;
+import com.autohubreactive.apigateway.service.CacheUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
