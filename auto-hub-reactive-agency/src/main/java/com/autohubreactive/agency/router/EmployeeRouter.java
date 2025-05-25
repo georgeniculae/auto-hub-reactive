@@ -2,6 +2,7 @@ package com.autohubreactive.agency.router;
 
 import com.autohubreactive.agency.handler.EmployeeHandler;
 import com.autohubreactive.agency.swaggeroperation.SwaggerEmployeeRouterOperations;
+import com.autohubreactive.agency.util.Constants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -13,12 +14,10 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 @Configuration
 public class EmployeeRouter {
 
-    private static final String REQUEST_MAPPING = "/employees";
-
     @Bean
     @SwaggerEmployeeRouterOperations
     public RouterFunction<ServerResponse> routeEmployee(EmployeeHandler employeeHandler) {
-        return RouterFunctions.nest(RequestPredicates.path(REQUEST_MAPPING).and(RequestPredicates.accept(MediaType.APPLICATION_JSON)),
+        return RouterFunctions.nest(RequestPredicates.path(Constants.EMPLOYEES_REQUEST_MAPPING).and(RequestPredicates.accept(MediaType.APPLICATION_JSON)),
                 RouterFunctions.route(RequestPredicates.GET(""), employeeHandler::findAllEmployees)
                         .andRoute(RequestPredicates.GET("/branch/{id}"), employeeHandler::findEmployeesByBranchId)
                         .andRoute(RequestPredicates.GET("/filter/{filter}"), employeeHandler::findEmployeeByFilterInsensitiveCase)

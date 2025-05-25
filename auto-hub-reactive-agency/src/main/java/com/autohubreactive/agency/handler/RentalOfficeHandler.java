@@ -1,6 +1,7 @@
 package com.autohubreactive.agency.handler;
 
 import com.autohubreactive.agency.service.RentalOfficeService;
+import com.autohubreactive.agency.util.Constants;
 import com.autohubreactive.agency.validator.RentalOfficeRequestValidator;
 import com.autohubreactive.dto.agency.RentalOfficeRequest;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +16,6 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class RentalOfficeHandler {
 
-    private static final String ID = "id";
-    private static final String FILTER = "filter";
     private final RentalOfficeService rentalOfficeService;
     private final RentalOfficeRequestValidator rentalOfficeRequestValidator;
 
@@ -31,14 +30,14 @@ public class RentalOfficeHandler {
 
     @PreAuthorize("hasRole('user')")
     public Mono<ServerResponse> findRentalOfficeById(ServerRequest serverRequest) {
-        return rentalOfficeService.findRentalOfficeById(serverRequest.pathVariable(ID))
+        return rentalOfficeService.findRentalOfficeById(serverRequest.pathVariable(Constants.ID))
                 .flatMap(rentalOfficeResponse -> ServerResponse.ok().bodyValue(rentalOfficeResponse))
                 .switchIfEmpty(ServerResponse.notFound().build());
     }
 
     @PreAuthorize("hasRole('admin')")
     public Mono<ServerResponse> findRentalOfficesByFilterInsensitiveCase(ServerRequest serverRequest) {
-        return rentalOfficeService.findRentalOfficesByFilterInsensitiveCase(serverRequest.pathVariable(FILTER))
+        return rentalOfficeService.findRentalOfficesByFilterInsensitiveCase(serverRequest.pathVariable(Constants.FILTER))
                 .collectList()
                 .filter(ObjectUtils::isNotEmpty)
                 .flatMap(rentalOfficeResponses -> ServerResponse.ok().bodyValue(rentalOfficeResponses))
@@ -64,7 +63,7 @@ public class RentalOfficeHandler {
         return serverRequest.bodyToMono(RentalOfficeRequest.class)
                 .flatMap(rentalOfficeRequestValidator::validateBody)
                 .flatMap(rentalOfficeRequest -> rentalOfficeService.updateRentalOffice(
-                                serverRequest.pathVariable(ID),
+                                serverRequest.pathVariable(Constants.ID),
                                 rentalOfficeRequest
                         )
                 )
@@ -73,7 +72,7 @@ public class RentalOfficeHandler {
 
     @PreAuthorize("hasRole('admin')")
     public Mono<ServerResponse> deleteRentalOfficeById(ServerRequest serverRequest) {
-        return rentalOfficeService.deleteRentalOfficeById(serverRequest.pathVariable(ID))
+        return rentalOfficeService.deleteRentalOfficeById(serverRequest.pathVariable(Constants.ID))
                 .then(ServerResponse.noContent().build());
     }
 

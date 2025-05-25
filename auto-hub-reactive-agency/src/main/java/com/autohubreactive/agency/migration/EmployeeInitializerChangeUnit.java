@@ -1,15 +1,12 @@
 package com.autohubreactive.agency.migration;
 
 import com.autohubreactive.agency.entity.Employee;
+import com.autohubreactive.agency.util.Constants;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertManyResult;
 import com.mongodb.reactivestreams.client.ClientSession;
 import com.mongodb.reactivestreams.client.MongoDatabase;
-import io.mongock.api.annotations.BeforeExecution;
-import io.mongock.api.annotations.ChangeUnit;
-import io.mongock.api.annotations.Execution;
-import io.mongock.api.annotations.RollbackBeforeExecution;
-import io.mongock.api.annotations.RollbackExecution;
+import io.mongock.api.annotations.*;
 import io.mongock.driver.mongodb.reactive.util.MongoSubscriberSync;
 import io.mongock.driver.mongodb.reactive.util.SubscriberSync;
 import lombok.extern.slf4j.Slf4j;
@@ -19,12 +16,10 @@ import org.bson.Document;
 @Slf4j
 public class EmployeeInitializerChangeUnit {
 
-    private static final String COLLECTION_NAME = "employee";
-
     @BeforeExecution
     public void beforeExecution(MongoDatabase mongoDatabase) {
         SubscriberSync<Void> subscriber = new MongoSubscriberSync<>();
-        mongoDatabase.createCollection(COLLECTION_NAME).subscribe(subscriber);
+        mongoDatabase.createCollection(Constants.EMPLOYEE_COLLECTION_NAME).subscribe(subscriber);
         subscriber.await();
     }
 
@@ -32,7 +27,7 @@ public class EmployeeInitializerChangeUnit {
     public void rollbackBeforeExecution(MongoDatabase mongoDatabase) {
         SubscriberSync<Void> subscriber = new MongoSubscriberSync<>();
 
-        mongoDatabase.getCollection(COLLECTION_NAME)
+        mongoDatabase.getCollection(Constants.EMPLOYEE_COLLECTION_NAME)
                 .drop()
                 .subscribe(subscriber);
 
@@ -43,7 +38,7 @@ public class EmployeeInitializerChangeUnit {
     public void execution(ClientSession clientSession, MongoDatabase mongoDatabase) {
         SubscriberSync<InsertManyResult> subscriber = new MongoSubscriberSync<>();
 
-        mongoDatabase.getCollection(COLLECTION_NAME, Employee.class)
+        mongoDatabase.getCollection(Constants.EMPLOYEE_COLLECTION_NAME, Employee.class)
                 .insertMany(clientSession, DatabaseCollectionCreator.getEmployees())
                 .subscribe(subscriber);
 
@@ -59,7 +54,7 @@ public class EmployeeInitializerChangeUnit {
     public void rollbackExecution(ClientSession clientSession, MongoDatabase mongoDatabase) {
         SubscriberSync<DeleteResult> subscriber = new MongoSubscriberSync<>();
 
-        mongoDatabase.getCollection(COLLECTION_NAME, Employee.class)
+        mongoDatabase.getCollection(Constants.EMPLOYEE_COLLECTION_NAME, Employee.class)
                 .deleteMany(clientSession, new Document())
                 .subscribe(subscriber);
 

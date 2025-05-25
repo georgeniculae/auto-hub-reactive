@@ -1,6 +1,7 @@
 package com.autohubreactive.agency.handler;
 
 import com.autohubreactive.agency.service.EmployeeService;
+import com.autohubreactive.agency.util.Constants;
 import com.autohubreactive.agency.validator.EmployeeRequestValidator;
 import com.autohubreactive.dto.agency.EmployeeRequest;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +16,6 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class EmployeeHandler {
 
-    private static final String ID = "id";
-    private static final String FILTER = "filter";
     private final EmployeeService employeeService;
     private final EmployeeRequestValidator employeeRequestValidator;
 
@@ -31,14 +30,14 @@ public class EmployeeHandler {
 
     @PreAuthorize("hasRole('user')")
     public Mono<ServerResponse> findEmployeeById(ServerRequest serverRequest) {
-        return employeeService.findEmployeeById(serverRequest.pathVariable(ID))
+        return employeeService.findEmployeeById(serverRequest.pathVariable(Constants.ID))
                 .flatMap(employeeResponse -> ServerResponse.ok().bodyValue(employeeResponse))
                 .switchIfEmpty(ServerResponse.notFound().build());
     }
 
     @PreAuthorize("hasRole('user')")
     public Mono<ServerResponse> findEmployeesByBranchId(ServerRequest serverRequest) {
-        return employeeService.findEmployeesByBranchId(serverRequest.pathVariable(ID))
+        return employeeService.findEmployeesByBranchId(serverRequest.pathVariable(Constants.ID))
                 .collectList()
                 .filter(ObjectUtils::isNotEmpty)
                 .flatMap(employeeResponses -> ServerResponse.ok().bodyValue(employeeResponses))
@@ -47,7 +46,7 @@ public class EmployeeHandler {
 
     @PreAuthorize("hasRole('admin')")
     public Mono<ServerResponse> findEmployeeByFilterInsensitiveCase(ServerRequest serverRequest) {
-        return employeeService.findEmployeeByFilterInsensitiveCase(serverRequest.pathVariable(FILTER))
+        return employeeService.findEmployeeByFilterInsensitiveCase(serverRequest.pathVariable(Constants.FILTER))
                 .collectList()
                 .filter(ObjectUtils::isNotEmpty)
                 .flatMap(employeeResponses -> ServerResponse.ok().bodyValue(employeeResponses))
@@ -73,7 +72,7 @@ public class EmployeeHandler {
         return serverRequest.bodyToMono(EmployeeRequest.class)
                 .flatMap(employeeRequestValidator::validateBody)
                 .flatMap(employeeRequest -> employeeService.updateEmployee(
-                                serverRequest.pathVariable(ID),
+                                serverRequest.pathVariable(Constants.ID),
                                 employeeRequest
                         )
                 )
@@ -82,7 +81,7 @@ public class EmployeeHandler {
 
     @PreAuthorize("hasRole('admin')")
     public Mono<ServerResponse> deleteEmployeeById(ServerRequest serverRequest) {
-        return employeeService.deleteEmployeeById(serverRequest.pathVariable(ID))
+        return employeeService.deleteEmployeeById(serverRequest.pathVariable(Constants.ID))
                 .then(ServerResponse.noContent().build());
     }
 

@@ -1,6 +1,7 @@
 package com.autohubreactive.agency.migration;
 
 import com.autohubreactive.agency.entity.Branch;
+import com.autohubreactive.agency.util.Constants;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertManyResult;
 import com.mongodb.reactivestreams.client.ClientSession;
@@ -19,12 +20,10 @@ import org.bson.Document;
 @Slf4j
 public class BranchInitializerChangeUnit {
 
-    private static final String COLLECTION_NAME = "branch";
-
     @BeforeExecution
     public void beforeExecution(MongoDatabase mongoDatabase) {
         SubscriberSync<Void> subscriber = new MongoSubscriberSync<>();
-        mongoDatabase.createCollection(COLLECTION_NAME).subscribe(subscriber);
+        mongoDatabase.createCollection(Constants.BRANCH_COLLECTION_NAME).subscribe(subscriber);
         subscriber.await();
     }
 
@@ -32,7 +31,7 @@ public class BranchInitializerChangeUnit {
     public void rollbackBeforeExecution(MongoDatabase mongoDatabase) {
         SubscriberSync<Void> subscriber = new MongoSubscriberSync<>();
 
-        mongoDatabase.getCollection(COLLECTION_NAME)
+        mongoDatabase.getCollection(Constants.BRANCH_COLLECTION_NAME)
                 .drop()
                 .subscribe(subscriber);
 
@@ -43,7 +42,7 @@ public class BranchInitializerChangeUnit {
     public void execution(ClientSession clientSession, MongoDatabase mongoDatabase) {
         SubscriberSync<InsertManyResult> subscriber = new MongoSubscriberSync<>();
 
-        mongoDatabase.getCollection(COLLECTION_NAME, Branch.class)
+        mongoDatabase.getCollection(Constants.BRANCH_COLLECTION_NAME, Branch.class)
                 .insertMany(clientSession, DatabaseCollectionCreator.getBranches())
                 .subscribe(subscriber);
 
@@ -59,7 +58,7 @@ public class BranchInitializerChangeUnit {
     public void rollbackExecution(ClientSession clientSession, MongoDatabase mongoDatabase) {
         SubscriberSync<DeleteResult> subscriber = new MongoSubscriberSync<>();
 
-        mongoDatabase.getCollection(COLLECTION_NAME, Branch.class)
+        mongoDatabase.getCollection(Constants.BRANCH_COLLECTION_NAME, Branch.class)
                 .deleteMany(clientSession, new Document())
                 .subscribe(subscriber);
 

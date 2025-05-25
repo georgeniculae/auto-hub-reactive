@@ -2,6 +2,7 @@ package com.autohubreactive.agency.router;
 
 import com.autohubreactive.agency.handler.RentalOfficeHandler;
 import com.autohubreactive.agency.swaggeroperation.SwaggerRentalOfficeRouterOperations;
+import com.autohubreactive.agency.util.Constants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -13,12 +14,10 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 @Configuration
 public class RentalOfficeRouter {
 
-    private static final String REQUEST_MAPPING = "/rental-offices";
-
     @Bean
     @SwaggerRentalOfficeRouterOperations
     public RouterFunction<ServerResponse> routeRentalOffice(RentalOfficeHandler rentalOfficeHandler) {
-        return RouterFunctions.nest(RequestPredicates.path(REQUEST_MAPPING).and(RequestPredicates.accept(MediaType.APPLICATION_JSON)),
+        return RouterFunctions.nest(RequestPredicates.path(Constants.RENTAL_OFFICES_REQUEST_MAPPING).and(RequestPredicates.accept(MediaType.APPLICATION_JSON)),
                 RouterFunctions.route(RequestPredicates.GET(""), rentalOfficeHandler::findAllRentalOffices)
                         .andRoute(RequestPredicates.GET("/filter/{filter}"), rentalOfficeHandler::findRentalOfficesByFilterInsensitiveCase)
                         .andRoute(RequestPredicates.GET("/count"), rentalOfficeHandler::countRentalOffices)

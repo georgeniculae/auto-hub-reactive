@@ -1,7 +1,12 @@
 package com.autohubreactive.agency.service;
 
+import com.autohubreactive.agency.entity.Branch;
+import com.autohubreactive.agency.entity.Car;
+import com.autohubreactive.agency.entity.CarStatus;
+import com.autohubreactive.agency.entity.Employee;
 import com.autohubreactive.agency.mapper.CarMapper;
 import com.autohubreactive.agency.repository.CarRepository;
+import com.autohubreactive.agency.util.Constants;
 import com.autohubreactive.agency.validator.CarRequestValidator;
 import com.autohubreactive.dto.agency.CarRequest;
 import com.autohubreactive.dto.agency.CarResponse;
@@ -16,10 +21,6 @@ import com.autohubreactive.exception.AutoHubNotFoundException;
 import com.autohubreactive.exception.AutoHubResponseStatusException;
 import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
 import com.autohubreactive.lib.util.MongoUtil;
-import com.autohubreactive.agency.entity.Branch;
-import com.autohubreactive.agency.entity.Car;
-import com.autohubreactive.agency.entity.CarStatus;
-import com.autohubreactive.agency.entity.Employee;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -51,8 +52,6 @@ import java.util.Map;
 @Slf4j
 public class CarService {
 
-    private static final String IMAGE = "image";
-    private static final String CAR_REQUEST = "carRequest";
     private final CarRepository carRepository;
     private final BranchService branchService;
     private final EmployeeService employeeService;
@@ -142,7 +141,7 @@ public class CarService {
     }
 
     public Mono<CarResponse> saveCar(Map<String, Part> carRequestPartMap) {
-        return getCarRequest(carRequestPartMap.get(CAR_REQUEST))
+        return getCarRequest(carRequestPartMap.get(Constants.CAR_REQUEST))
                 .flatMap(carRequestValidator::validateBody)
                 .flatMap(this::setupNewCar)
                 .flatMap(carRepository::save)
@@ -168,7 +167,7 @@ public class CarService {
     }
 
     public Mono<CarResponse> updateCar(String id, Map<String, Part> carRequestPartMap) {
-        return getCarRequest(carRequestPartMap.get(CAR_REQUEST))
+        return getCarRequest(carRequestPartMap.get(Constants.CAR_REQUEST))
                 .flatMap(carRequestValidator::validateBody)
                 .flatMap(updatedCarRequest -> setupUpdatedCar(id, updatedCarRequest))
                 .flatMap(carRepository::save)
@@ -245,7 +244,7 @@ public class CarService {
     }
 
     private Mono<ObjectId> saveCarImage(Map<String, Part> carRequestPartMap, Car car) {
-        return Mono.justOrEmpty(carRequestPartMap.get(IMAGE))
+        return Mono.justOrEmpty(carRequestPartMap.get(Constants.IMAGE))
                 .flatMap(part -> saveCarImage(getDataBuffer(part), car.getId().toString()));
     }
 

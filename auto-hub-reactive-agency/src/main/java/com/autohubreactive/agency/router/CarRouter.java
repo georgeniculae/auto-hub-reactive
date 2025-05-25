@@ -2,6 +2,7 @@ package com.autohubreactive.agency.router;
 
 import com.autohubreactive.agency.handler.CarHandler;
 import com.autohubreactive.agency.swaggeroperation.SwaggerCarRouterOperations;
+import com.autohubreactive.agency.util.Constants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RequestPredicates;
@@ -12,12 +13,10 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 @Configuration
 public class CarRouter {
 
-    private static final String REQUEST_MAPPING = "/cars";
-
     @Bean
     @SwaggerCarRouterOperations
     public RouterFunction<ServerResponse> routeCar(CarHandler carHandler) {
-        return RouterFunctions.nest(RequestPredicates.path(REQUEST_MAPPING),
+        return RouterFunctions.nest(RequestPredicates.path(Constants.CARS_REQUEST_MAPPING),
                 RouterFunctions.route(RequestPredicates.GET(""), carHandler::findAllCars)
                         .andRoute(RequestPredicates.GET("/make/{make}"), carHandler::findCarsByMakeInsensitiveCase)
                         .andRoute(RequestPredicates.GET("/filter/{filter}"), carHandler::findCarsByFilterInsensitiveCase)

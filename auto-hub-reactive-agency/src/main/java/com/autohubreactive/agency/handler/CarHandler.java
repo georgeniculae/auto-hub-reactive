@@ -1,6 +1,7 @@
 package com.autohubreactive.agency.handler;
 
 import com.autohubreactive.agency.service.CarService;
+import com.autohubreactive.agency.util.Constants;
 import com.autohubreactive.dto.agency.CarResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
@@ -16,10 +17,6 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class CarHandler {
 
-    private static final String ID = "id";
-    private static final String MAKE = "make";
-    private static final String FILTER = "filter";
-    private static final String FILE = "file";
     private final CarService carService;
 
     @PreAuthorize("hasRole('user')")
@@ -33,14 +30,14 @@ public class CarHandler {
 
     @PreAuthorize("hasRole('user')")
     public Mono<ServerResponse> findCarById(ServerRequest serverRequest) {
-        return carService.findCarById(serverRequest.pathVariable(ID))
+        return carService.findCarById(serverRequest.pathVariable(Constants.ID))
                 .flatMap(carResponse -> ServerResponse.ok().bodyValue(carResponse))
                 .switchIfEmpty(ServerResponse.notFound().build());
     }
 
     @PreAuthorize("hasRole('user')")
     public Mono<ServerResponse> findCarsByMakeInsensitiveCase(ServerRequest serverRequest) {
-        return carService.findCarsByMakeInsensitiveCase(serverRequest.pathVariable(MAKE))
+        return carService.findCarsByMakeInsensitiveCase(serverRequest.pathVariable(Constants.MAKE))
                 .collectList()
                 .filter(ObjectUtils::isNotEmpty)
                 .flatMap(carResponses -> ServerResponse.ok().bodyValue(carResponses))
@@ -49,7 +46,7 @@ public class CarHandler {
 
     @PreAuthorize("hasRole('user')")
     public Mono<ServerResponse> findCarsByFilterInsensitiveCase(ServerRequest serverRequest) {
-        return carService.findCarsByFilterInsensitiveCase(serverRequest.pathVariable(FILTER))
+        return carService.findCarsByFilterInsensitiveCase(serverRequest.pathVariable(Constants.FILTER))
                 .collectList()
                 .filter(ObjectUtils::isNotEmpty)
                 .flatMap(carResponses -> ServerResponse.ok().bodyValue(carResponses))
@@ -58,7 +55,7 @@ public class CarHandler {
 
     @PreAuthorize("hasRole('user')")
     public Mono<ServerResponse> getAvailableCar(ServerRequest serverRequest) {
-        return carService.getAvailableCar(serverRequest.pathVariable(ID))
+        return carService.getAvailableCar(serverRequest.pathVariable(Constants.ID))
                 .flatMap(availableCarInfo -> ServerResponse.ok().bodyValue(availableCarInfo))
                 .switchIfEmpty(ServerResponse.notFound().build());
     }
@@ -73,7 +70,7 @@ public class CarHandler {
 
     @PreAuthorize("hasRole('user')")
     public Mono<ServerResponse> getCarImage(ServerRequest serverRequest) {
-        return carService.getCarImage(serverRequest.pathVariable(ID))
+        return carService.getCarImage(serverRequest.pathVariable(Constants.ID))
                 .flatMap(carResponse -> ServerResponse.ok().bodyValue(carResponse))
                 .switchIfEmpty(ServerResponse.notFound().build());
     }
@@ -94,7 +91,7 @@ public class CarHandler {
     @PreAuthorize("hasRole('admin')")
     public Mono<ServerResponse> uploadCars(ServerRequest serverRequest) {
         return serverRequest.multipartData()
-                .map(multiValueMap -> multiValueMap.get(FILE))
+                .map(multiValueMap -> multiValueMap.get(Constants.FILE))
                 .flatMapMany(Flux::fromIterable)
                 .cast(FilePart.class)
                 .concatMap(carService::uploadCars)
@@ -106,7 +103,7 @@ public class CarHandler {
     public Mono<ServerResponse> updateCar(ServerRequest serverRequest) {
         return serverRequest.multipartData()
                 .flatMap(updatedCarRequestMultivalueMap -> carService.updateCar(
-                                serverRequest.pathVariable(ID),
+                                serverRequest.pathVariable(Constants.ID),
                                 updatedCarRequestMultivalueMap.toSingleValueMap()
                         )
                 )
@@ -115,7 +112,7 @@ public class CarHandler {
 
     @PreAuthorize("hasRole('admin')")
     public Mono<ServerResponse> deleteCarById(ServerRequest serverRequest) {
-        return carService.deleteCarById(serverRequest.pathVariable(ID))
+        return carService.deleteCarById(serverRequest.pathVariable(Constants.ID))
                 .then(ServerResponse.noContent().build());
     }
 
