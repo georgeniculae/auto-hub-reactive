@@ -9,13 +9,10 @@ import java.util.function.Consumer;
 @UtilityClass
 public class WebClientUtil {
 
-    private static final String X_API_KEY = "X-API-KEY";
-    private static final String X_ROLES = "X-ROLES";
-
     public static Consumer<HttpHeaders> setHttpHeaders(String apiKey, List<String> roles) {
         return httpHeaders -> {
-            httpHeaders.add(X_API_KEY, apiKey);
-            httpHeaders.addAll(X_ROLES, roles);
+            httpHeaders.add(Constants.X_API_KEY, apiKey);
+            httpHeaders.addAll(Constants.X_ROLES, roles);
         };
     }
 

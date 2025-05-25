@@ -1,5 +1,6 @@
 package com.autohubreactive.lib.exceptionhandling;
 
+import com.autohubreactive.lib.util.Constants;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
@@ -12,11 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.server.RequestPredicates;
-import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.RouterFunctions;
-import org.springframework.web.reactive.function.server.ServerRequest;
-import org.springframework.web.reactive.function.server.ServerResponse;
+import org.springframework.web.reactive.function.server.*;
 import org.springframework.web.reactive.result.view.ViewResolver;
 import reactor.core.publisher.Mono;
 
@@ -26,7 +23,6 @@ import java.util.Map;
 @Order(-2)
 public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHandler {
 
-    private static final String STATUS = "status";
     private final GlobalErrorAttributes globalErrorAttributes;
 
     public GlobalErrorWebExceptionHandler(ErrorAttributes errorAttributes,
@@ -51,7 +47,7 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
         Map<String, Object> errorPropertiesMap =
                 globalErrorAttributes.getErrorAttributes(request, ErrorAttributeOptions.defaults());
 
-        HttpStatus status = HttpStatus.valueOf((Integer) errorPropertiesMap.get(STATUS));
+        HttpStatus status = HttpStatus.valueOf((Integer) errorPropertiesMap.get(Constants.STATUS));
 
         return ServerResponse.status(status)
                 .contentType(MediaType.APPLICATION_JSON)

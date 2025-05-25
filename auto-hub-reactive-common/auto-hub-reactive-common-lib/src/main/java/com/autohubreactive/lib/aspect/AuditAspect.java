@@ -3,6 +3,7 @@ package com.autohubreactive.lib.aspect;
 import com.autohubreactive.dto.common.AuditLogInfoRequest;
 import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
 import com.autohubreactive.lib.service.AuditLogProducerService;
+import com.autohubreactive.lib.util.Constants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -30,7 +31,6 @@ import java.util.stream.Stream;
 @Slf4j
 public class AuditAspect {
 
-    private static final String X_USERNAME = "X-USERNAME";
     private final AuditLogProducerService auditLogProducerService;
 
     @Around("@annotation(com.autohubreactive.lib.aspect.LogActivity)")
@@ -67,7 +67,7 @@ public class AuditAspect {
     }
 
     private String getUsernameHeader(ServerHttpRequest serverHttpRequest) {
-        return Optional.ofNullable(serverHttpRequest.getHeaders().getFirst(X_USERNAME))
+        return Optional.ofNullable(serverHttpRequest.getHeaders().getFirst(Constants.X_USERNAME))
                 .orElse(StringUtils.EMPTY);
     }
 
