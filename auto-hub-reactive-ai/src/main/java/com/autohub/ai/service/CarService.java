@@ -1,5 +1,6 @@
 package com.autohub.ai.service;
 
+import com.autohub.ai.util.Constants;
 import com.autohubreactive.dto.agency.CarResponse;
 import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
 import com.autohubreactive.lib.util.WebClientUtil;
@@ -18,7 +19,6 @@ import java.util.List;
 @Slf4j
 public class CarService {
 
-    private static final String SEPARATOR = "/";
     private final WebClient webClient;
 
     @Value("${webclient.url.auto-hub-agency-cars}")
@@ -26,7 +26,7 @@ public class CarService {
 
     public Flux<CarResponse> getAllAvailableCars(String apikey, List<String> roles) {
         return webClient.get()
-                .uri(url + SEPARATOR + "available")
+                .uri(url + Constants.SEPARATOR + "available")
                 .headers(WebClientUtil.setHttpHeaders(apikey, roles))
                 .retrieve()
                 .bodyToFlux(CarResponse.class)

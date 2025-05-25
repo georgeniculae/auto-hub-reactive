@@ -1,5 +1,6 @@
 package com.autohub.ai.service;
 
+import com.autohub.ai.util.Constants;
 import com.autohubreactive.dto.agency.CarResponse;
 import com.autohubreactive.dto.ai.CarSuggestionResponse;
 import com.autohubreactive.dto.ai.TripInfo;
@@ -21,11 +22,6 @@ import java.util.Map;
 @Slf4j
 public class CarSuggestionService {
 
-    private static final String CARS = "cars";
-    private static final String DESTINATION = "destination";
-    private static final String PEOPLE_COUNT = "peopleCount";
-    private static final String MONTH = "month";
-    private static final String TRIP_KIND = "tripKind";
     private final ChatService chatService;
     private final CarService carService;
 
@@ -62,11 +58,11 @@ public class CarSuggestionService {
 
     private Map<String, Object> getParams(TripInfo tripInfo, List<String> cars) {
         return Map.of(
-                CARS, cars,
-                DESTINATION, tripInfo.destination(),
-                PEOPLE_COUNT, tripInfo.peopleCount(),
-                MONTH, getMonth(tripInfo.tripDate()),
-                TRIP_KIND, tripInfo.tripKind()
+                Constants.CARS, cars,
+                Constants.DESTINATION, tripInfo.destination(),
+                Constants.PEOPLE_COUNT, tripInfo.peopleCount(),
+                Constants.MONTH, getMonth(tripInfo.tripDate()),
+                Constants.TRIP_KIND, tripInfo.tripKind()
         );
     }
 

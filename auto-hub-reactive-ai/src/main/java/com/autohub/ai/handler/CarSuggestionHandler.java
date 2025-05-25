@@ -1,6 +1,7 @@
 package com.autohub.ai.handler;
 
 import com.autohub.ai.service.CarSuggestionService;
+import com.autohub.ai.util.Constants;
 import com.autohub.ai.validator.TripInfoValidator;
 import com.autohubreactive.dto.ai.TripInfo;
 import com.autohubreactive.lib.util.ServerRequestUtil;
@@ -13,14 +14,12 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
 
+import static com.autohub.ai.util.Constants.TRIP_DATE;
+
 @Component
 @RequiredArgsConstructor
 public class CarSuggestionHandler {
 
-    private static final String DESTINATION = "destination";
-    private static final String PEOPLE_COUNT = "peopleCount";
-    private static final String TRIP_KIND = "tripKind";
-    private static final String TRIP_DATE = "tripDate";
     private final CarSuggestionService carSuggestionService;
     private final TripInfoValidator tripInfoValidator;
 
@@ -40,9 +39,9 @@ public class CarSuggestionHandler {
     private Mono<TripInfo> getTripInfo(ServerRequest serverRequest) {
         return Mono.just(
                 TripInfo.builder()
-                        .destination(ServerRequestUtil.getQueryParam(serverRequest, DESTINATION))
-                        .peopleCount(Integer.parseInt(ServerRequestUtil.getQueryParam(serverRequest, PEOPLE_COUNT)))
-                        .tripKind(ServerRequestUtil.getQueryParam(serverRequest, TRIP_KIND))
+                        .destination(ServerRequestUtil.getQueryParam(serverRequest, Constants.DESTINATION))
+                        .peopleCount(Integer.parseInt(ServerRequestUtil.getQueryParam(serverRequest, Constants.PEOPLE_COUNT)))
+                        .tripKind(ServerRequestUtil.getQueryParam(serverRequest, Constants.TRIP_KIND))
                         .tripDate(LocalDate.parse(ServerRequestUtil.getQueryParam(serverRequest, TRIP_DATE)))
                         .build()
         );
