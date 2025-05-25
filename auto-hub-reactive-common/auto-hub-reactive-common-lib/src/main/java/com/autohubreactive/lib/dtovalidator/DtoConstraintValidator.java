@@ -1,4 +1,4 @@
-package com.autohubreactive.lib.validator;
+package com.autohubreactive.lib.dtovalidator;
 
 import com.autohubreactive.exception.AutoHubResponseStatusException;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
-public class BodyValidator<T> {
+public class DtoConstraintValidator<T> {
 
     private final Validator validator;
 

@@ -1,7 +1,7 @@
 package com.autohubreactive.expense.validator;
 
 import com.autohubreactive.dto.invoice.InvoiceRequest;
-import com.autohubreactive.lib.validator.BodyValidator;
+import com.autohubreactive.lib.dtovalidator.DtoConstraintValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class InvoiceRequestValidator {
 
-    private final BodyValidator<InvoiceRequest> validator;
+    private final DtoConstraintValidator<InvoiceRequest> validator;
 
     public final Mono<InvoiceRequest> validateBody(InvoiceRequest invoiceRequest) {
         return validator.validateBody(invoiceRequest);

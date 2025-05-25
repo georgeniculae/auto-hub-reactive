@@ -1,4 +1,4 @@
-package com.autohubreactive.lib.validator;
+package com.autohubreactive.lib.dtovalidator;
 
 import com.autohubreactive.dto.common.AuditLogInfoRequest;
 import com.autohubreactive.lib.util.TestUtil;
@@ -15,10 +15,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
-class BodyValidatorTest {
+class DtoConstraintValidatorTest {
 
     @InjectMocks
-    private BodyValidator<AuditLogInfoRequest> bodyValidator;
+    private DtoConstraintValidator<AuditLogInfoRequest> dtoConstraintValidator;
 
     @Mock
     private Validator validator;
@@ -30,7 +30,7 @@ class BodyValidatorTest {
 
         doNothing().when(validator).validate(any(Object.class), any(Errors.class));
 
-        bodyValidator.validateBody(auditLogInfoRequest)
+        dtoConstraintValidator.validateBody(auditLogInfoRequest)
                 .as(StepVerifier::create)
                 .expectNext(auditLogInfoRequest)
                 .verifyComplete();
