@@ -4,6 +4,7 @@ import com.atlassian.oai.validator.OpenApiInteractionValidator;
 import com.atlassian.oai.validator.whitelist.ValidationErrorsWhitelist;
 import com.atlassian.oai.validator.whitelist.rule.WhitelistRules;
 import com.autohubreactive.apigateway.util.Constants;
+import com.autohubreactive.lib.retry.RetryHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -11,9 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.retry.Retry;
-
-import java.time.Duration;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +20,7 @@ public class CacheUpdateService {
 
     private final OpenApiCache openApiCache;
     private final WebClient webClient;
+    private final RetryHandler retryHandler;
     private final RegisteredEndpoints registeredEndpoints;
 
     public Flux<Swagger> populateCache() {
@@ -37,7 +36,7 @@ public class CacheUpdateService {
                 .uri(registeredEndpoint.getUrl())
                 .retrieve()
                 .bodyToMono(String.class)
-                .retryWhen(Retry.backoff(3, Duration.ofSeconds(10)))
+                .retryWhen(retryHandler.retry())
                 .filter(StringUtils::isNotBlank)
                 .map(swaggerContent -> createSwaggerObject(registeredEndpoint, swaggerContent))
                 .onErrorResume(e -> {
