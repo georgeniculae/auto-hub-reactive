@@ -3,13 +3,14 @@ package com.autohubreactive.expense.service;
 import com.autohubreactive.dto.invoice.RevenueResponse;
 import com.autohubreactive.exception.AutoHubException;
 import com.autohubreactive.exception.AutoHubNotFoundException;
+import com.autohubreactive.expense.entity.Invoice;
+import com.autohubreactive.expense.entity.Revenue;
 import com.autohubreactive.expense.mapper.RevenueMapper;
 import com.autohubreactive.expense.model.Outbox;
 import com.autohubreactive.expense.repository.InvoiceRepository;
 import com.autohubreactive.expense.repository.RevenueRepository;
+import com.autohubreactive.expense.util.Constants;
 import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
-import com.autohubreactive.expense.entity.Invoice;
-import com.autohubreactive.expense.entity.Revenue;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
@@ -32,8 +33,6 @@ import java.util.Date;
 @Slf4j
 public class RevenueService {
 
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
-    private static final String DATE_OF_REVENUE = "dateOfRevenue";
     private final RevenueRepository revenueRepository;
     private final InvoiceRepository invoiceRepository;
     private final ReactiveMongoTemplate reactiveMongoTemplate;
@@ -102,11 +101,11 @@ public class RevenueService {
 
         String format = LocalDate.parse(dateOfRevenue)
                 .plusDays(1)
-                .format(DateTimeFormatter.ofPattern(DATE_FORMAT));
+                .format(DateTimeFormatter.ofPattern(Constants.DATE_FORMAT));
 
         Date dayAfterDateOfBookingAsDate = formatDate(format);
 
-        Criteria dateOfBookingCriteria = Criteria.where(DATE_OF_REVENUE)
+        Criteria dateOfBookingCriteria = Criteria.where(Constants.DATE_OF_REVENUE)
                 .gte(dateOfBookingAsDate)
                 .lt(dayAfterDateOfBookingAsDate);
 
@@ -115,7 +114,7 @@ public class RevenueService {
 
     private Date formatDate(String dateOfRevenue) {
         try {
-            return new SimpleDateFormat(DATE_FORMAT).parse(dateOfRevenue);
+            return new SimpleDateFormat(Constants.DATE_FORMAT).parse(dateOfRevenue);
         } catch (ParseException e) {
             throw new AutoHubException(e.getMessage());
         }

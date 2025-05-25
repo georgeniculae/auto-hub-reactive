@@ -1,6 +1,7 @@
 package com.autohubreactive.expense.handler;
 
 import com.autohubreactive.expense.service.RevenueService;
+import com.autohubreactive.expense.util.Constants;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,7 +14,6 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class RevenueHandler {
 
-    private static final String DATE_OF_REVENUE = "dateOfRevenue";
     private final RevenueService revenueService;
 
     @PreAuthorize("hasRole('admin')")
@@ -27,7 +27,7 @@ public class RevenueHandler {
 
     @PreAuthorize("hasRole('admin')")
     public Mono<ServerResponse> findRevenuesByDate(ServerRequest serverRequest) {
-        return revenueService.findRevenuesByDate(serverRequest.pathVariable(DATE_OF_REVENUE))
+        return revenueService.findRevenuesByDate(serverRequest.pathVariable(Constants.DATE_OF_REVENUE))
                 .collectList()
                 .filter(ObjectUtils::isNotEmpty)
                 .flatMap(revenueDtoList -> ServerResponse.ok().bodyValue(revenueDtoList))

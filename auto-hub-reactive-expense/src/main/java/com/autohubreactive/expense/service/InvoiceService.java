@@ -6,12 +6,13 @@ import com.autohubreactive.dto.invoice.InvoiceRequest;
 import com.autohubreactive.exception.AutoHubException;
 import com.autohubreactive.exception.AutoHubNotFoundException;
 import com.autohubreactive.exception.AutoHubResponseStatusException;
+import com.autohubreactive.expense.entity.Invoice;
 import com.autohubreactive.expense.mapper.InvoiceMapper;
 import com.autohubreactive.expense.repository.InvoiceRepository;
+import com.autohubreactive.expense.util.Constants;
 import com.autohubreactive.lib.aspect.LogActivity;
 import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
 import com.autohubreactive.lib.util.MongoUtil;
-import com.autohubreactive.expense.entity.Invoice;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -31,7 +32,6 @@ import java.util.Optional;
 @Slf4j
 public class InvoiceService {
 
-    private static final String TOTAL_AMOUNT = "totalAmount";
     private final InvoiceRepository invoiceRepository;
     private final ReactiveMongoTemplate reactiveMongoTemplate;
     private final RevenueService revenueService;
@@ -185,7 +185,7 @@ public class InvoiceService {
     }
 
     private Mono<Long> countActiveInvoices() {
-        Criteria criteria = Criteria.where(TOTAL_AMOUNT).ne(null);
+        Criteria criteria = Criteria.where(Constants.TOTAL_AMOUNT).ne(null);
         Query query = new Query(criteria);
 
         return reactiveMongoTemplate.count(query, Long.class);
