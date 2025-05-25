@@ -1,6 +1,7 @@
 package com.autohubreactive.customer.handler;
 
 import com.autohubreactive.customer.service.CustomerService;
+import com.autohubreactive.customer.util.Constants;
 import com.autohubreactive.customer.validator.RegisterRequestValidator;
 import com.autohubreactive.customer.validator.UserUpdateRequestValidator;
 import com.autohubreactive.dto.customer.RegisterRequest;
@@ -17,8 +18,6 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class CustomerHandler {
 
-    private static final String USERNAME = "username";
-    private static final String ID = "id";
     private final CustomerService customerService;
     private final RegisterRequestValidator registerRequestValidator;
     private final UserUpdateRequestValidator userUpdateRequestValidator;
@@ -39,7 +38,7 @@ public class CustomerHandler {
 
     @PreAuthorize("hasRole('user')")
     public Mono<ServerResponse> findUserByUsername(ServerRequest serverRequest) {
-        return customerService.findUserByUsername(serverRequest.pathVariable(USERNAME))
+        return customerService.findUserByUsername(serverRequest.pathVariable(Constants.USERNAME))
                 .flatMap(userInfo -> ServerResponse.ok().bodyValue(userInfo))
                 .switchIfEmpty(ServerResponse.badRequest().build());
     }
@@ -63,7 +62,7 @@ public class CustomerHandler {
         return serverRequest.bodyToMono(UserUpdateRequest.class)
                 .flatMap(userUpdateRequestValidator::validateBody)
                 .flatMap(updatedUser -> customerService.updateUser(
-                                serverRequest.pathVariable(ID),
+                                serverRequest.pathVariable(Constants.ID),
                                 updatedUser
                         )
                 )
@@ -72,7 +71,7 @@ public class CustomerHandler {
 
     @PreAuthorize("hasRole('admin')")
     public Mono<ServerResponse> deleteUserByUsername(ServerRequest serverRequest) {
-        return customerService.deleteUserByUsername(serverRequest.pathVariable(USERNAME))
+        return customerService.deleteUserByUsername(serverRequest.pathVariable(Constants.USERNAME))
                 .then(ServerResponse.noContent().build());
     }
 
@@ -84,7 +83,7 @@ public class CustomerHandler {
 
     @PreAuthorize("hasRole('user')")
     public Mono<ServerResponse> signOut(ServerRequest serverRequest) {
-        return customerService.signOut(serverRequest.pathVariable(ID))
+        return customerService.signOut(serverRequest.pathVariable(Constants.ID))
                 .then(ServerResponse.ok().build());
     }
 

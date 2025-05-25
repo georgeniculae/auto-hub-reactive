@@ -1,6 +1,7 @@
 package com.autohubreactive.customer.service;
 
 import com.autohubreactive.customer.mapper.CustomerMapper;
+import com.autohubreactive.customer.util.Constants;
 import com.autohubreactive.dto.customer.RegisterRequest;
 import com.autohubreactive.dto.customer.RegistrationResponse;
 import com.autohubreactive.dto.customer.UserInfo;
@@ -35,14 +36,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class KeycloakUserService {
 
-    private static final String ADDRESS = "address";
-    private static final String DATE_OF_BIRTH = "dateOfBirth";
-    private static final String USER = "user";
-    private static final String OFFLINE_ACCESS = "offline_access";
-    private static final String OPENING_BRACE = "{";
-    private static final String CLOSE_BRACE = "}";
-    private static final String ROLE = "role_";
-    private static final String $ = "$";
     private final Keycloak keycloak;
     private final CustomerMapper customerMapper;
 
@@ -92,8 +85,8 @@ public class KeycloakUserService {
         UserResource userResource = findById(id);
 
         UserRepresentation userRepresentation = customerMapper.mapToUserRepresentation(userUpdateRequest);
-        userRepresentation.singleAttribute(ADDRESS, userUpdateRequest.address());
-        userRepresentation.singleAttribute(DATE_OF_BIRTH, userUpdateRequest.dateOfBirth().toString());
+        userRepresentation.singleAttribute(Constants.ADDRESS, userUpdateRequest.address());
+        userRepresentation.singleAttribute(Constants.DATE_OF_BIRTH, userUpdateRequest.dateOfBirth().toString());
 
         try {
             userResource.update(userRepresentation);
@@ -149,8 +142,8 @@ public class KeycloakUserService {
         userRepresentation.setLastName(request.lastName());
         userRepresentation.setEmail(request.email());
         userRepresentation.setCredentials(List.of(createPasswordCredentials(request.password())));
-        userRepresentation.singleAttribute(ADDRESS, request.address());
-        userRepresentation.singleAttribute(DATE_OF_BIRTH, request.dateOfBirth().toString());
+        userRepresentation.singleAttribute(Constants.ADDRESS, request.address());
+        userRepresentation.singleAttribute(Constants.DATE_OF_BIRTH, request.dateOfBirth().toString());
         userRepresentation.setEmailVerified(!request.needsEmailVerification());
         userRepresentation.setEnabled(true);
 
@@ -205,17 +198,17 @@ public class KeycloakUserService {
                 .list()
                 .stream()
                 .map(RoleRepresentation::getName)
-                .noneMatch(USER::equals);
+                .noneMatch(Constants.USER::equals);
 
         if (isRoleNonexistent) {
             RoleRepresentation roleRepresentation = new RoleRepresentation();
-            roleRepresentation.setName(USER);
-            roleRepresentation.setDescription($ + OPENING_BRACE + ROLE + USER + CLOSE_BRACE);
+            roleRepresentation.setName(Constants.USER);
+            roleRepresentation.setDescription(Constants.$ + Constants.OPENING_BRACE + Constants.ROLE + Constants.USER + Constants.CLOSE_BRACE);
 
             RolesResource rolesResource = getRolesResource();
             rolesResource.create(roleRepresentation);
 
-            getRoleResource().addComposites(List.of(rolesResource.get(OFFLINE_ACCESS).toRepresentation()));
+            getRoleResource().addComposites(List.of(rolesResource.get(Constants.OFFLINE_ACCESS).toRepresentation()));
         }
     }
 
@@ -224,7 +217,7 @@ public class KeycloakUserService {
     }
 
     private RoleResource getRoleResource() {
-        return getRolesResource().get(USER);
+        return getRolesResource().get(Constants.USER);
     }
 
     private RolesResource getRolesResource() {
