@@ -1,7 +1,7 @@
 package com.autohubreactive.apigateway.scheduler;
 
 import com.autohubreactive.apigateway.cache.OpenApiCache;
-import com.autohubreactive.apigateway.cache.RegisteredEndpoints;
+import com.autohubreactive.apigateway.property.RegisteredEndpoints;
 import com.autohubreactive.apigateway.util.TestUtil;
 import com.autohubreactive.lib.retry.RetryHandler;
 import org.junit.jupiter.api.AfterEach;

@@ -1,4 +1,4 @@
-package com.autohubreactive.apigateway.cache;
+package com.autohubreactive.apigateway.property;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
