@@ -1,5 +1,6 @@
 package com.autohubreactive.apigateway.filter.factory;
 
+import com.autohubreactive.apigateway.util.Constants;
 import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,9 +17,6 @@ import reactor.core.publisher.Mono;
 @Component
 @Slf4j
 public class RequestTraceGatewayFilterFactory extends AbstractGatewayFilterFactory<RequestTraceGatewayFilterFactory.ServiceIdConfig> {
-
-    private static final String X_SERVICE_ID = "X-SERVICE-ID";
-    private static final String X_PATH = "X-PATH";
 
     public RequestTraceGatewayFilterFactory() {
         super(ServiceIdConfig.class);
@@ -43,8 +41,8 @@ public class RequestTraceGatewayFilterFactory extends AbstractGatewayFilterFacto
                                                              ServerWebExchange exchange) {
         return exchange.mutate()
                 .request(requestBuilder -> {
-                    requestBuilder.header(X_SERVICE_ID, serviceIdConfig.getServiceId());
-                    requestBuilder.header(X_PATH, exchange.getRequest().getURI().getPath());
+                    requestBuilder.header(Constants.X_SERVICE_ID, serviceIdConfig.getServiceId());
+                    requestBuilder.header(Constants.X_PATH, exchange.getRequest().getURI().getPath());
                 })
                 .build();
     }

@@ -1,5 +1,6 @@
 package com.autohubreactive.apigateway.filter.global;
 
+import com.autohubreactive.apigateway.util.Constants;
 import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -15,9 +16,6 @@ import reactor.core.publisher.Mono;
 @Component
 @Slf4j
 public class RequestHeaderLoggerFilter implements GlobalFilter, Ordered {
-
-    private static final String X_API_KEY = "X-API-KEY";
-    private static final String X_EMAIL = "X-EMAIL";
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -45,7 +43,7 @@ public class RequestHeaderLoggerFilter implements GlobalFilter, Ordered {
         log.info("Request headers: ");
 
         httpHeaders.forEach((header, value) -> {
-            if (!X_API_KEY.equals(header) && !X_EMAIL.equals(header)) {
+            if (!Constants.X_API_KEY.equals(header) && !Constants.X_EMAIL.equals(header)) {
                 log.info("{}: {}", header, value);
             }
         });

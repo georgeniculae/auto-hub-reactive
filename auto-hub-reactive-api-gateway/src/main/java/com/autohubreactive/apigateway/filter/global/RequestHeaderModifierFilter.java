@@ -1,6 +1,7 @@
 package com.autohubreactive.apigateway.filter.global;
 
 import com.autohubreactive.apigateway.security.JwtAuthenticationTokenConverter;
+import com.autohubreactive.apigateway.util.Constants;
 import com.autohubreactive.dto.common.AuthenticationInfo;
 import com.autohubreactive.exception.AutoHubResponseStatusException;
 import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
@@ -33,13 +34,6 @@ import java.util.function.Consumer;
 @Slf4j
 public class RequestHeaderModifierFilter implements GlobalFilter, Ordered {
 
-    private static final String X_API_KEY_HEADER = "X-API-KEY";
-    private static final String X_USERNAME = "X-USERNAME";
-    private static final String X_EMAIL = "X-EMAIL";
-    private static final String X_ROLES = "X-ROLES";
-    private static final String REGISTER_PATH = "register";
-    private static final String DEFINITION_PATH = "definition";
-    private static final String FALLBACK = "fallback";
     private final JwtAuthenticationTokenConverter jwtAuthenticationTokenConverter;
     private final NimbusReactiveJwtDecoder nimbusReactiveJwtDecoder;
 
@@ -77,7 +71,9 @@ public class RequestHeaderModifierFilter implements GlobalFilter, Ordered {
     private boolean isRequestValidatable(ServerHttpRequest serverHttpRequest) {
         String path = serverHttpRequest.getPath().value();
 
-        return !path.contains(REGISTER_PATH) && !path.contains(DEFINITION_PATH) && !path.contains(FALLBACK);
+        return !path.contains(Constants.REGISTER_PATH) &&
+                !path.contains(Constants.DEFINITION_PATH) &&
+                !path.contains(Constants.FALLBACK);
     }
 
     private Mono<Void> filterValidatedRequest(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -155,18 +151,18 @@ public class RequestHeaderModifierFilter implements GlobalFilter, Ordered {
 
     private Consumer<ServerHttpRequest.Builder> mutateHeaders(String username, String email, List<String> roles) {
         return requestBuilder -> {
-            requestBuilder.header(X_API_KEY_HEADER, apikey);
+            requestBuilder.header(Constants.X_API_KEY_HEADER, apikey);
 
             if (ObjectUtils.isNotEmpty(username)) {
-                requestBuilder.header(X_USERNAME, username);
+                requestBuilder.header(Constants.X_USERNAME, username);
             }
 
             if (ObjectUtils.isNotEmpty(email)) {
-                requestBuilder.header(X_EMAIL, email);
+                requestBuilder.header(Constants.X_EMAIL, email);
             }
 
             if (ObjectUtils.isNotEmpty(roles)) {
-                requestBuilder.header(X_ROLES, roles.toArray(new String[]{}));
+                requestBuilder.header(Constants.X_ROLES, roles.toArray(new String[]{}));
             }
 
             requestBuilder.headers(headers -> headers.remove(HttpHeaders.AUTHORIZATION));

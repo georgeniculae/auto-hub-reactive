@@ -1,5 +1,6 @@
 package com.autohubreactive.apigateway.security;
 
+import com.autohubreactive.apigateway.util.Constants;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,10 +20,6 @@ import java.util.stream.Collectors;
 @Configuration
 public class GrantedAuthoritiesConverterConfig {
 
-    private static final String REALM_ACCESS = "realm_access";
-    private static final String ROLES = "roles";
-    private static final String ROLE = "ROLE_";
-
     @Bean
     public Converter<Jwt, Flux<GrantedAuthority>> jwtGrantedAuthoritiesConverter(JwtGrantedAuthorityConverter jwtGrantedAuthorityConverter) {
         return new ReactiveJwtGrantedAuthoritiesConverterAdapter(jwtGrantedAuthorityConverter);
@@ -39,13 +36,13 @@ public class GrantedAuthoritiesConverterConfig {
 
     @SuppressWarnings("unchecked")
     private Map<String, List<String>> getClaims(Jwt source) {
-        return (Map<String, List<String>>) source.getClaims().get(REALM_ACCESS);
+        return (Map<String, List<String>>) source.getClaims().get(Constants.REALM_ACCESS);
     }
 
     private Collection<GrantedAuthority> getAuthorities(Map<String, List<String>> claims) {
-        return claims.get(ROLES)
+        return claims.get(Constants.ROLES)
                 .stream()
-                .map(role -> new SimpleGrantedAuthority(ROLE + role))
+                .map(role -> new SimpleGrantedAuthority(Constants.ROLE + role))
                 .collect(Collectors.toList());
     }
 

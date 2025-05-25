@@ -1,5 +1,6 @@
 package com.autohubreactive.apigateway.security;
 
+import com.autohubreactive.apigateway.util.Constants;
 import com.autohubreactive.exception.AutoHubException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
@@ -14,18 +15,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JwtAuthenticationTokenConverter {
 
-    private static final String USERNAME_CLAIM = "preferred_username";
-    private static final String EMAIL_CLAIM = "email";
     private final Converter<Jwt, Flux<GrantedAuthority>> jwtGrantedAuthoritiesConverter;
 
     public String extractUsername(Jwt source) {
-        return Optional.ofNullable(source.getClaims().get(USERNAME_CLAIM))
+        return Optional.ofNullable(source.getClaims().get(Constants.USERNAME_CLAIM))
                 .map(String::valueOf)
                 .orElseThrow(() -> new AutoHubException("Username claim is null"));
     }
 
     public String extractEmail(Jwt source) {
-        return Optional.ofNullable(source.getClaims().get(EMAIL_CLAIM))
+        return Optional.ofNullable(source.getClaims().get(Constants.EMAIL_CLAIM))
                 .map(String::valueOf)
                 .orElseThrow(() -> new AutoHubException("Email claim is null"));
     }
