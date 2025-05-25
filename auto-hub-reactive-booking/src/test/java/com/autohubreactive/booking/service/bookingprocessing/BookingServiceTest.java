@@ -1,5 +1,7 @@
 package com.autohubreactive.booking.service.bookingprocessing;
 
+import com.autohubreactive.booking.entity.Booking;
+import com.autohubreactive.booking.entity.BookingStatus;
 import com.autohubreactive.booking.mapper.BookingMapper;
 import com.autohubreactive.booking.mapper.BookingMapperImpl;
 import com.autohubreactive.booking.model.CreatedOutbox;
@@ -13,8 +15,6 @@ import com.autohubreactive.dto.common.AuthenticationInfo;
 import com.autohubreactive.dto.common.AvailableCarInfo;
 import com.autohubreactive.dto.common.BookingClosingDetails;
 import com.autohubreactive.dto.common.BookingResponse;
-import com.autohubreactive.booking.entity.Booking;
-import com.autohubreactive.booking.entity.BookingStatus;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,5 +1,6 @@
 package com.autohubreactive.booking.service.outbox;
 
+import com.autohubreactive.booking.entity.Booking;
 import com.autohubreactive.booking.mapper.BookingMapper;
 import com.autohubreactive.booking.model.CreatedOutbox;
 import com.autohubreactive.booking.producer.bookingprocessing.CreatedBookingCarUpdateProducerService;
@@ -11,7 +12,6 @@ import com.autohubreactive.dto.common.BookingResponse;
 import com.autohubreactive.dto.common.CarState;
 import com.autohubreactive.dto.common.CarStatusUpdate;
 import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
-import com.autohubreactive.booking.entity.Booking;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.stereotype.Service;

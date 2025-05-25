@@ -1,5 +1,6 @@
 package com.autohubreactive.agency.service;
 
+import com.autohubreactive.agency.entity.Employee;
 import com.autohubreactive.agency.mapper.EmployeeMapper;
 import com.autohubreactive.agency.repository.EmployeeRepository;
 import com.autohubreactive.dto.agency.EmployeeRequest;
@@ -8,7 +9,6 @@ import com.autohubreactive.exception.AutoHubException;
 import com.autohubreactive.exception.AutoHubNotFoundException;
 import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
 import com.autohubreactive.lib.util.MongoUtil;
-import com.autohubreactive.agency.entity.Employee;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

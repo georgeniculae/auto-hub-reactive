@@ -1,14 +1,14 @@
 package com.autohubreactive.expense.service;
 
 import com.autohubreactive.dto.invoice.RevenueResponse;
+import com.autohubreactive.expense.entity.Invoice;
+import com.autohubreactive.expense.entity.Revenue;
 import com.autohubreactive.expense.mapper.RevenueMapper;
 import com.autohubreactive.expense.mapper.RevenueMapperImpl;
 import com.autohubreactive.expense.model.Outbox;
 import com.autohubreactive.expense.repository.InvoiceRepository;
 import com.autohubreactive.expense.repository.RevenueRepository;
 import com.autohubreactive.expense.util.TestUtil;
-import com.autohubreactive.expense.entity.Invoice;
-import com.autohubreactive.expense.entity.Revenue;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,5 +1,6 @@
 package com.autohubreactive.booking.service.outbox;
 
+import com.autohubreactive.booking.entity.Booking;
 import com.autohubreactive.booking.mapper.BookingMapper;
 import com.autohubreactive.booking.mapper.BookingMapperImpl;
 import com.autohubreactive.booking.model.UpdatedOutbox;
@@ -12,7 +13,6 @@ import com.autohubreactive.booking.util.TestUtil;
 import com.autohubreactive.dto.booking.UpdatedBookingReprocessRequest;
 import com.autohubreactive.dto.common.BookingResponse;
 import com.autohubreactive.dto.common.UpdateCarsRequest;
-import com.autohubreactive.booking.entity.Booking;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

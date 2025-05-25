@@ -1,11 +1,11 @@
 package com.autohubreactive.booking.service.outbox;
 
+import com.autohubreactive.booking.entity.Booking;
 import com.autohubreactive.booking.model.DeletedOutbox;
 import com.autohubreactive.booking.producer.bookingprocessing.DeletedBookingProducerService;
 import com.autohubreactive.booking.repository.BookingRepository;
 import com.autohubreactive.booking.repository.DeletedOutboxRepository;
 import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
-import com.autohubreactive.booking.entity.Booking;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.stereotype.Service;

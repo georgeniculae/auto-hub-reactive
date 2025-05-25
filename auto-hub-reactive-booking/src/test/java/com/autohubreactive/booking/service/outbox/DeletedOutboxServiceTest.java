@@ -1,11 +1,11 @@
 package com.autohubreactive.booking.service.outbox;
 
+import com.autohubreactive.booking.entity.Booking;
 import com.autohubreactive.booking.model.DeletedOutbox;
 import com.autohubreactive.booking.producer.bookingprocessing.DeletedBookingProducerService;
 import com.autohubreactive.booking.repository.BookingRepository;
 import com.autohubreactive.booking.repository.DeletedOutboxRepository;
 import com.autohubreactive.booking.util.TestUtil;
-import com.autohubreactive.booking.entity.Booking;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

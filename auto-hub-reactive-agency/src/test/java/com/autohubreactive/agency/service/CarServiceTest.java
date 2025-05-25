@@ -1,5 +1,9 @@
 package com.autohubreactive.agency.service;
 
+import com.autohubreactive.agency.entity.Branch;
+import com.autohubreactive.agency.entity.Car;
+import com.autohubreactive.agency.entity.CarStatus;
+import com.autohubreactive.agency.entity.Employee;
 import com.autohubreactive.agency.mapper.CarMapper;
 import com.autohubreactive.agency.mapper.CarMapperImpl;
 import com.autohubreactive.agency.repository.CarRepository;
@@ -15,10 +19,6 @@ import com.autohubreactive.dto.common.CarUpdateDetails;
 import com.autohubreactive.dto.common.UpdateCarsRequest;
 import com.autohubreactive.exception.AutoHubException;
 import com.autohubreactive.exception.AutoHubNotFoundException;
-import com.autohubreactive.agency.entity.Branch;
-import com.autohubreactive.agency.entity.Car;
-import com.autohubreactive.agency.entity.CarStatus;
-import com.autohubreactive.agency.entity.Employee;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.types.ObjectId;

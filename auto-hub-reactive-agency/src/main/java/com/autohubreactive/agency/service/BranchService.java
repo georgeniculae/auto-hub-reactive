@@ -1,5 +1,6 @@
 package com.autohubreactive.agency.service;
 
+import com.autohubreactive.agency.entity.Branch;
 import com.autohubreactive.agency.mapper.BranchMapper;
 import com.autohubreactive.agency.repository.BranchRepository;
 import com.autohubreactive.agency.repository.EmployeeRepository;
@@ -9,7 +10,6 @@ import com.autohubreactive.exception.AutoHubException;
 import com.autohubreactive.exception.AutoHubNotFoundException;
 import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
 import com.autohubreactive.lib.util.MongoUtil;
-import com.autohubreactive.agency.entity.Branch;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

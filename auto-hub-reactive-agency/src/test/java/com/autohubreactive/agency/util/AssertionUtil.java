@@ -1,5 +1,9 @@
 package com.autohubreactive.agency.util;
 
+import com.autohubreactive.agency.entity.Branch;
+import com.autohubreactive.agency.entity.Car;
+import com.autohubreactive.agency.entity.Employee;
+import com.autohubreactive.agency.entity.RentalOffice;
 import com.autohubreactive.dto.agency.BranchRequest;
 import com.autohubreactive.dto.agency.BranchResponse;
 import com.autohubreactive.dto.agency.CarRequest;
@@ -8,10 +12,6 @@ import com.autohubreactive.dto.agency.EmployeeRequest;
 import com.autohubreactive.dto.agency.EmployeeResponse;
 import com.autohubreactive.dto.agency.RentalOfficeRequest;
 import com.autohubreactive.dto.agency.RentalOfficeResponse;
-import com.autohubreactive.agency.entity.Branch;
-import com.autohubreactive.agency.entity.Car;
-import com.autohubreactive.agency.entity.Employee;
-import com.autohubreactive.agency.entity.RentalOffice;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

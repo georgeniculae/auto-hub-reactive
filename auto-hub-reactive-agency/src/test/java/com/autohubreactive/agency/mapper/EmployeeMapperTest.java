@@ -1,11 +1,11 @@
 package com.autohubreactive.agency.mapper;
 
+import com.autohubreactive.agency.entity.Branch;
+import com.autohubreactive.agency.entity.Employee;
 import com.autohubreactive.agency.util.AssertionUtil;
 import com.autohubreactive.agency.util.TestUtil;
 import com.autohubreactive.dto.agency.EmployeeRequest;
 import com.autohubreactive.dto.agency.EmployeeResponse;
-import com.autohubreactive.agency.entity.Branch;
-import com.autohubreactive.agency.entity.Employee;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

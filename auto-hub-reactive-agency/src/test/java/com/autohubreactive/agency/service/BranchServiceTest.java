@@ -1,5 +1,7 @@
 package com.autohubreactive.agency.service;
 
+import com.autohubreactive.agency.entity.Branch;
+import com.autohubreactive.agency.entity.RentalOffice;
 import com.autohubreactive.agency.mapper.BranchMapper;
 import com.autohubreactive.agency.mapper.BranchMapperImpl;
 import com.autohubreactive.agency.repository.BranchRepository;
@@ -7,8 +9,6 @@ import com.autohubreactive.agency.repository.EmployeeRepository;
 import com.autohubreactive.agency.util.TestUtil;
 import com.autohubreactive.dto.agency.BranchRequest;
 import com.autohubreactive.dto.agency.BranchResponse;
-import com.autohubreactive.agency.entity.Branch;
-import com.autohubreactive.agency.entity.RentalOffice;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,15 +1,15 @@
 package com.autohubreactive.agency.mapper;
 
+import com.autohubreactive.agency.entity.BodyType;
+import com.autohubreactive.agency.entity.Branch;
+import com.autohubreactive.agency.entity.Car;
+import com.autohubreactive.agency.entity.CarStatus;
 import com.autohubreactive.dto.agency.BodyCategory;
 import com.autohubreactive.dto.agency.CarRequest;
 import com.autohubreactive.dto.agency.CarResponse;
 import com.autohubreactive.dto.agency.ExcelCarRequest;
 import com.autohubreactive.dto.common.AvailableCarInfo;
 import com.autohubreactive.dto.common.CarState;
-import com.autohubreactive.agency.entity.BodyType;
-import com.autohubreactive.agency.entity.Branch;
-import com.autohubreactive.agency.entity.Car;
-import com.autohubreactive.agency.entity.CarStatus;
 import org.apache.commons.lang3.ObjectUtils;
 import org.bson.types.ObjectId;
 import org.mapstruct.InjectionStrategy;
