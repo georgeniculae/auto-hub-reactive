@@ -97,10 +97,12 @@ public interface InvoiceMapper {
         return Period.between(bookingDateFrom, bookingDateTo).getDays();
     }
 
-    private BigDecimal getMoneyForLateReturn(LocalDate carReturnDate,
-                                             LocalDate bookingDateTo,
-                                             LocalDate bookingDateFrom,
-                                             BigDecimal carAmount) {
+    private BigDecimal getMoneyForLateReturn(
+            LocalDate carReturnDate,
+            LocalDate bookingDateTo,
+            LocalDate bookingDateFrom,
+            BigDecimal carAmount
+    ) {
         return carAmount.multiply(BigDecimal.valueOf(getDaysPeriod(bookingDateFrom, bookingDateTo)))
                 .add(carAmount.multiply(BigDecimal.valueOf(getDaysPeriod(bookingDateTo, carReturnDate) * 2L)));
     }

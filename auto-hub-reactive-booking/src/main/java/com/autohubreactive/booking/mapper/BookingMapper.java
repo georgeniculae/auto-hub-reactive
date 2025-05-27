@@ -58,7 +58,11 @@ public interface BookingMapper {
     @Mapping(target = "previousCarId", expression = "java(existingBooking.getActualCarId())")
     @Mapping(target = "rentalCarPrice", expression = "java(availableCarInfo.amount())")
     @Mapping(target = "rentalBranchId", expression = "java(mapStringToObjectId(availableCarInfo.actualBranchId()))")
-    Booking getUpdatedBookingWithNewData(Booking existingBooking, BookingRequest updatedBookingRequest, AvailableCarInfo availableCarInfo);
+    Booking getUpdatedBookingWithNewData(
+            Booking existingBooking,
+            BookingRequest updatedBookingRequest,
+            AvailableCarInfo availableCarInfo
+    );
 
     CreatedBookingReprocessRequest getCreatedBookingReprocessRequest(Booking content);
 

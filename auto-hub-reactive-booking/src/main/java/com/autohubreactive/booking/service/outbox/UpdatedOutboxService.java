@@ -29,13 +29,15 @@ public class UpdatedOutboxService extends OutboxService {
     private final FailedUpdatedBookingDlqProducerService failedUpdatedBookingDlqProducerService;
     private final BookingMapper bookingMapper;
 
-    public UpdatedOutboxService(ReactiveRedisOperations<String, String> redisOperations,
-                                UpdateOutboxRepository updateOutboxRepository,
-                                BookingRepository bookingRepository,
-                                UpdatedBookingProducerService updatedBookingProducerService,
-                                FailedUpdatedBookingDlqProducerService failedUpdatedBookingDlqProducerService,
-                                UpdatedBookingUpdateCarsProducerService updatedBookingUpdateCarsProducerService,
-                                BookingMapper bookingMapper) {
+    public UpdatedOutboxService(
+            ReactiveRedisOperations<String, String> redisOperations,
+            UpdateOutboxRepository updateOutboxRepository,
+            BookingRepository bookingRepository,
+            UpdatedBookingProducerService updatedBookingProducerService,
+            FailedUpdatedBookingDlqProducerService failedUpdatedBookingDlqProducerService,
+            UpdatedBookingUpdateCarsProducerService updatedBookingUpdateCarsProducerService,
+            BookingMapper bookingMapper
+    ) {
         super(redisOperations);
         this.updateOutboxRepository = updateOutboxRepository;
         this.bookingRepository = bookingRepository;

@@ -21,10 +21,12 @@ public class DeletedOutboxService extends OutboxService {
     private final BookingRepository bookingRepository;
     private final DeletedBookingProducerService deletedBookingProducerService;
 
-    public DeletedOutboxService(ReactiveRedisOperations<String, String> redisOperations,
-                                DeletedOutboxRepository deletedOutboxRepository,
-                                BookingRepository bookingRepository,
-                                DeletedBookingProducerService deletedBookingProducerService) {
+    public DeletedOutboxService(
+            ReactiveRedisOperations<String, String> redisOperations,
+            DeletedOutboxRepository deletedOutboxRepository,
+            BookingRepository bookingRepository,
+            DeletedBookingProducerService deletedBookingProducerService
+    ) {
         super(redisOperations);
         this.deletedOutboxRepository = deletedOutboxRepository;
         this.bookingRepository = bookingRepository;

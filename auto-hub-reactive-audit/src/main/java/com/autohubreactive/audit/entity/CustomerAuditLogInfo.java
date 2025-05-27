@@ -36,11 +36,13 @@ public class CustomerAuditLogInfo {
     @Builder.Default
     private List<String> parametersValues = new ArrayList<>();
 
-    public CustomerAuditLogInfo(ObjectId id,
-                                @NonNull String methodName,
-                                String username,
-                                LocalDateTime timestamp,
-                                List<String> parametersValues) {
+    public CustomerAuditLogInfo(
+            ObjectId id,
+            @NonNull String methodName,
+            String username,
+            LocalDateTime timestamp,
+            List<String> parametersValues
+    ) {
         this.id = id;
         this.methodName = methodName;
         this.username = username;

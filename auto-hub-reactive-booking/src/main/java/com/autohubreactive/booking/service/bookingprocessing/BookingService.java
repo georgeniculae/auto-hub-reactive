@@ -137,9 +137,11 @@ public class BookingService {
             activityDescription = "Booking update",
             sentParameters = "id"
     )
-    public Mono<BookingResponse> updateBooking(AuthenticationInfo authenticationInfo,
-                                               String id,
-                                               BookingRequest updatedBookingRequest) {
+    public Mono<BookingResponse> updateBooking(
+            AuthenticationInfo authenticationInfo,
+            String id,
+            BookingRequest updatedBookingRequest
+    ) {
         return validateBookingDates(updatedBookingRequest)
                 .flatMap(_ -> findEntityById(id))
                 .flatMap(existingBooking -> processBookingUpdate(authenticationInfo, updatedBookingRequest, existingBooking))
@@ -211,8 +213,10 @@ public class BookingService {
         return new AutoHubResponseStatusException(HttpStatus.BAD_REQUEST, "Date from is after date to");
     }
 
-    private Mono<Booking> getNewBooking(AuthenticationInfo authenticationInfo,
-                                        BookingRequest newBookingRequest) {
+    private Mono<Booking> getNewBooking(
+            AuthenticationInfo authenticationInfo,
+            BookingRequest newBookingRequest
+    ) {
         return carService.findAvailableCarById(authenticationInfo, newBookingRequest.carId())
                 .map(availableCarInfo -> bookingMapper.getNewBooking(newBookingRequest, availableCarInfo, authenticationInfo));
     }
@@ -222,18 +226,22 @@ public class BookingService {
                 .map(existingBooking -> bookingMapper.getClosedBooking(existingBooking, bookingClosingDetails.returnBranchId()));
     }
 
-    private Mono<Booking> processBookingUpdate(AuthenticationInfo authenticationInfo,
-                                               BookingRequest updatedBookingRequest,
-                                               Booking existingBooking) {
+    private Mono<Booking> processBookingUpdate(
+            AuthenticationInfo authenticationInfo,
+            BookingRequest updatedBookingRequest,
+            Booking existingBooking
+    ) {
         return getNewCarIfChanged(authenticationInfo, updatedBookingRequest, existingBooking)
                 .flatMap(availableCarInfo -> processNewBookingData(updatedBookingRequest, existingBooking, availableCarInfo))
                 .flatMap(this::handleBookingWhenCarIsChanged)
                 .switchIfEmpty(handleBookingWhenCarIsNotChanged(updatedBookingRequest, existingBooking));
     }
 
-    private Mono<AvailableCarInfo> getNewCarIfChanged(AuthenticationInfo authenticationInfo,
-                                                      BookingRequest updatedBookingRequest,
-                                                      Booking existingBooking) {
+    private Mono<AvailableCarInfo> getNewCarIfChanged(
+            AuthenticationInfo authenticationInfo,
+            BookingRequest updatedBookingRequest,
+            Booking existingBooking
+    ) {
         return Mono.just(updatedBookingRequest.carId())
                 .filter(carId -> isCarChanged(existingBooking.getActualCarId().toString(), carId))
                 .flatMap(newCarId -> carService.findAvailableCarById(authenticationInfo, newCarId))
@@ -245,7 +253,11 @@ public class BookingService {
         return !existingBookingId.equals(newCarId);
     }
 
-    private Mono<Booking> processNewBookingData(BookingRequest updatedBookingRequest, Booking existingBooking, AvailableCarInfo availableCarInfo) {
+    private Mono<Booking> processNewBookingData(
+            BookingRequest updatedBookingRequest,
+            Booking existingBooking,
+            AvailableCarInfo availableCarInfo
+    ) {
         return lockCar(availableCarInfo.id())
                 .filter(Boolean.TRUE::equals)
                 .switchIfEmpty(Mono.error(new AutoHubResponseStatusException(HttpStatus.BAD_REQUEST, "Car is not available")))
@@ -301,9 +313,11 @@ public class BookingService {
         return bookingMapper.getUpdatedBooking(existingBooking, dateFrom, dateTo);
     }
 
-    private Booking updateBookingWithNewData(BookingRequest updatedBookingRequest,
-                                             Booking existingBooking,
-                                             AvailableCarInfo availableCarInfo) {
+    private Booking updateBookingWithNewData(
+            BookingRequest updatedBookingRequest,
+            Booking existingBooking,
+            AvailableCarInfo availableCarInfo
+    ) {
         return bookingMapper.getUpdatedBookingWithNewData(existingBooking, updatedBookingRequest, availableCarInfo);
     }
 

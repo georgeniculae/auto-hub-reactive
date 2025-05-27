@@ -30,13 +30,15 @@ public class CreatedOutboxService extends OutboxService {
     private final FailedCreatedBookingDlqProducerService failedCreatedBookingDlqProducerService;
     private final BookingMapper bookingMapper;
 
-    public CreatedOutboxService(ReactiveRedisOperations<String, String> redisOperations,
-                                CreatedOutboxRepository createdOutboxRepository,
-                                BookingRepository bookingRepository,
-                                CreatedBookingProducerService createdBookingProducerService,
-                                CreatedBookingCarUpdateProducerService createdBookingCarUpdateProducerService,
-                                FailedCreatedBookingDlqProducerService failedCreatedBookingDlqProducerService,
-                                BookingMapper bookingMapper) {
+    public CreatedOutboxService(
+            ReactiveRedisOperations<String, String> redisOperations,
+            CreatedOutboxRepository createdOutboxRepository,
+            BookingRepository bookingRepository,
+            CreatedBookingProducerService createdBookingProducerService,
+            CreatedBookingCarUpdateProducerService createdBookingCarUpdateProducerService,
+            FailedCreatedBookingDlqProducerService failedCreatedBookingDlqProducerService,
+            BookingMapper bookingMapper
+    ) {
         super(redisOperations);
         this.createdOutboxRepository = createdOutboxRepository;
         this.bookingRepository = bookingRepository;

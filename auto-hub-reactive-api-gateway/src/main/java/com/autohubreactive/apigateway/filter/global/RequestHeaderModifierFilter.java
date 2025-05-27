@@ -136,14 +136,18 @@ public class RequestHeaderModifierFilter implements GlobalFilter, Ordered {
                 .substring(7);
     }
 
-    private Mono<Void> filterValidatedRequest(GatewayFilterChain chain,
-                                              ServerWebExchange exchange,
-                                              AuthenticationInfo authenticationInfo) {
+    private Mono<Void> filterValidatedRequest(
+            GatewayFilterChain chain,
+            ServerWebExchange exchange,
+            AuthenticationInfo authenticationInfo
+    ) {
         return chain.filter(createMutatedServerWebExchange(exchange, authenticationInfo));
     }
 
-    private ServerWebExchange createMutatedServerWebExchange(ServerWebExchange exchange,
-                                                             AuthenticationInfo authenticationInfo) {
+    private ServerWebExchange createMutatedServerWebExchange(
+            ServerWebExchange exchange,
+            AuthenticationInfo authenticationInfo
+    ) {
         return exchange.mutate()
                 .request(mutateHeaders(authenticationInfo.username(), authenticationInfo.email(), authenticationInfo.roles()))
                 .build();

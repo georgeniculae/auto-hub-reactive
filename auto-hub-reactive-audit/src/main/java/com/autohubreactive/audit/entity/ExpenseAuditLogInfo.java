@@ -36,11 +36,13 @@ public class ExpenseAuditLogInfo {
     @Builder.Default
     private List<String> parametersValues = new ArrayList<>();
 
-    public ExpenseAuditLogInfo(ObjectId id,
-                               @NonNull String methodName,
-                               String username,
-                               LocalDateTime timestamp,
-                               List<String> parametersValues) {
+    public ExpenseAuditLogInfo(
+            ObjectId id,
+            @NonNull String methodName,
+            String username,
+            LocalDateTime timestamp,
+            List<String> parametersValues
+    ) {
         this.id = id;
         this.methodName = methodName;
         this.username = username;

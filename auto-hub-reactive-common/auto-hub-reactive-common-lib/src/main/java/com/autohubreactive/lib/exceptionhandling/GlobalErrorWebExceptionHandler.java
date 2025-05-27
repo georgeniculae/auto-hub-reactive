@@ -29,12 +29,14 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
 
     private final GlobalErrorAttributes globalErrorAttributes;
 
-    public GlobalErrorWebExceptionHandler(ErrorAttributes errorAttributes,
-                                          WebProperties.Resources resources,
-                                          ApplicationContext applicationContext,
-                                          ServerCodecConfigurer serverCodecConfigurer,
-                                          ObjectProvider<ViewResolver> viewResolvers,
-                                          GlobalErrorAttributes globalErrorAttributes) {
+    public GlobalErrorWebExceptionHandler(
+            ErrorAttributes errorAttributes,
+            WebProperties.Resources resources,
+            ApplicationContext applicationContext,
+            ServerCodecConfigurer serverCodecConfigurer,
+            ObjectProvider<ViewResolver> viewResolvers,
+            GlobalErrorAttributes globalErrorAttributes
+    ) {
         super(errorAttributes, resources, applicationContext);
         super.setMessageWriters(serverCodecConfigurer.getWriters());
         super.setMessageReaders(serverCodecConfigurer.getReaders());

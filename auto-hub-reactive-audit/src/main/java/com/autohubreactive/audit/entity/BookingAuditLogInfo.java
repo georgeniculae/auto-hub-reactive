@@ -36,11 +36,13 @@ public class BookingAuditLogInfo {
     @Builder.Default
     private List<String> parametersValues = new ArrayList<>();
 
-    public BookingAuditLogInfo(ObjectId id,
-                               @NonNull String methodName,
-                               LocalDateTime timestamp,
-                               String username,
-                               List<String> parametersValues) {
+    public BookingAuditLogInfo(
+            ObjectId id,
+            @NonNull String methodName,
+            LocalDateTime timestamp,
+            String username,
+            List<String> parametersValues
+    ) {
         this.id = id;
         this.methodName = methodName;
         this.timestamp = timestamp;

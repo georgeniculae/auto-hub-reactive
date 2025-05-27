@@ -15,9 +15,11 @@ import org.springframework.context.annotation.Profile;
 public class MongoMigrationConfig {
 
     @Bean
-    public MongockInitializingBeanRunner getBuilder(MongoMigrationProperties mongoMigrationProperties,
-                                                    MongoClient mongoClient,
-                                                    ApplicationContext context) {
+    public MongockInitializingBeanRunner getBuilder(
+            MongoMigrationProperties mongoMigrationProperties,
+            MongoClient mongoClient,
+            ApplicationContext context
+    ) {
         return MongockSpringboot.builder()
                 .setDriver(MongoReactiveDriver.withDefaultLock(mongoClient, mongoMigrationProperties.getDatabaseName()))
                 .addMigrationScanPackage(mongoMigrationProperties.getPackageScan())

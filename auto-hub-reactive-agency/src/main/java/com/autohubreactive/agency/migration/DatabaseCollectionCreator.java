@@ -119,7 +119,12 @@ public class DatabaseCollectionCreator {
         );
     }
 
-    private static RentalOffice createRentalOffice(String id, String name, String contactAddress, String phoneNumber) {
+    private static RentalOffice createRentalOffice(
+            String id,
+            String name,
+            String contactAddress,
+            String phoneNumber
+    ) {
         return RentalOffice.builder()
                 .id(new ObjectId(id))
                 .name(name)
@@ -128,7 +133,12 @@ public class DatabaseCollectionCreator {
                 .build();
     }
 
-    private static Branch createBranch(String id, String name, String address, RentalOffice rentalOffice) {
+    private static Branch createBranch(
+            String id,
+            String name,
+            String address,
+            RentalOffice rentalOffice
+    ) {
         return Branch.builder()
                 .id(new ObjectId(id))
                 .name(name)
@@ -137,8 +147,13 @@ public class DatabaseCollectionCreator {
                 .build();
     }
 
-    private static Employee createEmployee(String id, String firstName, String lastName, String jobPosition,
-                                           Branch branch) {
+    private static Employee createEmployee(
+            String id,
+            String firstName,
+            String lastName,
+            String jobPosition,
+            Branch branch
+    ) {
         return Employee.builder()
                 .id(new ObjectId(id))
                 .firstName(firstName)
@@ -148,9 +163,18 @@ public class DatabaseCollectionCreator {
                 .build();
     }
 
-    private static Car createCar(String id, String make, String model, BodyType bodyType, Integer yearOfProduction,
-                                 String color, Integer mileage, BigDecimal amount, Branch originalBranch,
-                                 Branch actualBranch) {
+    private static Car createCar(
+            String id,
+            String make,
+            String model,
+            BodyType bodyType,
+            Integer yearOfProduction,
+            String color,
+            Integer mileage,
+            BigDecimal amount,
+            Branch originalBranch,
+            Branch actualBranch
+    ) {
         return Car.builder()
                 .id(new ObjectId(id))
                 .make(make)
