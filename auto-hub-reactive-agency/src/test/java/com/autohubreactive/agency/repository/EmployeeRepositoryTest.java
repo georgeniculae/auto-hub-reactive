@@ -49,7 +49,7 @@ class EmployeeRepositoryTest {
 
     @Test
     void findAllByFilterInsensitiveCaseTest_success() {
-        employeeRepository.findAllByFilterInsensitiveCase("manager")
+        employeeRepository.findAllByFilterInsensitiveCase("technician")
                 .as(StepVerifier::create)
                 .expectNextCount(1)
                 .verifyComplete();
@@ -57,7 +57,7 @@ class EmployeeRepositoryTest {
 
     @Test
     void findAllEmployeesByBranchIdTest_success() {
-        employeeRepository.findAllEmployeesByBranchId(new ObjectId("65072051d5d4531e66a0c00b"))
+        employeeRepository.findAllEmployeesByBranchId(new ObjectId("64f361caf291ae086e179521"))
                 .as(StepVerifier::create)
                 .assertNext(employee -> assertThat(employee).usingRecursiveComparison().isEqualTo(employee2))
                 .verifyComplete();
@@ -65,7 +65,7 @@ class EmployeeRepositoryTest {
 
     @Test
     void deleteByBranchIdTest_success() {
-        employeeRepository.deleteByBranchId(new ObjectId("65072051d5d4531e66a0c00a"))
+        employeeRepository.deleteByBranchId(new ObjectId("64f361caf291ae086e179532"))
                 .as(StepVerifier::create)
                 .expectComplete()
                 .verify();

@@ -47,7 +47,7 @@ class CarRepositoryTest {
 
     @Test
     void findByIdTest_success() {
-        carRepository.findById(new ObjectId("65072052d5d4531e66a0c00c"))
+        carRepository.findById(new ObjectId("64f361caf291ae086e179549"))
                 .as(StepVerifier::create)
                 .assertNext(actualCar -> assertThat(actualCar).usingRecursiveComparison().isEqualTo(car1))
                 .verifyComplete();
@@ -55,7 +55,7 @@ class CarRepositoryTest {
 
     @Test
     void findAllByFilterInsensitiveCaseTest_success() {
-        carRepository.findAllByFilterInsensitiveCase("Audi")
+        carRepository.findAllByFilterInsensitiveCase("Volkswagen")
                 .as(StepVerifier::create)
                 .assertNext(actualCar -> assertThat(actualCar).usingRecursiveComparison().isEqualTo(car2))
                 .verifyComplete();
@@ -63,7 +63,7 @@ class CarRepositoryTest {
 
     @Test
     void findImageByCarIdTest_success() {
-        carRepository.findImageByCarId(new ObjectId("65072052d5d4531e66a0c00c"))
+        carRepository.findImageByCarId(new ObjectId("64f361caf291ae086e179549"))
                 .as(StepVerifier::create)
                 .expectNextCount(1)
                 .verifyComplete();
@@ -71,7 +71,7 @@ class CarRepositoryTest {
 
     @Test
     void findCarsByMakeInsensitiveCaseTest_success() {
-        carRepository.findCarsByMakeInsensitiveCase("Volkswagen")
+        carRepository.findCarsByMakeInsensitiveCase("Audi")
                 .as(StepVerifier::create)
                 .assertNext(actualCar -> assertThat(actualCar).usingRecursiveComparison().isEqualTo(car1))
                 .verifyComplete();
