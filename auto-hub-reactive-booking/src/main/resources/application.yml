@@ -11,8 +11,6 @@ spring:
     name: auto-hub-reactive-booking
   webflux:
     base-path: /bookings
-  codec:
-    max-in-memory-size: 20MB
   data:
     mongodb:
       database: auto_hub_booking
@@ -49,7 +47,7 @@ spring:
       defaultBinder: kafka
       bindings:
         auditLogInfoProducer-out-0:
-          destination: ${BOOKING_AUDIT_LOG_INFO_REACTIVE_TOPIC}
+          destination: ${AUDIT_LOG_INFO_REACTIVE_TOPIC}
           contentType: application/json
         deletedBookingProducer-out-0:
           destination: ${DELETED_BOOKING_REACTIVE_TOPIC}
@@ -127,6 +125,9 @@ spring:
   web:
     resources:
       add-mappings: false
+  http:
+    codec:
+      max-in-memory-size: 20MB
 
 springdoc:
   swagger-ui:

@@ -15,8 +15,6 @@ spring:
         jwt:
           issuer-uri: http://localhost:8080/realms/auto-hub
           jwk-set-uri: http://localhost:8080/realms/auto-hub/protocol/openid-connect/certs
-  codec:
-    max-in-memory-size: 20MB
   cloud:
     loadbalancer:
       enabled: true
@@ -36,73 +34,78 @@ spring:
         hostname: localhost
         failFast: false
     gateway:
-      discovery:
-        locator:
-          enabled: true
-      routes:
-        - id: agency
-          uri: lb://auto-hub-reactive-agency
-          predicates:
-            - Path=/agency/**
-          filters:
-            - name: RequestTrace
-              args:
-                serviceId: "auto-hub-reactive-agency"
-            - name: CircuitBreaker
-              args:
-                name: fallbackHandler
-                fallbackUri: forward:/fallback
-        - id: ai
-          uri: lb://auto-hub-reactive-ai
-          predicates:
-            - Path=/ai/**
-          filters:
-            - name: RequestTrace
-              args:
-                serviceId: "auto-hub-reactive-ai"
-            - name: CircuitBreaker
-              args:
-                name: fallbackHandler
-                fallbackUri: forward:/fallback
-        - id: booking
-          uri: lb://auto-hub-reactive-booking
-          predicates:
-            - Path=/bookings/**
-          filters:
-            - name: RequestTrace
-              args:
-                serviceId: "auto-hub-reactive-booking"
-            - name: CircuitBreaker
-              args:
-                name: fallbackHandler
-                fallbackUri: forward:/fallback
-        - id: customer
-          uri: lb://auto-hub-reactive-customer
-          predicates:
-            - Path=/customers/**
-          filters:
-            - name: RequestTrace
-              args:
-                serviceId: "auto-hub-reactive-booking"
-            - name: CircuitBreaker
-              args:
-                name: fallbackHandler
-                fallbackUri: forward:/fallback
-        - id: expense
-          uri: lb://auto-hub-reactive-expense
-          predicates:
-            - Path=/expense/**
-          filters:
-            - name: RequestTrace
-              args:
-                serviceId: "auto-hub-reactive-expense"
-            - name: CircuitBreaker
-              args:
-                name: fallbackHandler
-                fallbackUri: forward:/fallback
+      server:
+        webflux:
+          routes:
+            - id: agency
+              uri: lb://auto-hub-reactive-agency
+              predicates:
+                - Path=/agency/**
+              filters:
+                - name: RequestTrace
+                  args:
+                    serviceId: "auto-hub-reactive-agency"
+                - name: CircuitBreaker
+                  args:
+                    name: fallbackHandler
+                    fallbackUri: forward:/fallback
+            - id: ai
+              uri: lb://auto-hub-reactive-ai
+              predicates:
+                - Path=/ai/**
+              filters:
+                - name: RequestTrace
+                  args:
+                    serviceId: "auto-hub-reactive-ai"
+                - name: CircuitBreaker
+                  args:
+                    name: fallbackHandler
+                    fallbackUri: forward:/fallback
+            - id: booking
+              uri: lb://auto-hub-reactive-booking
+              predicates:
+                - Path=/bookings/**
+              filters:
+                - name: RequestTrace
+                  args:
+                    serviceId: "auto-hub-reactive-booking"
+                - name: CircuitBreaker
+                  args:
+                    name: fallbackHandler
+                    fallbackUri: forward:/fallback
+            - id: customer
+              uri: lb://auto-hub-reactive-customer
+              predicates:
+                - Path=/customers/**
+              filters:
+                - name: RequestTrace
+                  args:
+                    serviceId: "auto-hub-reactive-booking"
+                - name: CircuitBreaker
+                  args:
+                    name: fallbackHandler
+                    fallbackUri: forward:/fallback
+            - id: expense
+              uri: lb://auto-hub-reactive-expense
+              predicates:
+                - Path=/expense/**
+              filters:
+                - name: RequestTrace
+                  args:
+                    serviceId: "auto-hub-reactive-expense"
+                - name: CircuitBreaker
+                  args:
+                    name: fallbackHandler
+                    fallbackUri: forward:/fallback
+          discovery:
+            locator:
+              enabled: true
     circuitbreaker:
       resilience4j:
         enabled: true
+  http:
+    codec:
+      max-in-memory-size: 20MB
 
 resilience4j:
   circuitbreaker:

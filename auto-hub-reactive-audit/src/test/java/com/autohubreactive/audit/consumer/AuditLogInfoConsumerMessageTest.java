@@ -24,10 +24,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CustomerBookingAuditLogInfoConsumerMessageTest {
+class AuditLogInfoConsumerMessageTest {
 
     @InjectMocks
-    private CustomerAuditLogInfoConsumerMessage customerAuditLogInfoConsumerMessage;
+    private AuditLogInfoConsumerMessage auditLogInfoConsumerMessage;
 
     @Mock
     private AuditService auditService;
@@ -36,33 +36,33 @@ class CustomerBookingAuditLogInfoConsumerMessageTest {
     private Acknowledgment acknowledgment;
 
     @Test
-    void customerAuditLogInfoConsumerTest_success_acknowledgementTrue() {
+    void bookingAuditLogInfoConsumerTest_success_acknowledgementTrue() {
         AuditLogInfoRequest auditLogInfoRequest =
-                TestUtil.getResourceAsJson("/data/CustomerAuditLogInfoRequest.json", AuditLogInfoRequest.class);
+                TestUtil.getResourceAsJson("/data/AuditLogInfoRequest.json", AuditLogInfoRequest.class);
 
         MessageHeaders messageHeaders = new MessageHeaders(Map.of(KafkaHeaders.ACKNOWLEDGMENT, acknowledgment));
         Message<AuditLogInfoRequest> message = MessageBuilder.createMessage(auditLogInfoRequest, messageHeaders);
         Flux<Message<AuditLogInfoRequest>> messageFlux = Flux.just(message);
 
-        when(auditService.saveCustomerAuditLogInfo(any(AuditLogInfoRequest.class))).thenReturn(Mono.just(auditLogInfoRequest));
+        when(auditService.saveAuditLogInfo(any(AuditLogInfoRequest.class))).thenReturn(Mono.empty());
 
-        customerAuditLogInfoConsumerMessage.customerAuditLogInfoConsumer().apply(messageFlux)
+        auditLogInfoConsumerMessage.auditLogInfoConsumer().apply(messageFlux)
                 .as(StepVerifier::create)
                 .expectComplete()
                 .verify();
     }
 
     @Test
-    void customerAuditLogInfoConsumerTest_success_acknowledgementTrue_noHeaders() {
-        AuditLogInfoRequest auditLogInfoRequest =
-                TestUtil.getResourceAsJson("/data/CustomerAuditLogInfoRequest.json", AuditLogInfoRequest.class);
+    void bookingAuditLogInfoConsumerTest_acknowledgementTrue_noHeaders() {
+        AuditLogInfoRequest auditLogInfoDto =
+                TestUtil.getResourceAsJson("/data/AuditLogInfoRequest.json", AuditLogInfoRequest.class);
 
-        Message<AuditLogInfoRequest> message = new GenericMessage<>(auditLogInfoRequest);
+        Message<AuditLogInfoRequest> message = new GenericMessage<>(auditLogInfoDto);
         Flux<Message<AuditLogInfoRequest>> messageFlux = Flux.just(message);
 
-        when(auditService.saveCustomerAuditLogInfo(any(AuditLogInfoRequest.class))).thenReturn(Mono.just(auditLogInfoRequest));
+        when(auditService.saveAuditLogInfo(any(AuditLogInfoRequest.class))).thenReturn(Mono.empty());
 
-        customerAuditLogInfoConsumerMessage.customerAuditLogInfoConsumer().apply(messageFlux)
+        auditLogInfoConsumerMessage.auditLogInfoConsumer().apply(messageFlux)
                 .as(StepVerifier::create)
                 .expectComplete()
                 .verify();

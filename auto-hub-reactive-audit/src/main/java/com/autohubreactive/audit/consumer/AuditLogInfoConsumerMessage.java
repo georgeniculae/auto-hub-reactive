@@ -16,21 +16,21 @@ import java.util.function.Function;
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
-public class ExpenseAuditLogInfoConsumerMessage {
+public class AuditLogInfoConsumerMessage {
 
     private final AuditService auditService;
 
     @Bean
-    public Function<Flux<Message<AuditLogInfoRequest>>, Mono<Void>> expenseAuditLogInfoConsumer() {
+    public Function<Flux<Message<AuditLogInfoRequest>>, Mono<Void>> auditLogInfoConsumer() {
         return messageFlux -> messageFlux.concatMap(this::processMessage)
                 .then();
     }
 
-    private Mono<AuditLogInfoRequest> processMessage(Message<AuditLogInfoRequest> message) {
-        return auditService.saveExpenseAuditLogInfo(message.getPayload())
-                .doOnNext(auditLogInfoRequest -> {
+    private Mono<Void> processMessage(Message<AuditLogInfoRequest> message) {
+        return auditService.saveAuditLogInfo(message.getPayload())
+                .doOnSuccess(_ -> {
                     KafkaUtil.acknowledgeMessage(message.getHeaders());
-                    log.info("Expense audit log saved: {}", auditLogInfoRequest);
+                    log.info("Booking audit log saved: {}", message.getPayload());
                 })
                 .onErrorResume(e -> {
                     log.error("Exception during processing saved audit log message: {}", e.getMessage(), e);

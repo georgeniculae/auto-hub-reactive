@@ -33,7 +33,8 @@ public class UpdatedCarBookingSavedMessageConsumer {
                 .retryWhen(retryHandler.retry())
                 .doOnSuccess(_ -> {
                     KafkaUtil.acknowledgeMessage(message.getHeaders());
-                    log.info("Car: {} status updated", message.getPayload().carId());
+                    CarStatusUpdate payload = message.getPayload();
+                    log.info("Car with id {} has status {}", payload.carId(), payload.carState().getDisplayName());
                 })
                 .onErrorResume(e -> {
                     log.error("Exception during car status update: {}", e.getMessage(), e);

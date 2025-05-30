@@ -15,8 +15,6 @@ spring:
       username: ${MONGODB_USERNAME}
       password: ${MONGODB_PASSWORD}
       uri: mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@autohubaudit.xi9hxud.mongodb.net/?retryWrites=true&w=majority&appName=AutoHubAudit
-  codec:
-    max-in-memory-size: 20MB
   cloud:
     loadbalancer:
       enabled: true
@@ -36,23 +34,13 @@ spring:
         hostname: localhost
         failFast: false
     function:
-      definition: bookingAuditLogInfoConsumer;customerAuditLogInfoConsumer;expenseAuditLogInfoConsumer
+      definition: auditLogInfoConsumer
     stream:
       defaultBinder: kafka
       bindings:
-        bookingAuditLogInfoConsumer-in-0:
+        auditLogInfoConsumer-in-0:
           binder: kafka
-          destination: ${BOOKING_AUDIT_LOG_INFO_REACTIVE_TOPIC}
-          contentType: application/json
-          group: ${AUDIT_CONSUMER_GROUP}
-        customerAuditLogInfoConsumer-in-0:
-          binder: kafka
-          destination: ${CUSTOMER_AUDIT_LOG_INFO_REACTIVE_TOPIC}
-          contentType: application/json
-          group: ${AUDIT_CONSUMER_GROUP}
-        expenseAuditLogInfoConsumer-in-0:
-          binder: kafka
-          destination: ${EXPENSE_AUDIT_LOG_INFO_REACTIVE_TOPIC}
+          destination: ${AUDIT_LOG_INFO_REACTIVE_TOPIC}
           contentType: application/json
           group: ${AUDIT_CONSUMER_GROUP}
       kafka:
@@ -64,13 +52,7 @@ spring:
             value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
             allow.auto.create.topics: true
         bindings:
-          bookingAuditLogInfoConsumer-in-0:
-            consumer:
-              ack-mode: MANUAL_IMMEDIATE
-          customerAuditLogInfoConsumer-in-0:
-            consumer:
-              ack-mode: MANUAL_IMMEDIATE
-          expenseAuditLogInfoConsumer-in-0:
+          auditLogInfoConsumer-in-0:
             consumer:
               ack-mode: MANUAL_IMMEDIATE
   kafka:
@@ -80,6 +62,9 @@ spring:
   web:
     resources:
       add-mappings: false
+  http:
+    codec:
+      max-in-memory-size: 20MB
 
 management:
   server:

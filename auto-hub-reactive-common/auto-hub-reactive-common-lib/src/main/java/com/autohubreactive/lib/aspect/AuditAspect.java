@@ -1,11 +1,15 @@
 package com.autohubreactive.lib.aspect;
 
 import com.autohubreactive.dto.common.AuditLogInfoRequest;
+import com.autohubreactive.dto.common.ParameterInfo;
 import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
 import com.autohubreactive.lib.service.AuditLogProducerService;
 import com.autohubreactive.lib.util.Constants;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -32,6 +36,7 @@ import java.util.stream.Stream;
 public class AuditAspect {
 
     private final AuditLogProducerService auditLogProducerService;
+    private final ObjectMapper objectMapper;
 
     @Around("@annotation(com.autohubreactive.lib.aspect.LogActivity)")
     public Mono<?> logActivity(ProceedingJoinPoint joinPoint) {
@@ -85,12 +90,20 @@ public class AuditAspect {
 
         log.info("Method called: {}", signature);
 
-        List<String> parametersValues = getParametersValues(joinPoint, logActivity, signature);
+        List<ParameterInfo> parameters = getParameters(joinPoint, logActivity, signature);
+        String methodName = method.getName();
+        String activityDescription = logActivity.activityDescription();
 
-        return new AuditLogInfoRequest(method.getName(), username, LocalDateTime.now(), parametersValues);
+        return AuditLogInfoRequest.builder()
+                .methodName(methodName)
+                .activityDescription(activityDescription)
+                .username(username)
+                .timestamp(LocalDateTime.now())
+                .parameters(parameters)
+                .build();
     }
 
-    private List<String> getParametersValues(
+    private List<ParameterInfo> getParameters(
             ProceedingJoinPoint joinPoint,
             LogActivity logActivity,
             MethodSignature signature
@@ -98,17 +111,38 @@ public class AuditAspect {
         return Optional.ofNullable(logActivity)
                 .stream()
                 .flatMap(activity -> Stream.of(activity.sentParameters()))
-                .map(parameter -> {
-                    List<String> parameters = Arrays.asList(signature.getParameterNames());
-                    int indexOfElement = parameters.indexOf(parameter);
-
-                    if (indexOfElement < 0) {
-                        return StringUtils.EMPTY;
-                    }
-
-                    return joinPoint.getArgs()[indexOfElement].toString();
-                })
+                .map(parameter -> extractParameterInfo(joinPoint, signature, parameter))
+                .filter(ObjectUtils::isNotEmpty)
                 .toList();
+    }
+
+    private ParameterInfo extractParameterInfo(ProceedingJoinPoint joinPoint, MethodSignature signature, String parameter) {
+        List<String> parameters = Arrays.asList(signature.getParameterNames());
+        int indexOfElement = parameters.indexOf(parameter);
+
+        if (indexOfElement < 0) {
+            return null;
+        }
+
+        Object value = joinPoint.getArgs()[indexOfElement];
+        String json = getJson(value);
+
+        return createParameterInfo(parameter, json);
+    }
+
+    private String getJson(Object value) {
+        try {
+            return objectMapper.writeValueAsString(value);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private ParameterInfo createParameterInfo(String parameter, String value) {
+        return ParameterInfo.builder()
+                .parameterName(parameter)
+                .parameterValue(value)
+                .build();
     }
 
 }

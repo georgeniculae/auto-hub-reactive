@@ -11,8 +11,6 @@ spring:
     name: auto-hub-reactive-ai
   webflux:
     base-path: /ai
-  codec:
-    max-in-memory-size: 20MB
   ai:
     ollama:
       base-url: http://localhost:11434
@@ -38,6 +36,9 @@ spring:
         healthCheckInterval: 10s
         hostname: localhost
         failFast: false
+  http:
+    codec:
+      max-in-memory-size: 20MB
 
 springdoc:
   swagger-ui:

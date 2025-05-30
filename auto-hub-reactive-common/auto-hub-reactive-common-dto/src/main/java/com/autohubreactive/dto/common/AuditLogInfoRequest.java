@@ -1,32 +1,37 @@
 package com.autohubreactive.dto.common;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import org.springframework.lang.NonNull;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
 public record AuditLogInfoRequest(
-        @NonNull
+        @NotEmpty(message = "Method name cannot be empty")
         String methodName,
+
+        @NotEmpty(message = "Activity description cannot be empty")
+        String activityDescription,
 
         String username,
 
-        @NonNull
+        @NotNull(message = "Timestamp cannot be null")
         LocalDateTime timestamp,
 
-        List<String> parametersValues
+        List<ParameterInfo> parameters
 ) {
 
     @Override
     public String toString() {
-        return "AuditLogInfoRequest{" + "\n" +
-                "methodName=" + methodName + "\n" +
-                "username=" + username + "\n" +
-                "timestamp=" + timestamp + "\n" +
-                "parametersValues=" + parametersValues + "\n" +
-                "}";
+        return "AuditLogInfoRequest{" +
+                "methodName='" + methodName + '\'' +
+                ", activityDescription='" + activityDescription + '\'' +
+                ", username='" + username + '\'' +
+                ", timestamp=" + timestamp +
+                ", parameters=" + parameters +
+                '}';
     }
 
 }

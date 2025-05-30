@@ -9,8 +9,6 @@ server:
 spring:
   application:
     name: auto-hub-reactive-email-notification
-  codec:
-    max-in-memory-size: 20MB
   cloud:
     loadbalancer:
       enabled: true
@@ -69,6 +67,9 @@ spring:
   web:
     resources:
       add-mappings: false
+  http:
+    codec:
+      max-in-memory-size: 20MB
 
 sendgrid:
   mail:

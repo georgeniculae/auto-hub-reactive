@@ -1,17 +1,9 @@
 package com.autohubreactive.audit.service;
 
-import com.autohubreactive.audit.entity.BookingAuditLogInfo;
-import com.autohubreactive.audit.entity.CustomerAuditLogInfo;
-import com.autohubreactive.audit.entity.ExpenseAuditLogInfo;
-import com.autohubreactive.audit.mapper.BookingAuditLogInfoMapper;
-import com.autohubreactive.audit.mapper.BookingAuditLogInfoMapperImpl;
-import com.autohubreactive.audit.mapper.CustomerAuditLogInfoMapper;
-import com.autohubreactive.audit.mapper.CustomerAuditLogInfoMapperImpl;
-import com.autohubreactive.audit.mapper.ExpenseAuditLogInfoMapper;
-import com.autohubreactive.audit.mapper.ExpenseAuditLogInfoMapperImpl;
-import com.autohubreactive.audit.repository.BookingAuditLogInfoRepository;
-import com.autohubreactive.audit.repository.CustomerAuditLogInfoRepository;
-import com.autohubreactive.audit.repository.ExpenseAuditLogInfoRepository;
+import com.autohubreactive.audit.entity.AuditLogInfo;
+import com.autohubreactive.audit.mapper.AuditLogInfoMapper;
+import com.autohubreactive.audit.mapper.AuditLogInfoMapperImpl;
+import com.autohubreactive.audit.repository.AuditLogInfoRepository;
 import com.autohubreactive.audit.util.TestUtil;
 import com.autohubreactive.dto.common.AuditLogInfoRequest;
 import org.junit.jupiter.api.Test;
@@ -34,108 +26,36 @@ class AuditServiceTest {
     private AuditService auditService;
 
     @Mock
-    private BookingAuditLogInfoRepository bookingAuditLogInfoRepository;
-
-    @Mock
-    private CustomerAuditLogInfoRepository customerAuditLogInfoRepository;
-
-    @Mock
-    private ExpenseAuditLogInfoRepository expenseAuditLogInfoRepository;
+    private AuditLogInfoRepository auditLogInfoRepository;
 
     @Spy
-    private BookingAuditLogInfoMapper bookingAuditLogInfoMapper = new BookingAuditLogInfoMapperImpl();
-
-    @Spy
-    private CustomerAuditLogInfoMapper customerAuditLogInfoMapper = new CustomerAuditLogInfoMapperImpl();
-
-    @Spy
-    private ExpenseAuditLogInfoMapper expenseAuditLogInfoMapper = new ExpenseAuditLogInfoMapperImpl();
+    private AuditLogInfoMapper auditLogInfoMapper = new AuditLogInfoMapperImpl();
 
     @Test
-    void saveBookingAuditLogInfoTest_success() {
-        BookingAuditLogInfo bookingAuditLogInfo =
-                TestUtil.getResourceAsJson("/data/BookingAuditLogInfo.json", BookingAuditLogInfo.class);
+    void saveAuditLogInfoTest_success() {
+        AuditLogInfo auditLogInfo =
+                TestUtil.getResourceAsJson("/data/AuditLogInfo.json", AuditLogInfo.class);
         AuditLogInfoRequest auditLogInfoRequest =
-                TestUtil.getResourceAsJson("/data/BookingAuditLogInfoRequest.json", AuditLogInfoRequest.class);
+                TestUtil.getResourceAsJson("/data/AuditLogInfoRequest.json", AuditLogInfoRequest.class);
 
-        when(bookingAuditLogInfoRepository.save(any(BookingAuditLogInfo.class))).thenReturn(Mono.just(bookingAuditLogInfo));
+        when(auditLogInfoRepository.save(any(AuditLogInfo.class))).thenReturn(Mono.just(auditLogInfo));
 
-        auditService.saveBookingAuditLogInfo(auditLogInfoRequest)
+        auditService.saveAuditLogInfo(auditLogInfoRequest)
                 .as(StepVerifier::create)
-                .expectNext(auditLogInfoRequest)
-                .verifyComplete();
+                .expectComplete()
+                .verify();
 
-        verify(bookingAuditLogInfoMapper).mapEntityToDto(any(BookingAuditLogInfo.class));
+        verify(auditLogInfoMapper).mapDtoToEntity(any(AuditLogInfoRequest.class));
     }
 
     @Test
     void saveBookingAuditLogInfoTest_errorOnSave() {
         AuditLogInfoRequest auditLogInfoRequest =
-                TestUtil.getResourceAsJson("/data/CustomerAuditLogInfoRequest.json", AuditLogInfoRequest.class);
+                TestUtil.getResourceAsJson("/data/AuditLogInfoRequest.json", AuditLogInfoRequest.class);
 
-        when(bookingAuditLogInfoRepository.save(any(BookingAuditLogInfo.class))).thenReturn(Mono.error(new Throwable()));
+        when(auditLogInfoRepository.save(any(AuditLogInfo.class))).thenReturn(Mono.error(new Throwable()));
 
-        auditService.saveBookingAuditLogInfo(auditLogInfoRequest)
-                .as(StepVerifier::create)
-                .expectError()
-                .verify();
-    }
-
-    @Test
-    void saveCustomerAuditLogInfoTest_success() {
-        CustomerAuditLogInfo customerAuditLogInfo =
-                TestUtil.getResourceAsJson("/data/CustomerAuditLogInfo.json", CustomerAuditLogInfo.class);
-        AuditLogInfoRequest auditLogInfoRequest =
-                TestUtil.getResourceAsJson("/data/CustomerAuditLogInfoRequest.json", AuditLogInfoRequest.class);
-
-        when(customerAuditLogInfoRepository.save(any(CustomerAuditLogInfo.class))).thenReturn(Mono.just(customerAuditLogInfo));
-
-        auditService.saveCustomerAuditLogInfo(auditLogInfoRequest)
-                .as(StepVerifier::create)
-                .expectNext(auditLogInfoRequest)
-                .verifyComplete();
-
-        verify(customerAuditLogInfoMapper).mapEntityToDto(any(CustomerAuditLogInfo.class));
-    }
-
-    @Test
-    void saveCustomerAuditLogInfoTest_errorOnSave() {
-        AuditLogInfoRequest auditLogInfoRequest =
-                TestUtil.getResourceAsJson("/data/CustomerAuditLogInfoRequest.json", AuditLogInfoRequest.class);
-
-        when(customerAuditLogInfoRepository.save(any(CustomerAuditLogInfo.class))).thenReturn(Mono.error(new Throwable()));
-
-        auditService.saveCustomerAuditLogInfo(auditLogInfoRequest)
-                .as(StepVerifier::create)
-                .expectError()
-                .verify();
-    }
-
-    @Test
-    void saveExpenseAuditLogInfoTest_success() {
-        ExpenseAuditLogInfo expenseAuditLogInfo =
-                TestUtil.getResourceAsJson("/data/ExpenseAuditLogInfo.json", ExpenseAuditLogInfo.class);
-        AuditLogInfoRequest auditLogInfoRequest =
-                TestUtil.getResourceAsJson("/data/ExpenseAuditLogInfoRequest.json", AuditLogInfoRequest.class);
-
-        when(expenseAuditLogInfoRepository.save(any(ExpenseAuditLogInfo.class))).thenReturn(Mono.just(expenseAuditLogInfo));
-
-        auditService.saveExpenseAuditLogInfo(auditLogInfoRequest)
-                .as(StepVerifier::create)
-                .expectNext(auditLogInfoRequest)
-                .verifyComplete();
-
-        verify(expenseAuditLogInfoMapper).mapEntityToDto(any(ExpenseAuditLogInfo.class));
-    }
-
-    @Test
-    void saveExpenseAuditLogInfoTest_errorOnSave() {
-        AuditLogInfoRequest auditLogInfoRequest =
-                TestUtil.getResourceAsJson("/data/ExpenseAuditLogInfoRequest.json", AuditLogInfoRequest.class);
-
-        when(expenseAuditLogInfoRepository.save(any(ExpenseAuditLogInfo.class))).thenReturn(Mono.error(new Throwable()));
-
-        auditService.saveExpenseAuditLogInfo(auditLogInfoRequest)
+        auditService.saveAuditLogInfo(auditLogInfoRequest)
                 .as(StepVerifier::create)
                 .expectError()
                 .verify();

@@ -17,8 +17,6 @@ spring:
       username: ${MONGODB_USERNAME}
       password: ${MONGODB_PASSWORD}
       uri: mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@autohubagency.okteugn.mongodb.net/?retryWrites=true&w=majority&appName=AutoHubAgency
-  codec:
-    max-in-memory-size: 20MB
   cloud:
     loadbalancer:
       enabled: true
@@ -86,6 +84,9 @@ spring:
   docker:
     compose:
       enabled: false
+  http:
+    codec:
+      max-in-memory-size: 20MB
 
 springdoc:
   swagger-ui:

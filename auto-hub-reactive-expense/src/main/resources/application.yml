@@ -17,8 +17,6 @@ spring:
       username: ${MONGODB_USERNAME}
       password: ${MONGODB_PASSWORD}
       uri: mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@autohubexpense.m0uogrw.mongodb.net/?retryWrites=true&w=majority&appName=AutoHubExpense
-  codec:
-    max-in-memory-size: 20MB
   cloud:
     loadbalancer:
       enabled: true
@@ -43,7 +41,7 @@ spring:
       defaultBinder: kafka
       bindings:
         auditLogInfoProducer-out-0:
-          destination: ${EXPENSE_AUDIT_LOG_INFO_REACTIVE_TOPIC}
+          destination: ${AUDIT_LOG_INFO_REACTIVE_TOPIC}
           contentType: application/json
         bookingUpdateProducer-out-0:
           destination: ${BOOKING_UPDATE_REACTIVE_TOPIC}
@@ -114,6 +112,9 @@ spring:
   web:
     resources:
       add-mappings: false
+  http:
+    codec:
+      max-in-memory-size: 20MB
 
 springdoc:
   swagger-ui:

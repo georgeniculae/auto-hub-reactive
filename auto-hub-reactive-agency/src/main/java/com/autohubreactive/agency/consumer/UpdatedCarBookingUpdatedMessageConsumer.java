@@ -35,8 +35,8 @@ public class UpdatedCarBookingUpdatedMessageConsumer {
                     KafkaUtil.acknowledgeMessage(message.getHeaders());
                     UpdateCarsRequest updateCarsRequest = message.getPayload();
 
-                    log.info("Car: {} is available", updateCarsRequest.previousCarId());
-                    log.info("Car: {} is not available", updateCarsRequest.actualCarId());
+                    log.info("Car with id: {} is available", updateCarsRequest.previousCarId());
+                    log.info("Car with id: {} is not available", updateCarsRequest.actualCarId());
                 })
                 .onErrorResume(e -> {
                     log.error("Exception during car status update: {}", e.getMessage(), e);
