@@ -1,7 +1,6 @@
 package com.autohubreactive.agency.repository;
 
 import com.autohubreactive.agency.entity.Car;
-import com.autohubreactive.agency.migration.DatabaseCollectionCreator;
 import com.autohubreactive.agency.util.TestUtil;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
