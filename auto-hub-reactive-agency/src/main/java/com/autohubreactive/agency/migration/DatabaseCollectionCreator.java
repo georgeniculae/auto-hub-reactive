@@ -5,9 +5,11 @@ import com.autohubreactive.agency.entity.Car;
 import com.autohubreactive.agency.entity.Employee;
 import com.autohubreactive.agency.entity.RentalOffice;
 import com.autohubreactive.agency.util.SerializerUtil;
+import lombok.experimental.UtilityClass;
 
 import java.util.List;
 
+@UtilityClass
 public class DatabaseCollectionCreator {
 
     public static List<RentalOffice> getRentalOffices() {
