@@ -1,0 +1,17 @@
+{
+  "id": "64f361caf291ae086e179591",
+  "firstName": "Marius",
+  "lastName": "Alexandrescu",
+  "jobPosition": "receptionist",
+  "workingBranch": {
+    "id": "64f361caf291ae086e179521",
+    "name": "Bucuresti Branch",
+    "address": "Bucuresti",
+    "rentalOffice": {
+      "id": "64f361caf291ae086e179506",
+      "name": "Bucuresti Test Rental Office",
+      "contactAddress": "Bucuresti",
+      "phoneNumber": "0733333333"
+    }
+  }
+}

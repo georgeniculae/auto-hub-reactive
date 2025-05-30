@@ -1,0 +1,33 @@
+{
+  "id": "64f361caf291ae086e179553",
+  "make": "Volkswagen",
+  "model": "Golf",
+  "bodyType": "HATCHBACK",
+  "yearOfProduction": 2010,
+  "color": "black",
+  "mileage": 270000,
+  "carStatus": "AVAILABLE",
+  "amount": 500,
+  "originalBranch": {
+    "id": "64f361caf291ae086e179521",
+    "name": "Bucuresti Branch",
+    "address": "Bucuresti",
+    "rentalOffice": {
+      "id": "64f361caf291ae086e179506",
+      "name": "Bucuresti Rental Office",
+      "contactAddress": "Bucuresti",
+      "phoneNumber": "0733333333"
+    }
+  },
+  "actualBranch": {
+    "id": "64f361caf291ae086e179521",
+    "name": "Bucuresti Branch",
+    "address": "Bucuresti",
+    "rentalOffice": {
+      "id": "64f361caf291ae086e179506",
+      "name": "Bucuresti Rental Office",
+      "contactAddress": "Bucuresti",
+      "phoneNumber": "0733333333"
+    }
+  }
+}
