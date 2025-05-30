@@ -21,7 +21,7 @@ class EmployeeMapperTest {
 
     @Test
     void mapEntityToDtoTest_success() {
-        Employee employee = TestUtil.getResourceAsJson("/data/Employee.json", Employee.class);
+        Employee employee = TestUtil.getResourceAsJson("/data/Employee1.json", Employee.class);
 
         EmployeeResponse employeeResponse = employeeMapper.mapEntityToDto(employee);
 
@@ -39,7 +39,7 @@ class EmployeeMapperTest {
         EmployeeRequest employeeRequest =
                 TestUtil.getResourceAsJson("/data/EmployeeRequest.json", EmployeeRequest.class);
 
-        Branch workingBranch = TestUtil.getResourceAsJson("/data/Branch.json", Branch.class);
+        Branch workingBranch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
 
         Employee employee = Assertions.assertDoesNotThrow(() -> employeeMapper.getNewEmployee(employeeRequest, workingBranch));
 

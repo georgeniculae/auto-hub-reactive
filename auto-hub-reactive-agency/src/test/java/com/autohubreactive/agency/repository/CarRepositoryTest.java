@@ -2,6 +2,7 @@ package com.autohubreactive.agency.repository;
 
 import com.autohubreactive.agency.entity.Car;
 import com.autohubreactive.agency.migration.DatabaseCollectionCreator;
+import com.autohubreactive.agency.util.TestUtil;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,13 +23,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataMongoTest
 class CarRepositoryTest {
 
+    private static final Car CAR_1 = TestUtil.getResourceAsJson("/data/Car1.json", Car.class);
+    private static final Car CAR_2 = TestUtil.getResourceAsJson("/data/Car2.json", Car.class);
+
     @Container
     @ServiceConnection
     static MongoDBContainer mongoDbContainer = new MongoDBContainer("mongo:latest");
-
-    private final Car car1 = DatabaseCollectionCreator.getCars().getFirst();
-
-    private final Car car2 = DatabaseCollectionCreator.getCars().getLast();
 
     @Autowired
     private CarRepository carRepository;
@@ -49,7 +49,7 @@ class CarRepositoryTest {
     void findByIdTest_success() {
         carRepository.findById(new ObjectId("64f361caf291ae086e179549"))
                 .as(StepVerifier::create)
-                .assertNext(actualCar -> assertThat(actualCar).usingRecursiveComparison().isEqualTo(car1))
+                .assertNext(actualCar -> assertThat(actualCar).usingRecursiveComparison().isEqualTo(CAR_1))
                 .verifyComplete();
     }
 
@@ -57,7 +57,7 @@ class CarRepositoryTest {
     void findAllByFilterInsensitiveCaseTest_success() {
         carRepository.findAllByFilterInsensitiveCase("Volkswagen")
                 .as(StepVerifier::create)
-                .assertNext(actualCar -> assertThat(actualCar).usingRecursiveComparison().isEqualTo(car2))
+                .assertNext(actualCar -> assertThat(actualCar).usingRecursiveComparison().isEqualTo(CAR_2))
                 .verifyComplete();
     }
 
@@ -73,7 +73,7 @@ class CarRepositoryTest {
     void findCarsByMakeInsensitiveCaseTest_success() {
         carRepository.findCarsByMakeInsensitiveCase("Audi")
                 .as(StepVerifier::create)
-                .assertNext(actualCar -> assertThat(actualCar).usingRecursiveComparison().isEqualTo(car1))
+                .assertNext(actualCar -> assertThat(actualCar).usingRecursiveComparison().isEqualTo(CAR_1))
                 .verifyComplete();
     }
 

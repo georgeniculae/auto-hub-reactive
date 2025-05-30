@@ -2,6 +2,7 @@ package com.autohubreactive.agency.repository;
 
 import com.autohubreactive.agency.entity.Branch;
 import com.autohubreactive.agency.migration.DatabaseCollectionCreator;
+import com.autohubreactive.agency.util.TestUtil;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,13 +23,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataMongoTest
 class BranchRepositoryTest {
 
+    private static final Branch BRANCH_1 = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
+    private static final Branch BRANCH_2 = TestUtil.getResourceAsJson("/data/Branch2.json", Branch.class);
+
     @Container
     @ServiceConnection
     static MongoDBContainer mongoDbContainer = new MongoDBContainer("mongo:latest");
-
-    private final Branch branch1 = DatabaseCollectionCreator.getBranches().getFirst();
-
-    private final Branch branch2 = DatabaseCollectionCreator.getBranches().getLast();
 
     @Autowired
     private BranchRepository branchRepository;
@@ -49,8 +49,8 @@ class BranchRepositoryTest {
     void findAllByFilterInsensitiveCaseTest_success() {
         branchRepository.findAllByFilterInsensitiveCase("Branch")
                 .as(StepVerifier::create)
-                .assertNext(branch -> assertThat(branch).usingRecursiveComparison().isEqualTo(branch1))
-                .assertNext(branch -> assertThat(branch).usingRecursiveComparison().isEqualTo(branch2))
+                .assertNext(branch -> assertThat(branch).usingRecursiveComparison().isEqualTo(BRANCH_1))
+                .assertNext(branch -> assertThat(branch).usingRecursiveComparison().isEqualTo(BRANCH_2))
                 .verifyComplete();
     }
 

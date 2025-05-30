@@ -20,7 +20,7 @@ class CarMapperTest {
 
     @Test
     void mapEntityToDtoTest_success() {
-        Car car = TestUtil.getResourceAsJson("/data/Car.json", Car.class);
+        Car car = TestUtil.getResourceAsJson("/data/Car1.json", Car.class);
 
         CarResponse carResponse = carMapper.mapEntityToDto(car);
 
@@ -36,8 +36,8 @@ class CarMapperTest {
     @Test
     void getNewCarTest_success() {
         CarRequest carRequest = TestUtil.getResourceAsJson("/data/CarRequest.json", CarRequest.class);
-        Branch originalBranch = TestUtil.getResourceAsJson("/data/Branch.json", Branch.class);
-        Branch actualBranch = TestUtil.getResourceAsJson("/data/Branch.json", Branch.class);
+        Branch originalBranch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
+        Branch actualBranch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
 
         Car car = carMapper.getNewCar(carRequest, originalBranch, actualBranch);
 

@@ -1,7 +1,7 @@
 package com.autohubreactive.agency.repository;
 
 import com.autohubreactive.agency.entity.Employee;
-import com.autohubreactive.agency.migration.DatabaseCollectionCreator;
+import com.autohubreactive.agency.util.TestUtil;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,13 +24,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataMongoTest
 class EmployeeRepositoryTest {
 
+    private static final Employee EMPLOYEE_1 = TestUtil.getResourceAsJson("/data/Employee1.json", Employee.class);
+    private static final Employee EMPLOYEE_2 = TestUtil.getResourceAsJson("/data/Employee2.json", Employee.class);
+
     @Container
     @ServiceConnection
     static MongoDBContainer mongoDbContainer = new MongoDBContainer("mongo:latest");
-
-    private final Employee employee1 = DatabaseCollectionCreator.getEmployees().getFirst();
-
-    private final Employee employee2 = DatabaseCollectionCreator.getEmployees().getLast();
 
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -38,7 +37,7 @@ class EmployeeRepositoryTest {
     @BeforeEach
     void initCollection() {
         employeeRepository.deleteAll()
-                .thenMany(employeeRepository.saveAll(List.of(employee1, employee2)))
+                .thenMany(employeeRepository.saveAll(List.of(EMPLOYEE_1, EMPLOYEE_2)))
                 .blockLast();
     }
 
@@ -59,7 +58,7 @@ class EmployeeRepositoryTest {
     void findAllEmployeesByBranchIdTest_success() {
         employeeRepository.findAllEmployeesByBranchId(new ObjectId("64f361caf291ae086e179521"))
                 .as(StepVerifier::create)
-                .assertNext(employee -> assertThat(employee).usingRecursiveComparison().isEqualTo(employee2))
+                .assertNext(employee -> assertThat(employee).usingRecursiveComparison().isEqualTo(EMPLOYEE_1))
                 .verifyComplete();
     }
 

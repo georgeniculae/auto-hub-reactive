@@ -49,7 +49,7 @@ class RentalOfficeServiceTest {
     @Test
     void findAllRentalOfficesTest_success() {
         RentalOffice rentalOffice =
-                TestUtil.getResourceAsJson("/data/RentalOffice.json", RentalOffice.class);
+                TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
 
         List<RentalOffice> rentalOffices = List.of(rentalOffice);
 
@@ -77,7 +77,7 @@ class RentalOfficeServiceTest {
     @Test
     void findRentalOfficeByIdTest_success() {
         RentalOffice rentalOffice =
-                TestUtil.getResourceAsJson("/data/RentalOffice.json", RentalOffice.class);
+                TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
 
         RentalOfficeResponse rentalOfficeResponse =
                 TestUtil.getResourceAsJson("/data/RentalOfficeResponse.json", RentalOfficeResponse.class);
@@ -123,7 +123,7 @@ class RentalOfficeServiceTest {
     @Test
     void saveRentalOfficeTest_success() {
         RentalOffice rentalOffice =
-                TestUtil.getResourceAsJson("/data/RentalOffice.json", RentalOffice.class);
+                TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
 
         RentalOfficeRequest rentalOfficeRequest =
                 TestUtil.getResourceAsJson("/data/RentalOfficeRequest.json", RentalOfficeRequest.class);
@@ -158,7 +158,7 @@ class RentalOfficeServiceTest {
     @Test
     void updateRentalOfficeTest_success() {
         RentalOffice rentalOffice =
-                TestUtil.getResourceAsJson("/data/RentalOffice.json", RentalOffice.class);
+                TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
 
         RentalOfficeRequest rentalOfficeRequest =
                 TestUtil.getResourceAsJson("/data/RentalOfficeRequest.json", RentalOfficeRequest.class);
@@ -178,7 +178,7 @@ class RentalOfficeServiceTest {
     @Test
     void updateRentalOfficeTest_errorOnSaving() {
         RentalOffice rentalOffice =
-                TestUtil.getResourceAsJson("/data/RentalOffice.json", RentalOffice.class);
+                TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
 
         RentalOfficeRequest rentalOfficeRequest =
                 TestUtil.getResourceAsJson("/data/RentalOfficeRequest.json", RentalOfficeRequest.class);
@@ -195,7 +195,7 @@ class RentalOfficeServiceTest {
     @Test
     void findRentalOfficeByNameTest_success() {
         RentalOffice rentalOffice =
-                TestUtil.getResourceAsJson("/data/RentalOffice.json", RentalOffice.class);
+                TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
 
         RentalOfficeResponse rentalOfficeResponse =
                 TestUtil.getResourceAsJson("/data/RentalOfficeResponse.json", RentalOfficeResponse.class);

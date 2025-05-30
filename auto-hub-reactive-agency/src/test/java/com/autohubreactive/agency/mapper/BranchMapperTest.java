@@ -21,7 +21,7 @@ class BranchMapperTest {
 
     @Test
     void mapEntityToDtoTest_success() {
-        Branch branch = TestUtil.getResourceAsJson("/data/Branch.json", Branch.class);
+        Branch branch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
 
         BranchResponse branchResponse = Assertions.assertDoesNotThrow(() -> branchMapper.mapEntityToDto(branch));
 
@@ -40,7 +40,7 @@ class BranchMapperTest {
                 TestUtil.getResourceAsJson("/data/BranchRequest.json", BranchRequest.class);
 
         RentalOffice rentalOffice =
-                TestUtil.getResourceAsJson("/data/RentalOffice.json", RentalOffice.class);
+                TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
 
         Branch branch = Assertions.assertDoesNotThrow(() -> branchMapper.getNewBranch(branchRequest, rentalOffice));
 
