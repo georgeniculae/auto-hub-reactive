@@ -40,7 +40,7 @@ class BranchMapperTest {
                 TestUtil.getResourceAsJson("/data/BranchRequest.json", BranchRequest.class);
 
         RentalOffice rentalOffice =
-                TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
+                TestUtil.getResourceAsJson("/data/RentalOffice2.json", RentalOffice.class);
 
         Branch branch = Assertions.assertDoesNotThrow(() -> branchMapper.getNewBranch(branchRequest, rentalOffice));
 

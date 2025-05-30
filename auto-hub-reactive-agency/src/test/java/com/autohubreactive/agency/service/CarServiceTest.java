@@ -199,7 +199,7 @@ class CarServiceTest {
 
         when(carRepository.findById(any(ObjectId.class))).thenReturn(Mono.just(car));
 
-        carService.getAvailableCar("64f361caf291ae086e179547")
+        carService.getAvailableCar("64f361caf291ae086e179549")
                 .as(StepVerifier::create)
                 .expectNext(availableCarInfo)
                 .verifyComplete();

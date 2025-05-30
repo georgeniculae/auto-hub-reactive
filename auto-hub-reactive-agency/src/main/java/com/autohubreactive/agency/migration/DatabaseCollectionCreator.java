@@ -14,8 +14,8 @@ public class DatabaseCollectionCreator {
 
     public static List<RentalOffice> getRentalOffices() {
         return List.of(
-                JsonUtil.getResourceAsJson("/migration/rental_office/RentalOffice1.json", RentalOffice.class),
-                JsonUtil.getResourceAsJson("/migration/rental_office/RentalOffice2.json", RentalOffice.class)
+                JsonUtil.getResourceAsJson("/migration/rental_office/RentalOffice2.json", RentalOffice.class),
+                JsonUtil.getResourceAsJson("/migration/rental_office/RentalOffice1.json", RentalOffice.class)
         );
     }
 

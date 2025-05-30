@@ -84,7 +84,7 @@ class RentalOfficeServiceTest {
 
         when(rentalOfficeRepository.findById(any(ObjectId.class))).thenReturn(Mono.just(rentalOffice));
 
-        rentalOfficeService.findRentalOfficeById("64f361caf291ae086e179547")
+        rentalOfficeService.findRentalOfficeById("64f361caf291ae086e179518")
                 .as(StepVerifier::create)
                 .expectNext(rentalOfficeResponse)
                 .verifyComplete();
@@ -94,7 +94,7 @@ class RentalOfficeServiceTest {
     void findRentalOfficeByIdTest_errorOnFindingById() {
         when(rentalOfficeRepository.findById(any(ObjectId.class))).thenReturn(Mono.error(new Throwable()));
 
-        rentalOfficeService.findRentalOfficeById("64f361caf291ae086e179547")
+        rentalOfficeService.findRentalOfficeById("64f361caf291ae086e179518")
                 .as(StepVerifier::create)
                 .expectError()
                 .verify();
@@ -169,7 +169,7 @@ class RentalOfficeServiceTest {
         when(rentalOfficeRepository.findById(any(ObjectId.class))).thenReturn(Mono.just(rentalOffice));
         when(rentalOfficeRepository.save(any(RentalOffice.class))).thenReturn(Mono.just(rentalOffice));
 
-        rentalOfficeService.updateRentalOffice("64f361caf291ae086e179547", rentalOfficeRequest)
+        rentalOfficeService.updateRentalOffice("64f361caf291ae086e179518", rentalOfficeRequest)
                 .as(StepVerifier::create)
                 .expectNext(rentalOfficeResponse)
                 .verifyComplete();
@@ -186,7 +186,7 @@ class RentalOfficeServiceTest {
         when(rentalOfficeRepository.findById(any(ObjectId.class))).thenReturn(Mono.just(rentalOffice));
         when(rentalOfficeRepository.save(any(RentalOffice.class))).thenReturn(Mono.error(new Throwable()));
 
-        rentalOfficeService.updateRentalOffice("64f361caf291ae086e179547", rentalOfficeRequest)
+        rentalOfficeService.updateRentalOffice("64f361caf291ae086e179518", rentalOfficeRequest)
                 .as(StepVerifier::create)
                 .expectError()
                 .verify();
@@ -223,7 +223,7 @@ class RentalOfficeServiceTest {
         when(rentalOfficeRepository.deleteById(any(ObjectId.class))).thenReturn(Mono.empty());
         when(branchRepository.deleteByRentalOfficeId(any(ObjectId.class))).thenReturn(Mono.empty());
 
-        rentalOfficeService.deleteRentalOfficeById("64f361caf291ae086e179547")
+        rentalOfficeService.deleteRentalOfficeById("64f361caf291ae086e179518")
                 .as(StepVerifier::create)
                 .expectComplete()
                 .verify();
@@ -233,7 +233,7 @@ class RentalOfficeServiceTest {
     void deleteRentalOfficeByIdTest_errorOnDeletingById() {
         when(rentalOfficeRepository.deleteById(any(ObjectId.class))).thenReturn(Mono.error(new Throwable()));
 
-        rentalOfficeService.deleteRentalOfficeById("64f361caf291ae086e179547")
+        rentalOfficeService.deleteRentalOfficeById("64f361caf291ae086e179518")
                 .as(StepVerifier::create)
                 .expectError()
                 .verify();

@@ -22,8 +22,8 @@ import static com.mongodb.assertions.Assertions.assertTrue;
 @DataMongoTest
 class RentalOfficeRepositoryTest {
 
-    private static final RentalOffice RENTAL_OFFICE_1 = TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
-    private static final RentalOffice RENTAL_OFFICE_2 = TestUtil.getResourceAsJson("/data/RentalOffice2.json", RentalOffice.class);
+    private static final RentalOffice RENTAL_OFFICE_1 = TestUtil.getResourceAsJson("/data/RentalOffice2.json", RentalOffice.class);
+    private static final RentalOffice RENTAL_OFFICE_2 = TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
 
     @Container
     @ServiceConnection
