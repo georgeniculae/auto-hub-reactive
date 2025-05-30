@@ -13,7 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @UtilityClass
-public class SerializerUtil {
+public class JsonUtil {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().registerModule(new JavaTimeModule());
 
@@ -26,7 +26,7 @@ public class SerializerUtil {
     }
 
     private static String getResourceAsString(String resourceName) {
-        URL resource = SerializerUtil.class.getResource(resourceName);
+        URL resource = JsonUtil.class.getResource(resourceName);
 
         if (resource == null) {
             throw new AutoHubException("Failed getting resource: " + resourceName);
