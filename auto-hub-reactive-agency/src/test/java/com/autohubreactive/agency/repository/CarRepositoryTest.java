@@ -15,6 +15,8 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import reactor.test.StepVerifier;
 
+import java.util.List;
+
 import static com.mongodb.assertions.Assertions.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,7 +38,7 @@ class CarRepositoryTest {
     @BeforeEach
     void initCollection() {
         carRepository.deleteAll()
-                .thenMany(carRepository.saveAll(DatabaseCollectionCreator.getCars()))
+                .thenMany(carRepository.saveAll(List.of(CAR_1, CAR_2)))
                 .blockLast();
     }
 

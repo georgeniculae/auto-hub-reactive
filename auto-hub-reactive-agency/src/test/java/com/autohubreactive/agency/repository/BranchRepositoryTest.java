@@ -1,7 +1,6 @@
 package com.autohubreactive.agency.repository;
 
 import com.autohubreactive.agency.entity.Branch;
-import com.autohubreactive.agency.migration.DatabaseCollectionCreator;
 import com.autohubreactive.agency.util.TestUtil;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +13,8 @@ import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import reactor.test.StepVerifier;
+
+import java.util.List;
 
 import static com.mongodb.assertions.Assertions.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,7 +37,7 @@ class BranchRepositoryTest {
     @BeforeEach
     void initCollection() {
         branchRepository.deleteAll()
-                .thenMany(branchRepository.saveAll(DatabaseCollectionCreator.getBranches()))
+                .thenMany(branchRepository.saveAll(List.of(BRANCH_1, BRANCH_2)))
                 .blockLast();
     }
 
