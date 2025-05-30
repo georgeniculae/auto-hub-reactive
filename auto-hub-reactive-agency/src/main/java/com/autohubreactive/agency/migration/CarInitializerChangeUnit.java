@@ -51,7 +51,7 @@ public class CarInitializerChangeUnit {
         log.info("ClientInitializerChangeLog.execution wasAcknowledged: {}", result.wasAcknowledged());
 
         result.getInsertedIds()
-                .forEach((key, value) -> log.info("update id[{}] : {}", key, value));
+                .forEach((key, value) -> log.info("update id {} : {}", key, value));
     }
 
     @RollbackExecution
