@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.autohub</groupId>
         <artifactId>auto-hub-reactive-parent</artifactId>
-        <version>0.0.22-SNAPSHOT</version>
+        <version>0.0.23-SNAPSHOT</version>
         <relativePath/>
     </parent>
 
