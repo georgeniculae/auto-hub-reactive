@@ -106,6 +106,3 @@ cors:
 
 audit:
   enabled: true
-
-booking-service:
-  url: http://auto-hub-reactive-booking/bookings
