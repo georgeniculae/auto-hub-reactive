@@ -104,7 +104,7 @@ spring:
       resilience4j:
         enabled: true
   http:
-    codec:
+    codecs:
       max-in-memory-size: 20MB
 
 resilience4j:

@@ -113,7 +113,7 @@ spring:
     resources:
       add-mappings: false
   http:
-    codec:
+    codecs:
       max-in-memory-size: 20MB
 
 springdoc:

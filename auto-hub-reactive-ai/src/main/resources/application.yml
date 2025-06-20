@@ -37,7 +37,7 @@ spring:
         hostname: localhost
         failFast: false
   http:
-    codec:
+    codecs:
       max-in-memory-size: 20MB
 
 springdoc:
