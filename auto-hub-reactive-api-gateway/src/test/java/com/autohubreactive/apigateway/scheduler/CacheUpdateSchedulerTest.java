@@ -13,7 +13,6 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -30,9 +29,9 @@ import static org.mockito.Mockito.when;
 @SpringBootTest(classes = {
         CacheUpdateScheduler.class,
         CacheUpdateService.class,
-        OpenApiCache.class
+        OpenApiCache.class,
+        TestConfig.class
 })
-@Import(TestConfig.class)
 class CacheUpdateSchedulerTest {
 
     private static String agencyContent;
