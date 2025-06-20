@@ -47,12 +47,13 @@ public class EmailService {
     }
 
     private Response sendMail(Mail mail) {
+        sendGrid.setDataResidency(Constants.DATA_RESIDENCY);
+
         Request request = new Request();
 
-        request.setMethod(Method.POST);
-        request.setEndpoint(Constants.ENDPOINT);
-
         try {
+            request.setMethod(Method.POST);
+            request.setEndpoint(Constants.ENDPOINT);
             request.setBody(mail.build());
 
             return sendGrid.api(request);
