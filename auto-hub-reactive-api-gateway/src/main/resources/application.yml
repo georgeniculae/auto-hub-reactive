@@ -80,7 +80,7 @@ spring:
               filters:
                 - name: RequestTrace
                   args:
-                    serviceId: "auto-hub-reactive-booking"
+                    serviceId: "auto-hub-reactive-customer"
                 - name: CircuitBreaker
                   args:
                     name: fallbackHandler
