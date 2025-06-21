@@ -1,13 +1,16 @@
 package com.autohubreactive.lib.util;
 
-public interface Constants {
+public class Constants {
 
-    String X_API_KEY = "X-API-KEY";
-    String X_USERNAME = "X-USERNAME";
-    String X_EMAIL = "X-EMAIL";
-    String X_ROLES = "X-ROLES";
-    String UNEXPECTED_ERROR = "Unexpected error";
-    String STATUS = "status";
-    String MESSAGE = "message";
+    private Constants() {
+    }
+
+    public static final String X_API_KEY = "X-API-KEY";
+    public static final String X_USERNAME = "X-USERNAME";
+    public static final String X_EMAIL = "X-EMAIL";
+    public static final String X_ROLES = "X-ROLES";
+    public static final String UNEXPECTED_ERROR = "Unexpected error";
+    public static final String STATUS = "status";
+    public static final String MESSAGE = "message";
 
 }
