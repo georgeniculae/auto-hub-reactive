@@ -1,7 +1,7 @@
 package com.autohubreactive.apigateway.scheduler;
 
+import com.autohubreactive.apigateway.cache.CaffeineCacheConfig;
 import com.autohubreactive.apigateway.cache.OpenApiCache;
-import com.autohubreactive.apigateway.config.TestConfig;
 import com.autohubreactive.apigateway.property.RegisteredEndpoints;
 import com.autohubreactive.apigateway.service.CacheUpdateService;
 import com.autohubreactive.apigateway.util.TestUtil;
@@ -28,9 +28,9 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = {
         CacheUpdateScheduler.class,
+        CaffeineCacheConfig.class,
         CacheUpdateService.class,
-        OpenApiCache.class,
-        TestConfig.class
+        OpenApiCache.class
 })
 class CacheUpdateSchedulerTest {
 
