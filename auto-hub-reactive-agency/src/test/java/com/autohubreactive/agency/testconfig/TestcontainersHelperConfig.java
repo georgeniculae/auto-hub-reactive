@@ -1,4 +1,4 @@
-package com.autohubreactive.agency.config;
+package com.autohubreactive.agency.testconfig;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -8,7 +8,7 @@ import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.CustomValidatorBean;
 
 @TestConfiguration
-public class TestConfig {
+public class TestcontainersHelperConfig {
 
     @Bean
     public Validator validator() {

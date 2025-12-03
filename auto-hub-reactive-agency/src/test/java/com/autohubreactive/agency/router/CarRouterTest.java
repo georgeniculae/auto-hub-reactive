@@ -1,6 +1,6 @@
 package com.autohubreactive.agency.router;
 
-import com.autohubreactive.agency.config.TestSecurityConfig;
+import com.autohubreactive.agency.testconfig.TestSecurityConfig;
 import com.autohubreactive.agency.handler.CarHandler;
 import com.autohubreactive.agency.util.TestData;
 import com.autohubreactive.agency.util.TestUtil;
