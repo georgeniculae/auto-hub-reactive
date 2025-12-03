@@ -1,0 +1,52 @@
+server:
+  port: ${PORT:8761}
+
+spring:
+  application:
+    name: swift-wheels-hub-service-discovery
+  security:
+    user:
+      name: ${EUREKA_USER}
+      password: ${EUREKA_PASSWORD}
+  web:
+    error:
+      include-message: always
+      include-binding-errors: never
+      include-stacktrace: never
+      include-exception: false
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    healthcheck:
+      enabled: true
+  instance:
+    hostname: localhost
+    lease-renewal-interval-in-seconds: 30
+    status-page-url-path: http://localhost:8761/eureka/info
+    health-check-url-path: http://localhost:8761/eureka/health
+    secure-port-enabled: true
+    non-secure-port-enabled: false
+    secure-port: 8761
+  server:
+    wait-time-in-ms-when-sync-empty: 0
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+        web:
+          csrf:
+            CsrfFilter: DEBUG
+        jdbc:
+          core:
+            JdbcTemplate: DEBUG
+            StatementCreatorUtils: TRACE
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE

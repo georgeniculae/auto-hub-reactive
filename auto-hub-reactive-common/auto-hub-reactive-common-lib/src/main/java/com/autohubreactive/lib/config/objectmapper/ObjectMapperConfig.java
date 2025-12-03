@@ -15,7 +15,7 @@ public class ObjectMapperConfig {
 
     @Bean
     @Primary
-    public ObjectMapper jsonMapper() {
+    public ObjectMapper objectMapper() {
         return JsonMapper.builder()
                 .enable(MapperFeature.ALLOW_COERCION_OF_SCALARS)
                 .enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS)
