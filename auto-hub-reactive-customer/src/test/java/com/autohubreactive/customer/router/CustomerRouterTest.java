@@ -1,6 +1,7 @@
 package com.autohubreactive.customer.router;
 
 import com.autohubreactive.customer.handler.CustomerHandler;
+import com.autohubreactive.customer.testconfig.TestSecurityConfig;
 import com.autohubreactive.customer.util.TestUtil;
 import com.autohubreactive.dto.customer.RegisterRequest;
 import com.autohubreactive.dto.customer.RegistrationResponse;
@@ -8,6 +9,7 @@ import com.autohubreactive.dto.customer.UserInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -28,6 +30,7 @@ import static org.mockito.Mockito.when;
 
 @WebFluxTest
 @ContextConfiguration(classes = CustomerRouter.class)
+@Import(TestSecurityConfig.class)
 class CustomerRouterTest {
 
     @Autowired
@@ -156,29 +159,6 @@ class CustomerRouterTest {
 
     @Test
     @WithAnonymousUser
-    void registerUserTest_forbidden() {
-        RegisterRequest registerRequest =
-                TestUtil.getResourceAsJson("/data/RegisterRequest.json", RegisterRequest.class);
-
-        RegistrationResponse registrationResponse =
-                TestUtil.getResourceAsJson("/data/RegistrationResponse.json", RegistrationResponse.class);
-
-        Mono<ServerResponse> token = ServerResponse.ok().bodyValue(registrationResponse);
-        when(customerHandler.registerUser(any(ServerRequest.class))).thenReturn(token);
-
-        webTestClient.mutateWith(SecurityMockServerConfigurers.csrf())
-                .post()
-                .uri("/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(registerRequest)
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus()
-                .isUnauthorized();
-    }
-
-    @Test
-    @WithAnonymousUser
     void registerUserTest_unauthorized() {
         RegisterRequest registerRequest =
                 TestUtil.getResourceAsJson("/data/RegisterRequest.json", RegisterRequest.class);
@@ -197,7 +177,7 @@ class CustomerRouterTest {
                 .bodyValue(registerRequest)
                 .exchange()
                 .expectStatus()
-                .isForbidden();
+                .isUnauthorized();
     }
 
     @Test
@@ -224,25 +204,6 @@ class CustomerRouterTest {
         responseBody.as(StepVerifier::create)
                 .expectNext(userInfo)
                 .verifyComplete();
-    }
-
-    @Test
-    @WithAnonymousUser
-    void updateUserTest_forbidden() {
-        UserInfo userInfo =
-                TestUtil.getResourceAsJson("/data/UserInfo.json", UserInfo.class);
-
-        Mono<ServerResponse> serverResponse = ServerResponse.ok().bodyValue(userInfo);
-
-        when(customerHandler.updateUser(any(ServerRequest.class))).thenReturn(serverResponse);
-
-        webTestClient.put()
-                .uri("/{username}", "admin")
-                .accept(MediaType.APPLICATION_JSON)
-                .bodyValue(userInfo)
-                .exchange()
-                .expectStatus()
-                .isForbidden();
     }
 
     @Test

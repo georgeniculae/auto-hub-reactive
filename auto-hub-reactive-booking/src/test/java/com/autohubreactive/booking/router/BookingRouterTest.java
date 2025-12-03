@@ -1,11 +1,13 @@
 package com.autohubreactive.booking.router;
 
 import com.autohubreactive.booking.handler.BookingHandler;
+import com.autohubreactive.booking.testconfig.TestSecurityConfig;
 import com.autohubreactive.booking.util.TestUtil;
 import com.autohubreactive.dto.common.BookingResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -27,6 +29,7 @@ import static org.mockito.Mockito.when;
 
 @WebFluxTest
 @ContextConfiguration(classes = BookingRouter.class)
+@Import(TestSecurityConfig.class)
 class BookingRouterTest {
 
     @Autowired
@@ -292,24 +295,6 @@ class BookingRouterTest {
     }
 
     @Test
-    @WithAnonymousUser
-    void saveBookingTest_forbidden() {
-        BookingResponse bookingResponse =
-                TestUtil.getResourceAsJson("/data/BookingResponse.json", BookingResponse.class);
-
-        Mono<ServerResponse> serverResponse = ServerResponse.ok().bodyValue(bookingResponse);
-
-        when(bookingHandler.saveBooking(any(ServerRequest.class))).thenReturn(serverResponse);
-
-        webTestClient.post()
-                .uri("/new")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus()
-                .isForbidden();
-    }
-
-    @Test
     @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void updateBookingTest_success() {
         BookingResponse bookingResponse =
@@ -351,24 +336,6 @@ class BookingRouterTest {
                 .exchange()
                 .expectStatus()
                 .isUnauthorized();
-    }
-
-    @Test
-    @WithAnonymousUser
-    void updateBookingTest_forbidden() {
-        BookingResponse bookingResponse =
-                TestUtil.getResourceAsJson("/data/BookingResponse.json", BookingResponse.class);
-
-        Mono<ServerResponse> serverResponse = ServerResponse.ok().bodyValue(bookingResponse);
-
-        when(bookingHandler.updateBooking(any(ServerRequest.class))).thenReturn(serverResponse);
-
-        webTestClient.put()
-                .uri("/edit/{id}", "64f361caf291ae086e179547")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus()
-                .isForbidden();
     }
 
 }

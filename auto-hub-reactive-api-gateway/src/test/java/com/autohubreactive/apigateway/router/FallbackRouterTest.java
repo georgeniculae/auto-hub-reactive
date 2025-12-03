@@ -1,6 +1,6 @@
 package com.autohubreactive.apigateway.router;
 
-import com.autohubreactive.apigateway.config.TestConfig;
+import com.autohubreactive.apigateway.testconfig.TestSecurityConfig;
 import com.autohubreactive.apigateway.handler.FallbackHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 
 @WebFluxTest
 @ContextConfiguration(classes = FallbackRouter.class)
-@Import(TestConfig.class)
+@Import(TestSecurityConfig.class)
 class FallbackRouterTest {
 
     private static final String FALLBACK_PATH = "/fallback";

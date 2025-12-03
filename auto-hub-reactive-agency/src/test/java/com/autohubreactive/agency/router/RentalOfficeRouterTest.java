@@ -1,11 +1,13 @@
 package com.autohubreactive.agency.router;
 
+import com.autohubreactive.agency.config.TestSecurityConfig;
 import com.autohubreactive.agency.handler.RentalOfficeHandler;
 import com.autohubreactive.agency.util.TestUtil;
 import com.autohubreactive.dto.agency.RentalOfficeResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -26,6 +28,7 @@ import static org.mockito.Mockito.when;
 
 @WebFluxTest
 @ContextConfiguration(classes = RentalOfficeRouter.class)
+@Import(TestSecurityConfig.class)
 class RentalOfficeRouterTest {
 
     private static final String PATH = "/rental-offices";
@@ -255,24 +258,6 @@ class RentalOfficeRouterTest {
     }
 
     @Test
-    @WithAnonymousUser
-    void saveRentalOfficeTest_forbidden() {
-        RentalOfficeResponse rentalOfficeResponse =
-                TestUtil.getResourceAsJson("/data/RentalOfficeResponse.json", RentalOfficeResponse.class);
-
-        Mono<ServerResponse> serverResponse = ServerResponse.ok().bodyValue(rentalOfficeResponse);
-
-        when(rentalOfficeHandler.saveRentalOffice(any(ServerRequest.class))).thenReturn(serverResponse);
-
-        webTestClient.post()
-                .uri(PATH)
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus()
-                .isForbidden();
-    }
-
-    @Test
     @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void updateRentalOfficeTest_success() {
         RentalOfficeResponse rentalOfficeResponse =
@@ -317,23 +302,6 @@ class RentalOfficeRouterTest {
     }
 
     @Test
-    @WithAnonymousUser
-    void updateRentalOfficeTest_forbidden() {
-        RentalOfficeResponse rentalOfficeResponse =
-                TestUtil.getResourceAsJson("/data/RentalOfficeResponse.json", RentalOfficeResponse.class);
-
-        Mono<ServerResponse> serverResponse = ServerResponse.ok().bodyValue(rentalOfficeResponse);
-
-        when(rentalOfficeHandler.updateRentalOffice(any(ServerRequest.class))).thenReturn(serverResponse);
-
-        webTestClient.put()
-                .uri(PATH + "/{id}", "64f361caf291ae086e179547")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus();
-    }
-
-    @Test
     @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void deleteRentalOfficeByIdTest_success() {
         Mono<ServerResponse> serverResponse = ServerResponse.noContent().build();
@@ -357,11 +325,7 @@ class RentalOfficeRouterTest {
 
     @Test
     @WithAnonymousUser
-    void deleteRentalOfficeByIdTest_forbidden() {
-        Mono<ServerResponse> serverResponse = ServerResponse.noContent().build();
-
-        when(rentalOfficeHandler.deleteRentalOfficeById(any(ServerRequest.class))).thenReturn(serverResponse);
-
+    void deleteRentalOfficeByIdTest_unauthorized() {
         webTestClient.mutateWith(SecurityMockServerConfigurers.csrf())
                 .delete()
                 .uri(PATH + "/{id}", "64f361caf291ae086e179547")

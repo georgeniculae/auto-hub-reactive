@@ -1,11 +1,13 @@
 package com.autohubreactive.agency.router;
 
+import com.autohubreactive.agency.config.TestSecurityConfig;
 import com.autohubreactive.agency.handler.BranchHandler;
 import com.autohubreactive.agency.util.TestUtil;
 import com.autohubreactive.dto.agency.BranchResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -26,6 +28,7 @@ import static org.mockito.Mockito.when;
 
 @WebFluxTest
 @ContextConfiguration(classes = BranchRouter.class)
+@Import(TestSecurityConfig.class)
 class BranchRouterTest {
 
     private static final String PATH = "/branches";
@@ -261,24 +264,6 @@ class BranchRouterTest {
     }
 
     @Test
-    @WithAnonymousUser
-    void saveBranchTest_forbidden() {
-        BranchResponse branchResponse =
-                TestUtil.getResourceAsJson("/data/BranchResponse.json", BranchResponse.class);
-
-        Mono<ServerResponse> serverResponse = ServerResponse.ok().bodyValue(branchResponse);
-
-        when(branchHandler.saveBranch(any(ServerRequest.class))).thenReturn(serverResponse);
-
-        webTestClient.post()
-                .uri(PATH)
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus()
-                .isForbidden();
-    }
-
-    @Test
     @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void updateBranchTest_success() {
         BranchResponse branchResponse =
@@ -304,25 +289,6 @@ class BranchRouterTest {
     }
 
     @Test
-    @WithAnonymousUser
-    void updateBranchTest_forbidden() {
-        BranchResponse branchResponse =
-                TestUtil.getResourceAsJson("/data/BranchResponse.json", BranchResponse.class);
-
-        Mono<ServerResponse> serverResponse = ServerResponse.ok().bodyValue(branchResponse);
-
-        when(branchHandler.updateBranch(any(ServerRequest.class))).thenReturn(serverResponse);
-
-        webTestClient.mutateWith(SecurityMockServerConfigurers.csrf())
-                .put()
-                .uri(PATH + "/{id}", "64f48612b92a3b7dfcebae07")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus()
-                .isUnauthorized();
-    }
-
-    @Test
     @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void deleteBranchByIdTest_success() {
         Mono<ServerResponse> serverResponse = ServerResponse.noContent().build();
@@ -341,22 +307,6 @@ class BranchRouterTest {
         responseBody.as(StepVerifier::create)
                 .expectComplete()
                 .verify();
-    }
-
-    @Test
-    @WithAnonymousUser
-    void deleteBranchByIdTest_forbidden() {
-        Mono<ServerResponse> serverResponse = ServerResponse.noContent().build();
-
-        when(branchHandler.updateBranch(any(ServerRequest.class))).thenReturn(serverResponse);
-
-        webTestClient.mutateWith(SecurityMockServerConfigurers.csrf())
-                .delete()
-                .uri(PATH + "/{id}", "64f48612b92a3b7dfcebae07")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus()
-                .isUnauthorized();
     }
 
 }

@@ -1,9 +1,11 @@
 package com.autohub.ai.router;
 
 import com.autohub.ai.handler.CarSuggestionHandler;
+import com.autohub.ai.testconfig.TestSecurityConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -22,6 +24,7 @@ import static org.mockito.Mockito.when;
 
 @WebFluxTest
 @ContextConfiguration(classes = CarSuggestionRouter.class)
+@Import(TestSecurityConfig.class)
 class CarSuggestionRouterTest {
 
     @Autowired

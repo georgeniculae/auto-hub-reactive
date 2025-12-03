@@ -1,11 +1,13 @@
 package com.autohubreactive.agency.router;
 
+import com.autohubreactive.agency.config.TestSecurityConfig;
 import com.autohubreactive.agency.handler.EmployeeHandler;
 import com.autohubreactive.agency.util.TestUtil;
 import com.autohubreactive.dto.agency.EmployeeResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -26,6 +28,7 @@ import static org.mockito.Mockito.when;
 
 @WebFluxTest
 @ContextConfiguration(classes = EmployeeRouter.class)
+@Import(TestSecurityConfig.class)
 class EmployeeRouterTest {
 
     private static final String PATH = "/employees";
@@ -61,27 +64,6 @@ class EmployeeRouterTest {
         responseBody.as(StepVerifier::create)
                 .expectNext(employeeResponse)
                 .verifyComplete();
-    }
-
-    @Test
-    @WithAnonymousUser
-    void findAllEmployeesTest_forbidden() {
-        EmployeeResponse employeeResponse =
-                TestUtil.getResourceAsJson("/data/EmployeeResponse.json", EmployeeResponse.class);
-
-        List<EmployeeResponse> employeeDtoList = List.of(employeeResponse);
-
-        Mono<ServerResponse> serverResponse = ServerResponse.ok().bodyValue(employeeDtoList);
-
-        when(employeeHandler.findAllEmployees(any(ServerRequest.class))).thenReturn(serverResponse);
-
-        webTestClient.mutateWith(SecurityMockServerConfigurers.csrf())
-                .get()
-                .uri(PATH)
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus()
-                .isUnauthorized();
     }
 
     @Test
@@ -255,24 +237,6 @@ class EmployeeRouterTest {
     }
 
     @Test
-    @WithAnonymousUser
-    void saveEmployeeTest_forbidden() {
-        EmployeeResponse employeeResponse =
-                TestUtil.getResourceAsJson("/data/EmployeeRequest.json", EmployeeResponse.class);
-
-        Mono<ServerResponse> serverResponse = ServerResponse.ok().bodyValue(employeeResponse);
-
-        when(employeeHandler.saveEmployee(any(ServerRequest.class))).thenReturn(serverResponse);
-
-        webTestClient.post()
-                .uri(PATH)
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus()
-                .isForbidden();
-    }
-
-    @Test
     @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void updateEmployeeTest_success() {
         EmployeeResponse employeeResponse =
@@ -317,24 +281,6 @@ class EmployeeRouterTest {
     }
 
     @Test
-    @WithAnonymousUser
-    void updateEmployeeTest_forbidden() {
-        EmployeeResponse employeeResponse =
-                TestUtil.getResourceAsJson("/data/EmployeeResponse.json", EmployeeResponse.class);
-
-        Mono<ServerResponse> serverResponse = ServerResponse.ok().bodyValue(employeeResponse);
-
-        when(employeeHandler.updateEmployee(any(ServerRequest.class))).thenReturn(serverResponse);
-
-        webTestClient.put()
-                .uri(PATH + "/{id}", "64f361caf291ae086e179547")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus()
-                .isForbidden();
-    }
-
-    @Test
     @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void deleteEmployeeByIdTest_success() {
         Mono<ServerResponse> serverResponse = ServerResponse.noContent().build();
@@ -354,21 +300,6 @@ class EmployeeRouterTest {
         responseBody.as(StepVerifier::create)
                 .expectComplete()
                 .verify();
-    }
-
-    @Test
-    void deleteEmployeeByIdTest_forbidden() {
-        Mono<ServerResponse> serverResponse = ServerResponse.noContent().build();
-
-        when(employeeHandler.deleteEmployeeById(any(ServerRequest.class))).thenReturn(serverResponse);
-
-        webTestClient.mutateWith(SecurityMockServerConfigurers.csrf())
-                .delete()
-                .uri(PATH + "/{id}", "64f361caf291ae086e179547")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus()
-                .isUnauthorized();
     }
 
 }

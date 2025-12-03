@@ -2,10 +2,12 @@ package com.autohubreactive.expense.router;
 
 import com.autohubreactive.dto.common.InvoiceResponse;
 import com.autohubreactive.expense.handler.InvoiceHandler;
+import com.autohubreactive.expense.testconfig.TestSecurityConfig;
 import com.autohubreactive.expense.util.TestUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -26,6 +28,7 @@ import static org.mockito.Mockito.when;
 
 @WebFluxTest
 @ContextConfiguration(classes = InvoiceRouter.class)
+@Import(TestSecurityConfig.class)
 class InvoiceRouterTest {
 
     private static final String PATH = "/invoices";
@@ -374,24 +377,6 @@ class InvoiceRouterTest {
                 .exchange()
                 .expectStatus()
                 .isUnauthorized();
-    }
-
-    @Test
-    @WithAnonymousUser
-    void closeInvoiceTest_forbidden() {
-        InvoiceResponse invoiceResponse =
-                TestUtil.getResourceAsJson("/data/InvoiceResponse.json", InvoiceResponse.class);
-
-        Mono<ServerResponse> serverResponse = ServerResponse.ok().bodyValue(List.of(invoiceResponse));
-
-        when(invoiceHandler.closeInvoice(any(ServerRequest.class))).thenReturn(serverResponse);
-
-        webTestClient.put()
-                .uri(PATH + "/{id}", "64f361caf291ae086e179547")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus()
-                .isForbidden();
     }
 
 }

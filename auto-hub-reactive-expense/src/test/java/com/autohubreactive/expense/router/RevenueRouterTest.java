@@ -2,10 +2,12 @@ package com.autohubreactive.expense.router;
 
 import com.autohubreactive.dto.invoice.RevenueResponse;
 import com.autohubreactive.expense.handler.RevenueHandler;
+import com.autohubreactive.expense.testconfig.TestSecurityConfig;
 import com.autohubreactive.expense.util.TestUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -26,6 +28,7 @@ import static org.mockito.Mockito.when;
 
 @WebFluxTest
 @ContextConfiguration(classes = RevenueRouter.class)
+@Import(TestSecurityConfig.class)
 class RevenueRouterTest {
 
     private static final String PATH = "/revenues";

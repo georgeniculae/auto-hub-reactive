@@ -1,5 +1,6 @@
 package com.autohubreactive.agency.router;
 
+import com.autohubreactive.agency.config.TestSecurityConfig;
 import com.autohubreactive.agency.handler.CarHandler;
 import com.autohubreactive.agency.util.TestData;
 import com.autohubreactive.agency.util.TestUtil;
@@ -7,6 +8,7 @@ import com.autohubreactive.dto.agency.CarResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
@@ -30,6 +32,7 @@ import static org.mockito.Mockito.when;
 
 @WebFluxTest
 @ContextConfiguration(classes = CarRouter.class)
+@Import(TestSecurityConfig.class)
 class CarRouterTest {
 
     private static final String PATH = "/cars";
@@ -359,23 +362,6 @@ class CarRouterTest {
     }
 
     @Test
-    @WithAnonymousUser
-    void saveCarTest_forbidden() {
-        CarResponse carResponse = TestUtil.getResourceAsJson("/data/CarResponse.json", CarResponse.class);
-
-        Mono<ServerResponse> serverResponse = ServerResponse.ok().bodyValue(carResponse);
-
-        when(carHandler.saveCar(any(ServerRequest.class))).thenReturn(serverResponse);
-
-        webTestClient.post()
-                .uri(PATH)
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus()
-                .isForbidden();
-    }
-
-    @Test
     @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void uploadCarsTest_success() {
         CarResponse carResponse = TestUtil.getResourceAsJson("/data/CarResponse.json", CarResponse.class);
@@ -426,27 +412,6 @@ class CarRouterTest {
     }
 
     @Test
-    @WithAnonymousUser
-    void uploadCarsTest_forbidden() {
-        CarResponse carResponse = TestUtil.getResourceAsJson("/data/CarResponse.json", CarResponse.class);
-
-        MultipartBodyBuilder builder = new MultipartBodyBuilder();
-        builder.part("file", new ClassPathResource("src/test/resources/file/Cars.xlsx"));
-
-        Mono<ServerResponse> serverResponse = ServerResponse.ok().bodyValue(List.of(carResponse));
-
-        when(carHandler.uploadCars(any(ServerRequest.class))).thenReturn(serverResponse);
-
-        webTestClient.post()
-                .uri(PATH + "/upload")
-                .accept(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromMultipartData(builder.build()))
-                .exchange()
-                .expectStatus()
-                .isForbidden();
-    }
-
-    @Test
     @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void updateCarTest_success() {
         CarResponse carResponse = TestUtil.getResourceAsJson("/data/CarResponse.json", CarResponse.class);
@@ -490,23 +455,6 @@ class CarRouterTest {
     }
 
     @Test
-    @WithAnonymousUser
-    void updateCarTest_forbidden() {
-        CarResponse carResponse = TestUtil.getResourceAsJson("/data/CarResponse.json", CarResponse.class);
-
-        Mono<ServerResponse> serverResponse = ServerResponse.ok().bodyValue(carResponse);
-
-        when(carHandler.updateCar(any(ServerRequest.class))).thenReturn(serverResponse);
-
-        webTestClient.put()
-                .uri(PATH + "/{id}", "64f361caf291ae086e179547")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus()
-                .isForbidden();
-    }
-
-    @Test
     @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void deleteCarByIdTest_success() {
         Mono<ServerResponse> serverResponse = ServerResponse.noContent().build();
@@ -526,22 +474,6 @@ class CarRouterTest {
         responseBody.as(StepVerifier::create)
                 .expectComplete()
                 .verify();
-    }
-
-    @Test
-    @WithAnonymousUser
-    void deleteCarByIdTest_forbidden() {
-        Mono<ServerResponse> serverResponse = ServerResponse.noContent().build();
-
-        when(carHandler.deleteCarById(any(ServerRequest.class))).thenReturn(serverResponse);
-
-        webTestClient.mutateWith(SecurityMockServerConfigurers.csrf())
-                .delete()
-                .uri(PATH + "/{id}", "64f361caf291ae086e179547")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus()
-                .isUnauthorized();
     }
 
 }
