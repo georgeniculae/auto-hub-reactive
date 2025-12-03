@@ -6,8 +6,8 @@ import org.springframework.boot.SpringApplication;
 @AutoHubReactiveMicroservice
 public class AutoHubReactiveEmailNotificationApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(AutoHubReactiveEmailNotificationApplication.class);
+    static void main(String[] args) {
+        SpringApplication.run(AutoHubReactiveEmailNotificationApplication.class, args);
     }
 
 }

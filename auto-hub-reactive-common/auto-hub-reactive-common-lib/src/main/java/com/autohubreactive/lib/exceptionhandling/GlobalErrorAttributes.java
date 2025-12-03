@@ -1,8 +1,9 @@
 package com.autohubreactive.lib.exceptionhandling;
 
 import com.autohubreactive.lib.util.Constants;
+import org.jspecify.annotations.NonNull;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
-import org.springframework.boot.web.reactive.error.DefaultErrorAttributes;
+import org.springframework.boot.webflux.error.DefaultErrorAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -14,7 +15,11 @@ import java.util.Map;
 public class GlobalErrorAttributes extends DefaultErrorAttributes {
 
     @Override
-    public Map<String, Object> getErrorAttributes(ServerRequest request, ErrorAttributeOptions options) {
+    @NonNull
+    public Map<String, Object> getErrorAttributes(
+            @NonNull ServerRequest request,
+            @NonNull ErrorAttributeOptions options
+    ) {
         Map<String, Object> errorAttributes = super.getErrorAttributes(request, options);
 
         Throwable error = super.getError(request);

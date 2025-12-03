@@ -1,22 +1,16 @@
 server:
   port: ${random.int(8189,9090)}
-  error:
-    include-message: always
-    include-binding-errors: never
-    include-stacktrace: never
-    include-exception: false
 
 spring:
   application:
     name: auto-hub-reactive-agency
   webflux:
     base-path: /agency
-  data:
-    mongodb:
-      database: auto_hub_agency
-      username: ${MONGODB_USERNAME}
-      password: ${MONGODB_PASSWORD}
-      uri: mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@autohubagency.okteugn.mongodb.net/?retryWrites=true&w=majority&appName=AutoHubAgency
+  mongodb:
+    database: auto_hub_agency
+    username: ${MONGODB_USERNAME}
+    password: ${MONGODB_PASSWORD}
+    uri: mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@autohubagency.okteugn.mongodb.net/?retryWrites=true&w=majority&appName=AutoHubAgency
   cloud:
     loadbalancer:
       enabled: true
@@ -81,6 +75,11 @@ spring:
   web:
     resources:
       add-mappings: false
+    error:
+      include-message: always
+      include-binding-errors: never
+      include-stacktrace: never
+      include-exception: false
   docker:
     compose:
       enabled: false

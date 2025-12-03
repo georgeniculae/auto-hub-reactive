@@ -20,6 +20,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.autohub</groupId>
             <artifactId>auto-hub-reactive-common-lib</artifactId>
             <version>${auto-hub-common-reactive.version}</version>

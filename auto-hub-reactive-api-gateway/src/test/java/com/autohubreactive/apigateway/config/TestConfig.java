@@ -1,28 +1,17 @@
-package com.autohubreactive.agency.config;
+package com.autohubreactive.apigateway.config;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.security.oauth2.server.resource.autoconfigure.reactive.ReactiveOAuth2ResourceServerAutoConfiguration;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.codec.ServerCodecConfigurer;
-import org.springframework.http.codec.support.DefaultServerCodecConfigurer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.validation.Validator;
-import org.springframework.validation.beanvalidation.CustomValidatorBean;
 
 @TestConfiguration
 @EnableWebFluxSecurity
+@EnableAutoConfiguration(exclude = ReactiveOAuth2ResourceServerAutoConfiguration.class)
 public class TestConfig {
-
-    @Bean
-    public Validator validator() {
-        return new CustomValidatorBean();
-    }
-
-    @Bean
-    public ServerCodecConfigurer serverCodecConfigurer() {
-        return new DefaultServerCodecConfigurer();
-    }
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {

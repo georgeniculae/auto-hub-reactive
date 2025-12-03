@@ -17,7 +17,7 @@ public class RestClientConfig {
         HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = ClientHttpRequestFactoryBuilder.httpComponents()
                 .withCustomizers(
                         List.of(
-                                requestFactory -> requestFactory.setConnectTimeout(Duration.ofSeconds(60)),
+                                requestFactory -> requestFactory.setConnectionRequestTimeout(Duration.ofSeconds(60)),
                                 requestFactory -> requestFactory.setReadTimeout(Duration.ofSeconds(60))
                         )
                 )

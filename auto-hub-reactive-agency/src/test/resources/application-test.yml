@@ -1,15 +1,19 @@
 spring:
-  data:
-    mongodb:
-      database: auto_hub_agency
-      username: admin
-      password: password
-      uri: mongodb://localhost:27017/auto_hub_agency
   cloud:
     bus:
       enabled: false
     discovery:
       enabled: false
     consul:
+      discovery:
+        enabled: false
       config:
         enabled: false
+  mongodb:
+    database: auto_hub_agency
+    username: admin
+    password: password
+    uri: mongodb://localhost:27017/auto_hub_agency
+
+apikey:
+  secret: test

@@ -1,11 +1,12 @@
 package com.autohubreactive.lib.exceptionhandling;
 
 import com.autohubreactive.lib.util.Constants;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.web.WebProperties;
-import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
-import org.springframework.boot.web.reactive.error.ErrorAttributes;
+import org.springframework.boot.webflux.autoconfigure.error.AbstractErrorWebExceptionHandler;
+import org.springframework.boot.webflux.error.ErrorAttributes;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,7 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
             WebProperties.Resources resources,
             ApplicationContext applicationContext,
             ServerCodecConfigurer serverCodecConfigurer,
-            ObjectProvider<ViewResolver> viewResolvers,
+            ObjectProvider<@NonNull ViewResolver> viewResolvers,
             GlobalErrorAttributes globalErrorAttributes
     ) {
         super(errorAttributes, resources, applicationContext);
@@ -45,11 +46,12 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
     }
 
     @Override
-    public RouterFunction<ServerResponse> getRoutingFunction(ErrorAttributes errorAttributes) {
+    @NonNull
+    public RouterFunction<@NonNull ServerResponse> getRoutingFunction(@NonNull ErrorAttributes errorAttributes) {
         return RouterFunctions.route(RequestPredicates.all(), this::renderErrorResponse);
     }
 
-    private Mono<ServerResponse> renderErrorResponse(ServerRequest request) {
+    private Mono<@NonNull ServerResponse> renderErrorResponse(ServerRequest request) {
         Map<String, Object> errorPropertiesMap =
                 globalErrorAttributes.getErrorAttributes(request, ErrorAttributeOptions.defaults());
 
