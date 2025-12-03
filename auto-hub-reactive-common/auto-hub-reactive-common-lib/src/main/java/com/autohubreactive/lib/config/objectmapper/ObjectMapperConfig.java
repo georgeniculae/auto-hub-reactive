@@ -2,7 +2,6 @@ package com.autohubreactive.lib.config.objectmapper;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import tools.jackson.databind.DeserializationFeature;
 import tools.jackson.databind.MapperFeature;
 import tools.jackson.databind.ObjectMapper;
@@ -14,7 +13,6 @@ import tools.jackson.databind.json.JsonMapper;
 public class ObjectMapperConfig {
 
     @Bean
-    @Primary
     public ObjectMapper objectMapper() {
         return JsonMapper.builder()
                 .enable(MapperFeature.ALLOW_COERCION_OF_SCALARS)
