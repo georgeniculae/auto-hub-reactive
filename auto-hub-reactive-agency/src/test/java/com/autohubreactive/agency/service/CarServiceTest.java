@@ -19,8 +19,6 @@ import com.autohubreactive.dto.common.CarUpdateDetails;
 import com.autohubreactive.dto.common.UpdateCarsRequest;
 import com.autohubreactive.exception.AutoHubException;
 import com.autohubreactive.exception.AutoHubNotFoundException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,6 +36,7 @@ import org.springframework.util.MultiValueMap;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -285,7 +284,7 @@ class CarServiceTest {
     }
 
     @Test
-    void saveCarTest_success() throws JsonProcessingException {
+    void saveCarTest_success() {
         Branch branch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
         Car car = TestUtil.getResourceAsJson("/data/Car1.json", Car.class);
         CarRequest carRequest = TestUtil.getResourceAsJson("/data/CarRequest.json", CarRequest.class);
@@ -307,7 +306,7 @@ class CarServiceTest {
     }
 
     @Test
-    void saveCarTest_noCarImage_success() throws JsonProcessingException {
+    void saveCarTest_noCarImage_success() {
         Branch branch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
         Car car = TestUtil.getResourceAsJson("/data/Car1.json", Car.class);
         CarRequest carRequest = TestUtil.getResourceAsJson("/data/CarRequest.json", CarRequest.class);
@@ -327,7 +326,7 @@ class CarServiceTest {
     }
 
     @Test
-    void saveCarTest_errorOnSaving() throws JsonProcessingException {
+    void saveCarTest_errorOnSaving() {
         Branch branch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
         CarRequest carRequest = TestUtil.getResourceAsJson("/data/CarRequest.json", CarRequest.class);
         MultiValueMap<String, Part> multivalueMap = TestData.getCarRequestMultivalueMap();
@@ -390,7 +389,7 @@ class CarServiceTest {
     }
 
     @Test
-    void updateCarTest_success() throws JsonProcessingException {
+    void updateCarTest_success() {
         Branch branch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
         Car car = TestUtil.getResourceAsJson("/data/Car1.json", Car.class);
         CarRequest carRequest = TestUtil.getResourceAsJson("/data/CarRequest.json", CarRequest.class);
@@ -412,7 +411,7 @@ class CarServiceTest {
     }
 
     @Test
-    void updateCarTest_errorOnSaving() throws JsonProcessingException {
+    void updateCarTest_errorOnSaving() {
         Branch branch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
         Car car = TestUtil.getResourceAsJson("/data/Car1.json", Car.class);
         CarRequest carRequest = TestUtil.getResourceAsJson("/data/CarRequest.json", CarRequest.class);

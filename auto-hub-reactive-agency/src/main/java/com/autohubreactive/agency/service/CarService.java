@@ -21,8 +21,6 @@ import com.autohubreactive.exception.AutoHubNotFoundException;
 import com.autohubreactive.exception.AutoHubResponseStatusException;
 import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
 import com.autohubreactive.lib.util.MongoUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -43,6 +41,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -279,11 +278,7 @@ public class CarService {
         return Mono.fromSupplier(() -> {
             FormFieldPart carRequestFormFieldPart = (FormFieldPart) carRequestAsPart;
 
-            try {
-                return objectMapper.readValue(carRequestFormFieldPart.value(), CarRequest.class);
-            } catch (JsonProcessingException e) {
-                throw new AutoHubException(e.getMessage());
-            }
+            return objectMapper.readValue(carRequestFormFieldPart.value(), CarRequest.class);
         });
     }
 

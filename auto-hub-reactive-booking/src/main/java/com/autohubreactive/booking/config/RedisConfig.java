@@ -6,7 +6,7 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.JacksonJsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -29,12 +29,12 @@ public class RedisConfig {
 
     @Bean
     public ReactiveRedisOperations<String, String> redisOperations(LettuceConnectionFactory factory) {
-        Jackson2JsonRedisSerializer<String> serializer = new Jackson2JsonRedisSerializer<>(String.class);
+        JacksonJsonRedisSerializer<String> serializer = new JacksonJsonRedisSerializer<>(String.class);
 
-        RedisSerializationContext.RedisSerializationContextBuilder<String, String> builder =
+        RedisSerializationContext.RedisSerializationContextBuilder<String, String> redisSerializationContextBuilder =
                 RedisSerializationContext.newSerializationContext(new StringRedisSerializer());
 
-        RedisSerializationContext<String, String> context = builder.value(serializer).build();
+        RedisSerializationContext<String, String> context = redisSerializationContextBuilder.value(serializer).build();
 
         return new ReactiveRedisTemplate<>(factory, context);
     }
