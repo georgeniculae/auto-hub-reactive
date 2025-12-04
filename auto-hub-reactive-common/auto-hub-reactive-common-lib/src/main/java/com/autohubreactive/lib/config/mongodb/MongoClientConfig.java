@@ -25,10 +25,12 @@ public class MongoClientConfig {
                 CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build())
         );
 
-        return MongoClients.create(MongoClientSettings.builder()
+        MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
                 .applyConnectionString(new ConnectionString(connectionString))
                 .codecRegistry(codecRegistry)
-                .build());
+                .build();
+
+        return MongoClients.create(mongoClientSettings);
     }
 
 }
