@@ -14,7 +14,7 @@ public class ShedLockConfig {
 
     public static final String SHEDLOCK = "shedlock";
 
-    @Value("${spring.data.mongodb.database}")
+    @Value("${spring.mongodb.database}")
     private String databaseName;
 
     @Bean
