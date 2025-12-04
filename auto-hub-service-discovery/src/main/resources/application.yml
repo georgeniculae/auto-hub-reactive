@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: swift-wheels-hub-service-discovery
+    name: auto-hub-service-discovery
   security:
     user:
       name: ${EUREKA_USER}
