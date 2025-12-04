@@ -1,5 +1,6 @@
 package com.autohubreactive.lib.annotation;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.persistence.autoconfigure.EntityScan;
@@ -28,6 +29,7 @@ import java.lang.annotation.Target;
 })
 @ComponentScan(basePackages = "com.autohubreactive")
 @EntityScan("com.autohubreactive")
+@EnableAutoConfiguration
 @EnableReactiveMongoRepositories(basePackages = "com.autohubreactive")
 @EnableTransactionManagement
 @EnableDiscoveryClient

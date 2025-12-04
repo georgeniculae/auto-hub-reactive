@@ -10,25 +10,12 @@ spring:
     database: auto_hub_agency
     username: ${MONGODB_USERNAME}
     password: ${MONGODB_PASSWORD}
-    uri: mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@autohubagency.okteugn.mongodb.net/?retryWrites=true&w=majority&appName=AutoHubAgency
+    uri: mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@autohubagency.czbgrqe.mongodb.net/?retryWrites=true&w=majority&appName=AutoHubAgency
   cloud:
     loadbalancer:
       enabled: true
       cache:
         enabled: true
-    consul:
-      enabled: true
-      host: localhost
-      port: 8500
-      discovery:
-        enabled: true
-        prefer-ip-address: true
-        instanceId: ${spring.application.name}-id
-        serviceName: ${spring.application.name}
-        healthCheckPath: /actuator/health
-        healthCheckInterval: 5s
-        hostname: localhost
-        failFast: false
     function:
       definition: updatedCarBookingSavedConsumer;updatedCarBookingUpdatedConsumer;updatedCarInvoiceClosedConsumer
     stream:
@@ -87,6 +74,17 @@ spring:
     codecs:
       max-in-memory-size: 20MB
 
+eureka:
+  client:
+    enabled: true
+    healthcheck:
+      enabled: true
+    eureka-server-port: 8761
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    proxy-password: ${EUREKA_USER}
+    proxy-user-name: ${EUREKA_PASSWORD}
+
 springdoc:
   swagger-ui:
     enabled: true
@@ -141,4 +139,4 @@ mongo-operations:
   enabled: true
 
 migration:
-  packageScan: com.autohubreactive.agency.migration
+  package-scan: com.autohubreactive.agency.migration
