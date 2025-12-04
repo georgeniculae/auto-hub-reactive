@@ -13,7 +13,9 @@ import org.springframework.transaction.reactive.TransactionalOperator;
 public class ReactiveMongoTransactionManagerConfig {
 
     @Bean
-    public ReactiveMongoTransactionManager reactiveMongoTransactionManager(ReactiveMongoDatabaseFactory reactiveMongoDatabaseFactory) {
+    public ReactiveMongoTransactionManager reactiveMongoTransactionManager(
+            ReactiveMongoDatabaseFactory reactiveMongoDatabaseFactory
+    ) {
         return new ReactiveMongoTransactionManager(reactiveMongoDatabaseFactory);
     }
 
