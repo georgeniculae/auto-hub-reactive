@@ -40,13 +40,3 @@ logging:
         web:
           csrf:
             CsrfFilter: DEBUG
-        jdbc:
-          core:
-            JdbcTemplate: DEBUG
-            StatementCreatorUtils: TRACE
-      hibernate:
-        SQL: DEBUG
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
