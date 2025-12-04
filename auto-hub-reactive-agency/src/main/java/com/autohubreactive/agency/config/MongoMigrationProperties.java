@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 @Getter
 public class MongoMigrationProperties {
 
-    @Value("${migration.packageScan}")
+    @Value("${migration.package-scan}")
     private String packageScan;
 
-    @Value("${spring.data.mongodb.database}")
+    @Value("${spring.mongodb.database}")
     private String databaseName;
 
 }
