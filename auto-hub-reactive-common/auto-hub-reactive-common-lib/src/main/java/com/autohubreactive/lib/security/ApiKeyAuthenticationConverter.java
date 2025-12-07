@@ -2,6 +2,7 @@ package com.autohubreactive.lib.security;
 
 import com.autohubreactive.lib.util.ServerRequestUtil;
 import org.apache.commons.lang3.ObjectUtils;
+import org.jspecify.annotations.NonNull;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,6 +18,7 @@ import java.util.List;
 public class ApiKeyAuthenticationConverter implements ServerAuthenticationConverter {
 
     @Override
+    @NonNull
     public Mono<Authentication> convert(ServerWebExchange exchange) {
         return Mono.justOrEmpty(ServerRequestUtil.getApiKeyHeader(exchange.getRequest()))
                 .map(apikey -> getApiKeyAuthenticationToken(exchange, apikey));
