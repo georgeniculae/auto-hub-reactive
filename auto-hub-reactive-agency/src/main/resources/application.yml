@@ -10,7 +10,7 @@ spring:
     database: auto_hub_agency
     username: ${MONGODB_USERNAME}
     password: ${MONGODB_PASSWORD}
-    uri: mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@autohubagency.iv26ddq.mongodb.net/?retryWrites=true&w=majority&appName=AutoHubAgency&authSource=admin
+    uri: mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@autohubagency.iv26ddq.mongodb.net/?retryWrites=true&w=majority&appName=AutoHubAgency
   cloud:
     loadbalancer:
       enabled: true
