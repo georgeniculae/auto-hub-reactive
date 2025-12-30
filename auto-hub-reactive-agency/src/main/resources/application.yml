@@ -10,7 +10,13 @@ spring:
     database: auto_hub_agency
     username: ${MONGODB_USERNAME}
     password: ${MONGODB_PASSWORD}
-    uri: mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@autohubagency.iv26ddq.mongodb.net/?retryWrites=true&w=majority&appName=AutoHubAgency
+    uri: mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@autohubagency.iv26ddq.mongodb.net/auto_hub_agency?retryWrites=true&w=majority&appName=AutoHubAgency
+    representation:
+      uuid: standard
+  data:
+    mongodb:
+      representation:
+        big-decimal: decimal128
   cloud:
     loadbalancer:
       enabled: true
@@ -118,10 +124,14 @@ logging:
   level:
     org:
       springframework:
+        boot:
+          autoconfigure:
+            mongo: DEBUG
         security: ERROR
         web: ERROR
         data:
           mongodb:
+            driver: DEBUG
             core:
               ReactiveMongoTemplate: ERROR
 
