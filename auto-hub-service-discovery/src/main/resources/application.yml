@@ -1,5 +1,5 @@
 server:
-  port: ${PORT:8761}
+  port: ${PORT:8861}
 
 spring:
   application:
@@ -24,11 +24,11 @@ eureka:
   instance:
     hostname: localhost
     lease-renewal-interval-in-seconds: 30
-    status-page-url-path: http://localhost:8761/eureka/info
-    health-check-url-path: http://localhost:8761/eureka/health
+    status-page-url-path: http://localhost:8861/eureka/info
+    health-check-url-path: http://localhost:8861/eureka/health
     secure-port-enabled: true
     non-secure-port-enabled: false
-    secure-port: 8761
+    secure-port: 8861
   server:
     wait-time-in-ms-when-sync-empty: 0
 

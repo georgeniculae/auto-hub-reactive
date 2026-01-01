@@ -33,9 +33,9 @@ eureka:
     enabled: true
     healthcheck:
       enabled: true
-    eureka-server-port: 8761
+    eureka-server-port: 8861
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://localhost:8861/eureka/
     proxy-password: ${EUREKA_USER}
     proxy-user-name: ${EUREKA_PASSWORD}
 
