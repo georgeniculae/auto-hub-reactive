@@ -2,6 +2,7 @@ package com.autohubreactive.agency.migration;
 
 import com.autohubreactive.agency.entity.Branch;
 import com.autohubreactive.agency.util.Constants;
+import com.mongodb.MongoClientSettings;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertManyResult;
 import com.mongodb.reactivestreams.client.ClientSession;
@@ -15,10 +16,18 @@ import io.mongock.driver.mongodb.reactive.util.MongoSubscriberSync;
 import io.mongock.driver.mongodb.reactive.util.SubscriberSync;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
+import org.bson.codecs.configuration.CodecRegistries;
+import org.bson.codecs.configuration.CodecRegistry;
+import org.bson.codecs.pojo.PojoCodecProvider;
 
 @ChangeUnit(id = "branch-initializer", order = "2", author = "George Niculae")
 @Slf4j
 public class BranchInitializerChangeUnit {
+
+    private final CodecRegistry pojoCodecRegistry = CodecRegistries.fromRegistries(
+        MongoClientSettings.getDefaultCodecRegistry(),
+        CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build())
+    );
 
     @BeforeExecution
     public void beforeExecution(MongoDatabase mongoDatabase) {
@@ -42,9 +51,10 @@ public class BranchInitializerChangeUnit {
     public void execution(ClientSession clientSession, MongoDatabase mongoDatabase) {
         SubscriberSync<InsertManyResult> subscriber = new MongoSubscriberSync<>();
 
-        mongoDatabase.getCollection(Constants.BRANCH_COLLECTION_NAME, Branch.class)
-                .insertMany(clientSession, DatabaseCollectionCreator.getBranches())
-                .subscribe(subscriber);
+        mongoDatabase.withCodecRegistry(pojoCodecRegistry)
+            .getCollection(Constants.BRANCH_COLLECTION_NAME, Branch.class)
+            .insertMany(clientSession, DatabaseCollectionCreator.getBranches())
+            .subscribe(subscriber);
 
         InsertManyResult result = subscriber.getFirst();
 

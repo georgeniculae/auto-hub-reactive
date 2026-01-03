@@ -18,14 +18,14 @@ import org.mapstruct.ReportingPolicy;
 )
 public interface BranchMapper {
 
-    @Mapping(target = "rentalOfficeId", expression = "java(mapObjectIdToString(branch.getRentalOffice().getId()))")
+    @Mapping(target = "rentalOfficeId", expression = "java(mapObjectIdToString(branch.rentalOffice().id()))")
     BranchResponse mapEntityToDto(Branch branch);
 
     @Mapping(target = "rentalOffice", expression = "java(rentalOffice)")
     @Mapping(target = "name", expression = "java(branchRequest.name())")
     Branch getNewBranch(BranchRequest branchRequest, RentalOffice rentalOffice);
 
-    @Mapping(target = "id", expression = "java(existingBranch.getId())")
+    @Mapping(target = "id", expression = "java(existingBranch.id())")
     @Mapping(target = "name", expression = "java(branchRequest.name())")
     @Mapping(target = "address", expression = "java(branchRequest.address())")
     @Mapping(target = "rentalOffice", source = "rentalOffice")

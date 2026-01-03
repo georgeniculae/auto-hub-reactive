@@ -1,37 +1,26 @@
 package com.autohubreactive.agency.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
+import org.jspecify.annotations.NonNull;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.lang.NonNull;
 
 @Document(collection = "employee")
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Getter
-@Setter
-public class Employee {
-
+public record Employee(
     @BsonProperty("_id")
     @BsonId
-    private ObjectId id;
+    ObjectId id,
 
     @NonNull
-    private String firstName;
+    String firstName,
 
     @NonNull
-    private String lastName;
+    String lastName,
 
     @NonNull
-    private String jobPosition;
+    String jobPosition,
 
-    private Branch workingBranch;
-
+    Branch workingBranch
+) {
 }

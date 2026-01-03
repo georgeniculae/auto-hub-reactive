@@ -2,6 +2,7 @@ package com.autohubreactive.agency.migration;
 
 import com.autohubreactive.agency.entity.RentalOffice;
 import com.autohubreactive.agency.util.Constants;
+import com.mongodb.MongoClientSettings;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertManyResult;
 import com.mongodb.reactivestreams.client.ClientSession;
@@ -15,10 +16,18 @@ import io.mongock.driver.mongodb.reactive.util.MongoSubscriberSync;
 import io.mongock.driver.mongodb.reactive.util.SubscriberSync;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
+import org.bson.codecs.configuration.CodecRegistries;
+import org.bson.codecs.configuration.CodecRegistry;
+import org.bson.codecs.pojo.PojoCodecProvider;
 
 @ChangeUnit(id = "rental-office-initializer", order = "1", author = "George Niculae")
 @Slf4j
 public class RentalOfficeInitializerChangeUnit {
+
+    private final CodecRegistry pojoCodecRegistry = CodecRegistries.fromRegistries(
+        MongoClientSettings.getDefaultCodecRegistry(),
+        CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build())
+    );
 
     @BeforeExecution
     public void beforeExecution(MongoDatabase mongoDatabase) {
@@ -31,9 +40,10 @@ public class RentalOfficeInitializerChangeUnit {
     public void rollbackBeforeExecution(MongoDatabase mongoDatabase) {
         SubscriberSync<Void> subscriber = new MongoSubscriberSync<>();
 
-        mongoDatabase.getCollection(Constants.RENTAL_OFFICE_COLLECTION_NAME)
-                .drop()
-                .subscribe(subscriber);
+        mongoDatabase.withCodecRegistry(pojoCodecRegistry)
+            .getCollection(Constants.RENTAL_OFFICE_COLLECTION_NAME)
+            .drop()
+            .subscribe(subscriber);
 
         subscriber.await();
     }

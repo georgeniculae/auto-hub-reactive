@@ -18,13 +18,13 @@ import org.mapstruct.ReportingPolicy;
 )
 public interface EmployeeMapper {
 
-    @Mapping(target = "workingBranchId", expression = "java(mapObjectIdToString(employee.getWorkingBranch().getId()))")
+    @Mapping(target = "workingBranchId", expression = "java(mapObjectIdToString(employee.workingBranch().id()))")
     EmployeeResponse mapEntityToDto(Employee employee);
 
     @Mapping(target = "workingBranch", expression = "java(workingBranch)")
     Employee getNewEmployee(EmployeeRequest employeeRequest, Branch workingBranch);
 
-    @Mapping(target = "id", expression = "java(existingEmployee.getId())")
+    @Mapping(target = "id", expression = "java(existingEmployee.id())")
     @Mapping(target = "firstName", expression = "java(updatedEmployeeRequest.firstName())")
     @Mapping(target = "lastName", expression = "java(updatedEmployeeRequest.lastName())")
     @Mapping(target = "jobPosition", expression = "java(updatedEmployeeRequest.jobPosition())")

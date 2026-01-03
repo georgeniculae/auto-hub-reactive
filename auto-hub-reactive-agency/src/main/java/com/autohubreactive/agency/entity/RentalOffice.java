@@ -1,34 +1,23 @@
 package com.autohubreactive.agency.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
+import org.jspecify.annotations.NonNull;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.lang.NonNull;
 
 @Document(collection = "rental_office")
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Getter
-@Setter
-public class RentalOffice {
-
+public record RentalOffice(
     @BsonProperty("_id")
     @BsonId
-    private ObjectId id;
+    ObjectId id,
 
     @NonNull
-    private String name;
+    String name,
 
     @NonNull
-    private String contactAddress;
+    String contactAddress,
 
-    private String phoneNumber;
-
+    String phoneNumber
+) {
 }

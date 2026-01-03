@@ -207,9 +207,9 @@ class CarServiceTest {
     @Test
     void getAvailableCarTest_noCarAvailable() {
         Car car = TestUtil.getResourceAsJson("/data/Car1.json", Car.class);
-        car.setCarStatus(CarStatus.NOT_AVAILABLE);
+        Car returnedCar = car.withCarStatus(CarStatus.NOT_AVAILABLE);
 
-        when(carRepository.findById(any(ObjectId.class))).thenReturn(Mono.just(car));
+        when(carRepository.findById(any(ObjectId.class))).thenReturn(Mono.just(returnedCar));
 
         carService.getAvailableCar("64f361caf291ae086e179547")
                 .as(StepVerifier::create)

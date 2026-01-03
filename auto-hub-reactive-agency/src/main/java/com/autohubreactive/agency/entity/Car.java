@@ -1,37 +1,41 @@
 package com.autohubreactive.agency.entity;
 
-import lombok.AllArgsConstructor;
+import java.math.BigDecimal;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.With;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.math.BigDecimal;
-
 @Document(collection = "car")
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Getter
-@Setter
-public class Car {
-
+@Builder(toBuilder = true)
+public record Car(
     @BsonProperty("_id")
     @BsonId
-    private ObjectId id;
-    private String make;
-    private String model;
-    private BodyType bodyType;
-    private Integer yearOfProduction;
-    private String color;
-    private Integer mileage;
-    private CarStatus carStatus;
-    private BigDecimal amount;
-    private Branch originalBranch;
-    private Branch actualBranch;
+    ObjectId id,
 
+    String make,
+
+    String model,
+
+    BodyType bodyType,
+
+    Integer yearOfProduction,
+
+    String color,
+
+    Integer mileage,
+
+    @With
+    CarStatus carStatus,
+
+    BigDecimal amount,
+
+    @With
+    Branch originalBranch,
+
+    @With
+    Branch actualBranch
+) {
 }

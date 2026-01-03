@@ -24,8 +24,8 @@ import org.mapstruct.ReportingPolicy;
 )
 public interface CarMapper {
 
-    @Mapping(target = "originalBranchId", expression = "java(mapObjectIdToString(car.getOriginalBranch().getId()))")
-    @Mapping(target = "actualBranchId", expression = "java(mapObjectIdToString(car.getActualBranch().getId()))")
+    @Mapping(target = "originalBranchId", expression = "java(mapObjectIdToString(car.originalBranch().id()))")
+    @Mapping(target = "actualBranchId", expression = "java(mapObjectIdToString(car.actualBranch().id()))")
     @Mapping(target = "bodyCategory", source = "bodyType")
     @Mapping(target = "carState", source = "carStatus")
     CarResponse mapEntityToDto(Car car);
@@ -44,7 +44,7 @@ public interface CarMapper {
     @Mapping(target = "carStatus", source = "carStatus")
     Car getUpdatedCarWithStatus(Car existingCar, CarStatus carStatus);
 
-    @Mapping(target = "actualBranchId", expression = "java(mapObjectIdToString(car.getActualBranch().getId()))")
+    @Mapping(target = "actualBranchId", expression = "java(mapObjectIdToString(car.actualBranch().id()))")
     AvailableCarInfo mapToAvailableCarInfo(Car car);
 
     @Mapping(target = "id", expression = "java(existingCarId)")
@@ -60,7 +60,7 @@ public interface CarMapper {
     @Mapping(target = "actualBranch", expression = "java(actualBranch)")
     Car getUpdatedCar(ObjectId existingCarId, CarRequest updatedCarRequest, Branch originalBranch, Branch actualBranch);
 
-    @Mapping(target = "id", expression = "java(car.getId())")
+    @Mapping(target = "id", expression = "java(car.id())")
     @Mapping(target = "actualBranch", expression = "java(workingBranch)")
     @Mapping(target = "carStatus", source = "carStatus")
     Car getCarAfterBookingClosing(Car car, Branch workingBranch, CarStatus carStatus);

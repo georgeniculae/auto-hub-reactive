@@ -21,6 +21,8 @@ import com.autohubreactive.exception.AutoHubNotFoundException;
 import com.autohubreactive.exception.AutoHubResponseStatusException;
 import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
 import com.autohubreactive.lib.util.MongoUtil;
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -42,9 +44,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import tools.jackson.databind.ObjectMapper;
-
-import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -92,7 +91,7 @@ public class CarService {
 
     public Mono<AvailableCarInfo> getAvailableCar(String id) {
         return findEntityById(id)
-                .filter(car -> CarStatus.AVAILABLE.equals(car.getCarStatus()))
+            .filter(car -> CarStatus.AVAILABLE.equals(car.carStatus()))
                 .map(carMapper::mapToAvailableCarInfo)
                 .switchIfEmpty(Mono.error(getCarNotAvailableException()))
                 .onErrorMap(e -> {
@@ -244,7 +243,7 @@ public class CarService {
 
     private Mono<ObjectId> saveCarImage(Map<String, Part> carRequestPartMap, Car car) {
         return Mono.justOrEmpty(carRequestPartMap.get(Constants.IMAGE))
-                .flatMap(part -> saveCarImage(getDataBuffer(part), car.getId().toString()));
+            .flatMap(part -> saveCarImage(getDataBuffer(part), car.id().toString()));
     }
 
     private Mono<Car> processCarFromExcel(ExcelCarRequest excelCarRequest) {
@@ -256,7 +255,7 @@ public class CarService {
     private Mono<ObjectId> saveExcelImage(ExcelCarRequest excelCarRequest, Car car) {
         return Mono.just(excelCarRequest.image())
                 .filter(image -> image.length > 0)
-                .flatMap(image -> saveCarImage(getImageAsDataBuffer(image), car.getId().toString()));
+            .flatMap(image -> saveCarImage(getImageAsDataBuffer(image), car.id().toString()));
     }
 
     private Flux<DataBuffer> getImageAsDataBuffer(byte[] bytes) {
@@ -297,7 +296,7 @@ public class CarService {
     }
 
     private CarStatus getUpdatedCarStatus(UpdateCarsRequest updateCarsRequest, Car existingCar) {
-        return existingCar.getId().toString().equals(updateCarsRequest.previousCarId()) ?
+      return existingCar.id().toString().equals(updateCarsRequest.previousCarId()) ?
                 CarStatus.AVAILABLE :
                 CarStatus.NOT_AVAILABLE;
     }
@@ -325,7 +324,8 @@ public class CarService {
         Branch originalBranch = (Branch) carDetails[1];
         Branch actualBranch = (Branch) carDetails[2];
 
-        return carMapper.getUpdatedCar(existingCar.getId(), updatedCarRequest, originalBranch, actualBranch);
+      return carMapper.getUpdatedCar(existingCar.id(), updatedCarRequest, originalBranch,
+          actualBranch);
     }
 
     private Mono<Car> updateCarAfterClosingBooking(CarUpdateDetails carUpdateDetails) {
@@ -340,7 +340,7 @@ public class CarService {
         CarState carState = carUpdateDetails.carState();
         CarStatus carStatus = CarStatus.valueOf(carState.name());
 
-        return carMapper.getCarAfterBookingClosing(car, employee.getWorkingBranch(), carStatus);
+      return carMapper.getCarAfterBookingClosing(car, employee.workingBranch(), carStatus);
     }
 
     private Mono<ObjectId> saveCarImage(Flux<DataBuffer> dataBufferFlux, String carId) {
@@ -366,10 +366,11 @@ public class CarService {
 
     private Car generateCar(ExcelCarRequest excelCarRequest, Branch originalBranch, Branch actualBranch) {
         Car car = carMapper.mapExcelCarRequestToEntity(excelCarRequest);
-        car.setOriginalBranch(originalBranch);
-        car.setActualBranch(actualBranch);
 
-        return car;
+        return car.toBuilder()
+            .actualBranch(actualBranch)
+            .originalBranch(originalBranch)
+            .build();
     }
 
     private AutoHubResponseStatusException getCarNotAvailableException() {
