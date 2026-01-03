@@ -62,6 +62,8 @@ eureka:
       defaultZone: http://localhost:8861/eureka/
     proxy-password: admin
     proxy-user-name: admin
+  instance:
+    prefer-ip-address: true
 
 management:
   server:

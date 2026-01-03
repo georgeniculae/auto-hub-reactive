@@ -105,6 +105,8 @@ eureka:
       defaultZone: http://localhost:8861/eureka/
     proxy-password: ${EUREKA_USER}
     proxy-user-name: ${EUREKA_PASSWORD}
+  instance:
+    prefer-ip-address: true
 
 resilience4j:
   circuitbreaker:
