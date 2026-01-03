@@ -10,10 +10,9 @@ spring:
     database: auto_hub_agency
     username: ${MONGODB_USERNAME}
     password: ${MONGODB_PASSWORD}
-    uri: mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@autohubagency.iv26ddq.mongodb.net/auto_hub_agency?retryWrites=true&w=majority&appName=AutoHubAgency&authSource=admin
+    uri: mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@autohubagency.iv26ddq.mongodb.net/auto_hub_agency?retryWrites=true&w=majority&appName=AutoHubAgency
     representation:
       uuid: standard
-    authentication-database: admin
   data:
     mongodb:
       representation:
