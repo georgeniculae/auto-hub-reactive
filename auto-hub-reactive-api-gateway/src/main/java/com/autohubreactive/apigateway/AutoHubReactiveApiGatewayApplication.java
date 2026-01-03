@@ -6,7 +6,7 @@ import org.springframework.boot.SpringApplication;
 @AutoHubReactiveMicroservice
 public class AutoHubReactiveApiGatewayApplication {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         SpringApplication.run(AutoHubReactiveApiGatewayApplication.class, args);
     }
 
