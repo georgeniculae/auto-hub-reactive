@@ -10,7 +10,6 @@
     </parent>
 
     <artifactId>auto-hub-reactive-common</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Auto Hub Reactive Common Parent</name>

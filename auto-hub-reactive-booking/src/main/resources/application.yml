@@ -158,10 +158,14 @@ management:
       enabled: true
     readinessstate:
       enabled: true
+    mongodb:
+      enabled: false
 
 logging:
   level:
     org:
+      mongodb:
+        driver: ERROR
       springframework:
         security: ERROR
         web: ERROR

@@ -10,7 +10,6 @@
     </parent>
 
     <artifactId>auto-hub-reactive-agency</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>Auto Hub Reactive Agency Reactive</name>
     <description>Auto Hub Reactive Agency Reactive</description>
 

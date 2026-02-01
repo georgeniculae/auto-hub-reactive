@@ -10,7 +10,6 @@
     </parent>
 
     <artifactId>auto-hub-reactive-customer</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>Auto Hub Reactive Customer Reactive</name>
     <description>Auto Hub Reactive Customer Reactive</description>
 
