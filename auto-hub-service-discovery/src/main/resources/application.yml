@@ -24,7 +24,7 @@ eureka:
       enabled: true
   instance:
     hostname: localhost
-    lease-renewal-interval-in-seconds: 10
+    lease-renewal-interval-in-seconds: 8
     status-page-url-path: http://localhost:8861/eureka/info
     health-check-url-path: http://localhost:8861/eureka/health
     secure-port-enabled: true
