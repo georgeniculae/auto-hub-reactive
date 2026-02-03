@@ -18,8 +18,7 @@
 
     <modules>
         <module>auto-hub-reactive-common</module>
-        <module>auto-hub-service-discovery</module>
-        <module>auto-hub-reactive-api-gateway</module>
+        <module>auto-hub-reactive-gateway</module>
         <module>auto-hub-reactive-agency</module>
         <module>auto-hub-reactive-ai</module>
         <module>auto-hub-reactive-audit</module>

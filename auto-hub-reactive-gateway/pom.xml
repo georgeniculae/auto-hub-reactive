@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.autohub</groupId>
+        <artifactId>auto-hub-reactive</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>auto-hub-reactive-gateway</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Auto Hub Reactive Gateway</name>
+    <description>Auto Hub Reactive Gateway</description>
+
+    <modules>
+        <module>auto-hub-reactive-service-discovery</module>
+        <module>auto-hub-reactive-api-gateway</module>
+    </modules>
+
+</project>
