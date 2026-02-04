@@ -5,7 +5,7 @@
 
     <parent>
         <groupId>com.autohub</groupId>
-        <artifactId>auto-hub-reactive</artifactId>
+        <artifactId>auto-hub-reactive-gateway</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
