@@ -9,7 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>auto-hub-reactive-service-discovery</artifactId>
+    <artifactId>auto-hub-eureka-service-discovery</artifactId>
 
     <name>Auto Hub Eureka Service Discovery</name>
     <description>Auto Hub Eureka Service Discovery</description>

@@ -16,7 +16,7 @@
     <description>Auto Hub Reactive Gateway</description>
 
     <modules>
-        <module>auto-hub-reactive-service-discovery</module>
+        <module>auto-hub-eureka-service-discovery</module>
         <module>auto-hub-reactive-api-gateway</module>
     </modules>
 
