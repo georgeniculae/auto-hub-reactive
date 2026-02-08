@@ -46,7 +46,7 @@
         <repository>
             <id>github</id>
             <name>auto-hub-reactive</name>
-            <url>https://maven.pkg.github.com/georgeniculae/auto-hub-reactive-parent</url>
+            <url>https://maven.pkg.github.com/georgeniculae/auto-hub-reactive</url>
         </repository>
     </distributionManagement>
 
