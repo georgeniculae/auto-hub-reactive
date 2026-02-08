@@ -1,4 +1,4 @@
-package com.autohub.servicediscovery.config;
+package com.autohubreactive.servicediscovery.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
