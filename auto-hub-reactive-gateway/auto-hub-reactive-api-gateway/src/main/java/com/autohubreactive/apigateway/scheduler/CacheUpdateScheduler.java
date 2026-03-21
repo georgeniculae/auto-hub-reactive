@@ -15,12 +15,12 @@ public class CacheUpdateScheduler {
 
     @Scheduled(cron = "${cache.swagger-update-frequency}")
     public void updateCache() {
-        cacheUpdateService.populateCache().blockLast();
+        cacheUpdateService.populateCache().subscribe();
     }
 
     @EventListener(ApplicationReadyEvent.class)
     public void loadCacheOnStartup() {
-        cacheUpdateService.populateCache().blockLast();
+        cacheUpdateService.populateCache().subscribe();
     }
 
 }

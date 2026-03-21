@@ -19,7 +19,7 @@ public class DeletedOutboxScheduler {
             lockAtMostFor = "10m"
     )
     public void pollOutboxCollection() {
-        deletedOutboxService.handleOutboxes().blockLast();
+        deletedOutboxService.handleOutboxes().subscribe();
     }
 
 }
