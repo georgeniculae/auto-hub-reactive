@@ -24,11 +24,11 @@ public class FailedCreatedBookingDlqMessageConsumer {
 
     @Bean
     public Function<Flux<Message<CreatedBookingReprocessRequest>>, Mono<Void>> failedCreatedBookingDlqConsumer() {
-        return messageFlux -> messageFlux.concatMap(this::reprocessUpdatedBooking)
+        return messageFlux -> messageFlux.concatMap(this::reprocessCreatedBooking)
                 .then();
     }
 
-    public Mono<Void> reprocessUpdatedBooking(Message<CreatedBookingReprocessRequest> message) {
+    public Mono<Void> reprocessCreatedBooking(Message<CreatedBookingReprocessRequest> message) {
         return createdBookingReprocessService.reprocessCreatedBooking(message.getPayload())
                 .retryWhen(retryHandler.retry())
                 .doOnSuccess(_ -> {
