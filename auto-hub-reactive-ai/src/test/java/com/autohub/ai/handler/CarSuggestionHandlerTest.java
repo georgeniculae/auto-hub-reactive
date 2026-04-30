@@ -1,8 +1,9 @@
 package com.autohub.ai.handler;
 
-import com.autohub.ai.service.CarSuggestionService;
 import com.autohub.ai.util.TestUtil;
-import com.autohub.ai.validator.TripInfoValidator;
+import com.autohubreactive.ai.handler.CarSuggestionHandler;
+import com.autohubreactive.ai.service.CarSuggestionService;
+import com.autohubreactive.ai.validator.TripInfoValidator;
 import com.autohubreactive.dto.ai.CarSuggestionResponse;
 import com.autohubreactive.dto.ai.TripInfo;
 import org.junit.jupiter.api.Test;

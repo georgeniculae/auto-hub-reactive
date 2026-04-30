@@ -1,6 +1,9 @@
 package com.autohub.ai.service;
 
 import com.autohub.ai.util.TestUtil;
+import com.autohubreactive.ai.service.CarService;
+import com.autohubreactive.ai.service.CarSuggestionService;
+import com.autohubreactive.ai.service.ChatService;
 import com.autohubreactive.dto.agency.CarResponse;
 import com.autohubreactive.dto.ai.CarSuggestionResponse;
 import com.autohubreactive.dto.ai.TripInfo;
