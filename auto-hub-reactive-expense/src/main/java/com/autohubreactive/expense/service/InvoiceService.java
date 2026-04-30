@@ -32,6 +32,7 @@ import java.util.Optional;
 @Slf4j
 public class InvoiceService {
 
+    public static final String TOTAL_AMOUNT = "totalAmount";
     private final InvoiceRepository invoiceRepository;
     private final ReactiveMongoTemplate reactiveMongoTemplate;
     private final RevenueService revenueService;
@@ -178,7 +179,7 @@ public class InvoiceService {
     }
 
     private Flux<Invoice> findActiveInvoices() {
-        Criteria criteria = Criteria.where("totalAmount").ne(null);
+        Criteria criteria = Criteria.where(TOTAL_AMOUNT).ne(null);
         Query query = new Query(criteria);
 
         return reactiveMongoTemplate.find(query, Invoice.class);

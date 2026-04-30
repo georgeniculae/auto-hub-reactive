@@ -1,4 +1,4 @@
-package com.autohub.ai.config;
+package com.autohubreactive.ai.config;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.context.annotation.Bean;

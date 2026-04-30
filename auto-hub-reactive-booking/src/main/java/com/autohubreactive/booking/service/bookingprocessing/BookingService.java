@@ -110,10 +110,6 @@ public class BookingService {
                 });
     }
 
-    public Mono<LocalDate> getCurrentDate() {
-        return Mono.just(LocalDate.now());
-    }
-
     @LogActivity(
             activityDescription = "Booking creation",
             sentParameters = "newBookingRequest"
@@ -233,7 +229,7 @@ public class BookingService {
     ) {
         return getNewCarIfChanged(authenticationInfo, updatedBookingRequest, existingBooking)
                 .flatMap(availableCarInfo -> processNewBookingData(updatedBookingRequest, existingBooking, availableCarInfo))
-                .flatMap(this::handleBookingWhenCarIsChanged)
+                .flatMap(updatedOutboxService::processBookingUpdate)
                 .switchIfEmpty(handleBookingWhenCarIsNotChanged(updatedBookingRequest, existingBooking));
     }
 
@@ -245,8 +241,7 @@ public class BookingService {
         return Mono.just(updatedBookingRequest.carId())
                 .filter(carId -> isCarChanged(existingBooking.getActualCarId().toString(), carId))
                 .flatMap(newCarId -> carService.findAvailableCarById(authenticationInfo, newCarId))
-                .flatMap(availableCarInfo -> checkIfCarIsFromRightBranch(updatedBookingRequest, availableCarInfo))
-                .switchIfEmpty(Mono.empty());
+                .flatMap(availableCarInfo -> checkIfCarIsFromRightBranch(updatedBookingRequest, availableCarInfo));
     }
 
     private boolean isCarChanged(String existingBookingId, String newCarId) {
@@ -264,17 +259,14 @@ public class BookingService {
                 .map(_ -> updateBookingWithNewData(updatedBookingRequest, existingBooking, availableCarInfo));
     }
 
-    private Mono<Booking> handleBookingWhenCarIsChanged(Booking pendingUpdatedBooking) {
-        return updatedOutboxService.processBookingUpdate(pendingUpdatedBooking);
-    }
-
     private Mono<Booking> handleBookingWhenCarIsNotChanged(BookingRequest updatedBookingRequest, Booking existingBooking) {
-        return Mono.defer(() -> processExistingBooking(updatedBookingRequest, existingBooking));
-    }
+        return Mono.defer(() -> {
+            LocalDate dateFrom = updatedBookingRequest.dateFrom();
+            LocalDate dateTo = updatedBookingRequest.dateTo();
+            Booking updatedBooking = bookingMapper.getUpdatedBooking(existingBooking, dateFrom, dateTo);
 
-    private Mono<Booking> processExistingBooking(BookingRequest updatedBookingRequest, Booking existingBooking) {
-        return Mono.just(getUpdatedExistingBooking(updatedBookingRequest, existingBooking))
-                .flatMap(updatedOutboxService::processBookingUpdate);
+            return updatedOutboxService.processBookingUpdate(updatedBooking);
+        });
     }
 
     private Query getQuery(String dateOfBooking) {
@@ -304,13 +296,6 @@ public class BookingService {
     private Mono<Booking> findEntityById(String id) {
         return bookingRepository.findById(MongoUtil.getObjectId(id))
                 .switchIfEmpty(Mono.error(new AutoHubNotFoundException("Booking with id " + id + " does not exist")));
-    }
-
-    private Booking getUpdatedExistingBooking(BookingRequest updatedBookingRequest, Booking existingBooking) {
-        LocalDate dateFrom = updatedBookingRequest.dateFrom();
-        LocalDate dateTo = updatedBookingRequest.dateTo();
-
-        return bookingMapper.getUpdatedBooking(existingBooking, dateFrom, dateTo);
     }
 
     private Booking updateBookingWithNewData(

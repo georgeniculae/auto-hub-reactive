@@ -21,8 +21,6 @@ import com.autohubreactive.exception.AutoHubNotFoundException;
 import com.autohubreactive.exception.AutoHubResponseStatusException;
 import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
 import com.autohubreactive.lib.util.MongoUtil;
-import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -44,6 +42,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import tools.jackson.databind.ObjectMapper;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -310,22 +311,17 @@ public class CarService {
 
     private Mono<Car> setupUpdatedCar(String id, CarRequest updatedCarRequest) {
         return Mono.zip(
-                List.of(
                         findEntityById(id),
                         branchService.findEntityById(updatedCarRequest.originalBranchId()),
                         branchService.findEntityById(updatedCarRequest.actualBranchId())
-                ),
-                carDetails -> getUpdatedCar(updatedCarRequest, carDetails)
-        );
-    }
+                )
+                .map(carDetails -> {
+                    Car existingCar = carDetails.getT1();
+                    Branch originalBranch = carDetails.getT2();
+                    Branch actualBranch = carDetails.getT3();
 
-    private Car getUpdatedCar(CarRequest updatedCarRequest, Object[] carDetails) {
-        Car existingCar = (Car) carDetails[0];
-        Branch originalBranch = (Branch) carDetails[1];
-        Branch actualBranch = (Branch) carDetails[2];
-
-      return carMapper.getUpdatedCar(existingCar.id(), updatedCarRequest, originalBranch,
-          actualBranch);
+                    return carMapper.getUpdatedCar(existingCar.id(), updatedCarRequest, originalBranch, actualBranch);
+                });
     }
 
     private Mono<Car> updateCarAfterClosingBooking(CarUpdateDetails carUpdateDetails) {

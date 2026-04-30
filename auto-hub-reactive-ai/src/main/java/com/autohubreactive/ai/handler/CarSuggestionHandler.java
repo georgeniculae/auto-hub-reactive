@@ -1,8 +1,8 @@
-package com.autohub.ai.handler;
+package com.autohubreactive.ai.handler;
 
-import com.autohub.ai.service.CarSuggestionService;
-import com.autohub.ai.util.Constants;
-import com.autohub.ai.validator.TripInfoValidator;
+import com.autohubreactive.ai.service.CarSuggestionService;
+import com.autohubreactive.ai.util.Constants;
+import com.autohubreactive.ai.validator.TripInfoValidator;
 import com.autohubreactive.dto.ai.TripInfo;
 import com.autohubreactive.lib.util.ServerRequestUtil;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +13,6 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
-
-import static com.autohub.ai.util.Constants.TRIP_DATE;
 
 @Component
 @RequiredArgsConstructor
@@ -42,7 +40,7 @@ public class CarSuggestionHandler {
                         .destination(ServerRequestUtil.getQueryParam(serverRequest, Constants.DESTINATION))
                         .peopleCount(Integer.parseInt(ServerRequestUtil.getQueryParam(serverRequest, Constants.PEOPLE_COUNT)))
                         .tripKind(ServerRequestUtil.getQueryParam(serverRequest, Constants.TRIP_KIND))
-                        .tripDate(LocalDate.parse(ServerRequestUtil.getQueryParam(serverRequest, TRIP_DATE)))
+                        .tripDate(LocalDate.parse(ServerRequestUtil.getQueryParam(serverRequest, Constants.TRIP_DATE)))
                         .build()
         );
     }

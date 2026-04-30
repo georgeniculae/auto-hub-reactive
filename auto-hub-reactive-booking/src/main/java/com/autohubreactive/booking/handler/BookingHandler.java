@@ -68,12 +68,6 @@ public class BookingHandler {
     }
 
     @PreAuthorize("hasRole('user')")
-    public Mono<ServerResponse> getCurrentDate(ServerRequest serverRequest) {
-        return bookingService.getCurrentDate()
-                .flatMap(currentDate -> ServerResponse.ok().bodyValue(currentDate));
-    }
-
-    @PreAuthorize("hasRole('user')")
     public Mono<ServerResponse> saveBooking(ServerRequest serverRequest) {
         return serverRequest.bodyToMono(BookingRequest.class)
                 .flatMap(bookingRequestValidator::validateBody)

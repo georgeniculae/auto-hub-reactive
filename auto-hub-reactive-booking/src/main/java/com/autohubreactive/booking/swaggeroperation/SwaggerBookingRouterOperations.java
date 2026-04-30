@@ -22,7 +22,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
@@ -130,32 +129,6 @@ import java.time.LocalDate;
                                                 responseCode = "200",
                                                 description = "Successful",
                                                 content = @Content(schema = @Schema(implementation = Long.class))
-                                        ),
-                                        @ApiResponse(
-                                                responseCode = "400",
-                                                description = "Bad Request",
-                                                content = @Content(schema = @Schema())
-                                        ),
-                                        @ApiResponse(
-                                                responseCode = "500",
-                                                description = "Internal Server Error",
-                                                content = @Content(schema = @Schema())
-                                        ),
-                                }
-                        )
-                ),
-                @RouterOperation(
-                        method = RequestMethod.GET,
-                        path = "/bookings/current-date",
-                        beanClass = BookingHandler.class,
-                        beanMethod = "getCurrentDate",
-                        operation = @Operation(
-                                operationId = "getCurrentDate",
-                                responses = {
-                                        @ApiResponse(
-                                                responseCode = "200",
-                                                description = "Successful",
-                                                content = @Content(schema = @Schema(implementation = LocalDate.class))
                                         ),
                                         @ApiResponse(
                                                 responseCode = "400",

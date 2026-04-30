@@ -31,7 +31,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -177,14 +176,6 @@ class BookingServiceTest {
                 .as(StepVerifier::create)
                 .expectError()
                 .verify();
-    }
-
-    @Test
-    void getCurrentDateTest_success() {
-        bookingService.getCurrentDate()
-                .as(StepVerifier::create)
-                .expectNext(LocalDate.now())
-                .verifyComplete();
     }
 
     @Test

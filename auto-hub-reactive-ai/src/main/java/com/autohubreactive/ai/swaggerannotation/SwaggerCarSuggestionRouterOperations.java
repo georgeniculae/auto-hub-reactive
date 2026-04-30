@@ -1,6 +1,6 @@
-package com.autohub.ai.swaggerannotation;
+package com.autohubreactive.ai.swaggerannotation;
 
-import com.autohub.ai.handler.CarSuggestionHandler;
+import com.autohubreactive.ai.handler.CarSuggestionHandler;
 import com.autohubreactive.dto.ai.CarSuggestionResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

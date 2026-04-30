@@ -14,7 +14,7 @@ import org.mapstruct.ReportingPolicy;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.Period;
+import java.time.temporal.ChronoUnit;
 
 @Mapper(
         componentModel = "spring",
@@ -93,8 +93,8 @@ public interface InvoiceMapper {
         return ObjectUtils.isEmpty(additionalPayment) ? BigDecimal.ZERO : additionalPayment;
     }
 
-    private int getDaysPeriod(LocalDate bookingDateFrom, LocalDate bookingDateTo) {
-        return Period.between(bookingDateFrom, bookingDateTo).getDays();
+    private long getDaysPeriod(LocalDate bookingDateFrom, LocalDate bookingDateTo) {
+        return ChronoUnit.DAYS.between(bookingDateFrom, bookingDateTo);
     }
 
     private BigDecimal getMoneyForLateReturn(

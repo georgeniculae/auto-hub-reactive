@@ -1,6 +1,6 @@
-package com.autohub.ai.service;
+package com.autohubreactive.ai.service;
 
-import com.autohub.ai.util.Constants;
+import com.autohubreactive.ai.util.Constants;
 import com.autohubreactive.dto.agency.CarResponse;
 import com.autohubreactive.dto.ai.CarSuggestionResponse;
 import com.autohubreactive.dto.ai.TripInfo;

@@ -1,7 +1,7 @@
-package com.autohub.ai.router;
+package com.autohubreactive.ai.router;
 
-import com.autohub.ai.handler.CarSuggestionHandler;
-import com.autohub.ai.swaggerannotation.SwaggerCarSuggestionRouterOperations;
+import com.autohubreactive.ai.handler.CarSuggestionHandler;
+import com.autohubreactive.ai.swaggerannotation.SwaggerCarSuggestionRouterOperations;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RequestPredicates;

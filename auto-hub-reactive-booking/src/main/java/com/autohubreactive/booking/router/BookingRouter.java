@@ -23,7 +23,6 @@ public class BookingRouter {
                         .andRoute(RequestPredicates.GET("/date/{date}"), bookingHandler::findBookingsByDateOfBooking)
                         .andRoute(RequestPredicates.GET("/count"), bookingHandler::countBookings)
                         .andRoute(RequestPredicates.GET("/count-by-logged-in-user"), bookingHandler::countBookingsOfLoggedInUser)
-                        .andRoute(RequestPredicates.GET("/current-date"), bookingHandler::getCurrentDate)
                         .andRoute(RequestPredicates.GET("/by-current-user"), bookingHandler::findBookingsByLoggedInUser)
                         .andRoute(RequestPredicates.GET("/{id}"), bookingHandler::findBookingById)
                         .andRoute(RequestPredicates.POST("/new"), bookingHandler::saveBooking)

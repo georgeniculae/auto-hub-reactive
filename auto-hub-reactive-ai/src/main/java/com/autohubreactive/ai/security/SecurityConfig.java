@@ -1,4 +1,4 @@
-package com.autohub.ai.security;
+package com.autohubreactive.ai.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

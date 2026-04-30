@@ -21,7 +21,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -205,45 +204,6 @@ class BookingRouterTest {
         webTestClient.mutateWith(SecurityMockServerConfigurers.csrf())
                 .get()
                 .uri("/count-by-current-user")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus()
-                .isUnauthorized();
-    }
-
-    @Test
-    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
-    void getCurrentDateTest_success() {
-        BookingResponse bookingResponse =
-                TestUtil.getResourceAsJson("/data/BookingResponse.json", BookingResponse.class);
-
-        Mono<ServerResponse> serverResponse = ServerResponse.ok().bodyValue(bookingResponse);
-
-        when(bookingHandler.getCurrentDate(any(ServerRequest.class))).thenReturn(serverResponse);
-
-        webTestClient.mutateWith(SecurityMockServerConfigurers.csrf())
-                .get()
-                .uri("/current-date")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus()
-                .isOk()
-                .returnResult(LocalDate.class);
-    }
-
-    @Test
-    @WithAnonymousUser
-    void getCurrentDateTest_unauthorized() {
-        BookingResponse bookingResponse =
-                TestUtil.getResourceAsJson("/data/BookingResponse.json", BookingResponse.class);
-
-        Mono<ServerResponse> serverResponse = ServerResponse.ok().bodyValue(bookingResponse);
-
-        when(bookingHandler.getCurrentDate(any(ServerRequest.class))).thenReturn(serverResponse);
-
-        webTestClient.mutateWith(SecurityMockServerConfigurers.csrf())
-                .get()
-                .uri("/current-date")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus()

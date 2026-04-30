@@ -1,4 +1,4 @@
-package com.autohub.ai.util;
+package com.autohubreactive.ai.util;
 
 public class Constants {
 

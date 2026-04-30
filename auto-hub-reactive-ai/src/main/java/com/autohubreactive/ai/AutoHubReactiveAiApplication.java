@@ -1,4 +1,4 @@
-package com.autohub.ai;
+package com.autohubreactive.ai;
 
 import com.autohubreactive.lib.annotation.AutoHubReactiveMicroservice;
 import org.springframework.boot.SpringApplication;

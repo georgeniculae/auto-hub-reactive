@@ -1,4 +1,4 @@
-package com.autohub.ai.service;
+package com.autohubreactive.ai.service;
 
 import com.autohubreactive.dto.ai.CarSuggestionResponse;
 import lombok.RequiredArgsConstructor;

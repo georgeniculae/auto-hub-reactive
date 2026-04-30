@@ -1,4 +1,4 @@
-package com.autohub.ai.validator;
+package com.autohubreactive.ai.validator;
 
 import com.autohubreactive.dto.ai.TripInfo;
 import com.autohubreactive.lib.dtovalidator.DtoConstraintValidator;

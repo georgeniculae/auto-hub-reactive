@@ -17,8 +17,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.time.LocalDate;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -189,20 +187,6 @@ class BookingHandlerTest {
         when(bookingService.countBookingsOfLoggedInUser(anyString())).thenReturn(Mono.just(4L));
 
         bookingHandler.countBookingsOfLoggedInUser(serverRequest)
-                .as(StepVerifier::create)
-                .expectNextMatches(serverResponse -> serverResponse.statusCode().is2xxSuccessful())
-                .verifyComplete();
-    }
-
-    @Test
-    void getCurrentDateTest_success() {
-        MockServerRequest serverRequest = MockServerRequest.builder()
-                .method(HttpMethod.GET)
-                .build();
-
-        when(bookingService.getCurrentDate()).thenReturn(Mono.just(LocalDate.now()));
-
-        bookingHandler.getCurrentDate(serverRequest)
                 .as(StepVerifier::create)
                 .expectNextMatches(serverResponse -> serverResponse.statusCode().is2xxSuccessful())
                 .verifyComplete();
