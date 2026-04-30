@@ -23,9 +23,7 @@ public class CarHandler {
     public Mono<ServerResponse> findAllCars(ServerRequest serverRequest) {
         return carService.findAllCars()
                 .collectList()
-                .filter(ObjectUtils::isNotEmpty)
-                .flatMap(carResponses -> ServerResponse.ok().bodyValue(carResponses))
-                .switchIfEmpty(ServerResponse.notFound().build());
+                .flatMap(carResponses -> ServerResponse.ok().bodyValue(carResponses));
     }
 
     @PreAuthorize("hasRole('user')")
