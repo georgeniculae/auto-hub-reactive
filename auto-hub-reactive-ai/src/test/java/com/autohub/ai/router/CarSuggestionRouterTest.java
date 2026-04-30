@@ -1,7 +1,8 @@
 package com.autohub.ai.router;
 
-import com.autohub.ai.handler.CarSuggestionHandler;
 import com.autohub.ai.testconfig.TestSecurityConfig;
+import com.autohubreactive.ai.handler.CarSuggestionHandler;
+import com.autohubreactive.ai.router.CarSuggestionRouter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest;
