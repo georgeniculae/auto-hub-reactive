@@ -35,6 +35,7 @@ public class SecurityConfig {
                 .authorizeExchange(
                         request -> request.pathMatchers(
                                         "/agency/definition/**",
+                                        "/agency/cars/availability/location/**",
                                         "/ai/definition/**",
                                         "/bookings/definition/**",
                                         "/customers/definition/**",
