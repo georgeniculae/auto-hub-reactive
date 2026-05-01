@@ -113,7 +113,13 @@ public class CarService {
     }
 
     public Flux<CarResponse> getAllAvailableCarsByLocation(String destination) {
-        return null;
+        return carRepository.findByRentalOfficeCity(destination)
+                .map(carMapper::mapEntityToDto)
+                .onErrorMap(e -> {
+                    log.error("Error while getting all available cars by location: {}", e.getMessage());
+
+                    return ExceptionUtil.handleException(e);
+                });
     }
 
     public Flux<CarResponse> findCarsByFilterInsensitiveCase(String filter) {
