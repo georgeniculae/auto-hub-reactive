@@ -209,7 +209,7 @@ import java.lang.annotation.Target;
                 ),
                 @RouterOperation(
                         method = RequestMethod.GET,
-                        path = "/cars/availability/{location}",
+                        path = "/cars/availability/location/{location}",
                         beanClass = CarHandler.class,
                         beanMethod = "getAllAvailableCarsByLocation",
                         operation = @Operation(

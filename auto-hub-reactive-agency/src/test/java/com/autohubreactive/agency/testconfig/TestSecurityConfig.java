@@ -13,7 +13,10 @@ public class TestSecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         return http.csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .authorizeExchange(request -> request.anyExchange().authenticated())
+                .authorizeExchange(request -> request.pathMatchers("/cars/availability/location/**")
+                        .permitAll()
+                        .anyExchange()
+                        .authenticated())
                 .build();
     }
 

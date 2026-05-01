@@ -1,7 +1,7 @@
 package com.autohubreactive.agency.router;
 
-import com.autohubreactive.agency.testconfig.TestSecurityConfig;
 import com.autohubreactive.agency.handler.CarHandler;
+import com.autohubreactive.agency.testconfig.TestSecurityConfig;
 import com.autohubreactive.agency.util.TestData;
 import com.autohubreactive.agency.util.TestUtil;
 import com.autohubreactive.dto.agency.CarResponse;
@@ -175,7 +175,7 @@ class CarRouterTest {
         when(carHandler.getAllAvailableCars(any(ServerRequest.class))).thenReturn(serverResponse);
 
         Flux<CarResponse> responseBody = webTestClient.get()
-                .uri(PATH + "/available")
+                .uri(PATH + "/availability")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus()
@@ -199,11 +199,35 @@ class CarRouterTest {
         when(carHandler.getAllAvailableCars(any(ServerRequest.class))).thenReturn(serverResponse);
 
         webTestClient.get()
-                .uri(PATH + "/available")
+                .uri(PATH + "/availability")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus()
                 .isUnauthorized();
+    }
+
+    @Test
+    @WithAnonymousUser
+    void getAllAvailableCarsByLocationTest_success() {
+        CarResponse carResponse = TestUtil.getResourceAsJson("/data/CarResponse.json", CarResponse.class);
+        List<CarResponse> carResponses = List.of(carResponse);
+
+        Mono<ServerResponse> serverResponse = ServerResponse.ok().bodyValue(carResponses);
+
+        when(carHandler.getAllAvailableCarsByLocation(any(ServerRequest.class))).thenReturn(serverResponse);
+
+        Flux<CarResponse> responseBody = webTestClient.get()
+                .uri(PATH + "/availability/location/{location}", "Ploiesti")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .returnResult(CarResponse.class)
+                .getResponseBody();
+
+        responseBody.as(StepVerifier::create)
+                .expectNext(carResponse)
+                .verifyComplete();
     }
 
     @Test
