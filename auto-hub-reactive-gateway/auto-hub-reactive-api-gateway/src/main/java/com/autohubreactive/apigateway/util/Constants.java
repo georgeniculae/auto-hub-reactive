@@ -1,9 +1,9 @@
 package com.autohubreactive.apigateway.util;
 
-public class Constants {
+import lombok.experimental.UtilityClass;
 
-    private Constants() {
-    }
+@UtilityClass
+public class Constants {
 
     public static final String REALM_ACCESS = "realm_access";
     public static final String ROLES = "roles";

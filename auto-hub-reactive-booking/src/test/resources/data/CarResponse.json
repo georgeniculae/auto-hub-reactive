@@ -8,6 +8,6 @@
   "mileage": 270000,
   "carState": "AVAILABLE",
   "amount": 500,
-  "originalBranchId": "64f361caf291ae086e179547",
-  "actualBranchId": "64f361caf291ae086e179547"
+  "initialRentalOfficeId": "64f361caf291ae086e179547",
+  "actualRentalOfficeId": "64f361caf291ae086e179547"
 }

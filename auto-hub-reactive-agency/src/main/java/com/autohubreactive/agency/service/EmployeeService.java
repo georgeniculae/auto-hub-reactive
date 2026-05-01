@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-    private final BranchService branchService;
+    private final RentalOfficeService rentalOfficeService;
     private final EmployeeMapper employeeMapper;
 
     public Flux<EmployeeResponse> findAllEmployees() {
@@ -46,9 +46,9 @@ public class EmployeeService {
     }
 
     public Mono<EmployeeResponse> saveEmployee(EmployeeRequest employeeRequest) {
-        return branchService.findEntityById(employeeRequest.workingBranchId())
-                .flatMap(workingBranch -> {
-                    Employee newEmployee = employeeMapper.getNewEmployee(employeeRequest, workingBranch);
+        return rentalOfficeService.findEntityById(employeeRequest.workingRentalOfficeId())
+                .flatMap(workingRentalOffice -> {
+                    Employee newEmployee = employeeMapper.getNewEmployee(employeeRequest, workingRentalOffice);
 
                     return employeeRepository.save(newEmployee);
                 })
@@ -63,7 +63,7 @@ public class EmployeeService {
     public Mono<EmployeeResponse> updateEmployee(String id, EmployeeRequest updatedEmployeeRequest) {
         return Mono.zip(
                         findEntityById(id),
-                        branchService.findEntityById(updatedEmployeeRequest.workingBranchId()),
+                        rentalOfficeService.findEntityById(updatedEmployeeRequest.workingRentalOfficeId()),
                         (existingEmployee, workingBranch) -> employeeMapper.getUpdatedEmployee(existingEmployee, updatedEmployeeRequest, workingBranch)
                 )
                 .flatMap(employeeRepository::save)
@@ -76,7 +76,7 @@ public class EmployeeService {
     }
 
     public Flux<EmployeeResponse> findEmployeesByBranchId(String id) {
-        return employeeRepository.findAllEmployeesByBranchId(MongoUtil.getObjectId(id))
+        return employeeRepository.findAllEmployeesByRentalOfficeId(MongoUtil.getObjectId(id))
                 .map(employeeMapper::mapEntityToDto)
                 .onErrorMap(e -> {
                     log.error("Error while finding all employees ny branch id: {}", e.getMessage());

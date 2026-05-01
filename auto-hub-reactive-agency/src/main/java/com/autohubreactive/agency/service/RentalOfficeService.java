@@ -2,7 +2,7 @@ package com.autohubreactive.agency.service;
 
 import com.autohubreactive.agency.entity.RentalOffice;
 import com.autohubreactive.agency.mapper.RentalOfficeMapper;
-import com.autohubreactive.agency.repository.BranchRepository;
+import com.autohubreactive.agency.repository.EmployeeRepository;
 import com.autohubreactive.agency.repository.RentalOfficeRepository;
 import com.autohubreactive.dto.agency.RentalOfficeRequest;
 import com.autohubreactive.dto.agency.RentalOfficeResponse;
@@ -21,7 +21,8 @@ import reactor.core.publisher.Mono;
 public class RentalOfficeService {
 
     private final RentalOfficeRepository rentalOfficeRepository;
-    private final BranchRepository branchRepository;
+    private final BranchService branchService;
+    private final EmployeeRepository employeeRepository;
     private final RentalOfficeMapper rentalOfficeMapper;
 
     public Flux<RentalOfficeResponse> findAllRentalOffices() {
@@ -56,7 +57,12 @@ public class RentalOfficeService {
     }
 
     public Mono<RentalOfficeResponse> saveRentalOffice(RentalOfficeRequest rentalOfficeRequest) {
-        return rentalOfficeRepository.save(rentalOfficeMapper.getNewRentalOffice(rentalOfficeRequest))
+        return branchService.findEntityById(rentalOfficeRequest.branchId())
+                .flatMap(branch -> {
+                    RentalOffice newRentalOffice = rentalOfficeMapper.getNewRentalOffice(rentalOfficeRequest, branch);
+
+                    return rentalOfficeRepository.save(newRentalOffice);
+                })
                 .map(rentalOfficeMapper::mapEntityToDto)
                 .onErrorMap(e -> {
                     log.error("Error while saving rental office: {}", e.getMessage());
@@ -66,12 +72,12 @@ public class RentalOfficeService {
     }
 
     public Mono<RentalOfficeResponse> updateRentalOffice(String id, RentalOfficeRequest updatedRentalOfficeRequest) {
-        return findEntityById(id)
-                .flatMap(existingRentalOffice -> {
-                    RentalOffice updatedRentalOffice = rentalOfficeMapper.getUpdatedRentalOffice(existingRentalOffice, updatedRentalOfficeRequest);
-
-                    return rentalOfficeRepository.save(updatedRentalOffice);
-                })
+        return Mono.zip(
+                        findEntityById(id),
+                        branchService.findEntityById(updatedRentalOfficeRequest.branchId()),
+                        (existingRentalOffice, branch) -> rentalOfficeMapper.getUpdatedRentalOffice(existingRentalOffice.id(), updatedRentalOfficeRequest, branch)
+                )
+                .flatMap(rentalOfficeRepository::save)
                 .map(rentalOfficeMapper::mapEntityToDto)
                 .onErrorMap(e -> {
                     log.error("Error while updating rental office: {}", e.getMessage());
@@ -91,7 +97,7 @@ public class RentalOfficeService {
 
     public Mono<Void> deleteRentalOfficeById(String id) {
         return rentalOfficeRepository.deleteById(MongoUtil.getObjectId(id))
-                .then(Mono.defer(() -> branchRepository.deleteByRentalOfficeId(MongoUtil.getObjectId(id))))
+                .then(Mono.defer(() -> employeeRepository.deleteByBranchId(MongoUtil.getObjectId(id))))
                 .onErrorMap(e -> {
                     log.error("Error while deleting rental office: {}", e.getMessage());
 

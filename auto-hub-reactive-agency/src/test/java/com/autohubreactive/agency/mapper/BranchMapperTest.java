@@ -1,7 +1,6 @@
 package com.autohubreactive.agency.mapper;
 
 import com.autohubreactive.agency.entity.Branch;
-import com.autohubreactive.agency.entity.RentalOffice;
 import com.autohubreactive.agency.util.AssertionUtil;
 import com.autohubreactive.agency.util.TestUtil;
 import com.autohubreactive.dto.agency.BranchRequest;
@@ -21,12 +20,12 @@ class BranchMapperTest {
 
     @Test
     void mapEntityToDtoTest_success() {
-        Branch branch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
+        Branch rentalOffice = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
 
-        BranchResponse branchResponse = Assertions.assertDoesNotThrow(() -> branchMapper.mapEntityToDto(branch));
+        BranchResponse branchResponse = Assertions.assertDoesNotThrow(() -> branchMapper.mapEntityToDto(rentalOffice));
 
         assertNotNull(branchResponse);
-        AssertionUtil.assertBranchResponse(branch, branchResponse);
+        AssertionUtil.assertBranchResponse(rentalOffice, branchResponse);
     }
 
     @Test
@@ -39,18 +38,15 @@ class BranchMapperTest {
         BranchRequest branchRequest =
                 TestUtil.getResourceAsJson("/data/BranchRequest.json", BranchRequest.class);
 
-        RentalOffice rentalOffice =
-                TestUtil.getResourceAsJson("/data/RentalOffice2.json", RentalOffice.class);
+        Branch rentalOffice = Assertions.assertDoesNotThrow(() -> branchMapper.getNewBranch(branchRequest));
 
-        Branch branch = Assertions.assertDoesNotThrow(() -> branchMapper.getNewBranch(branchRequest, rentalOffice));
-
-        assertNotNull(branch);
-        AssertionUtil.assertBranchRequest(branch, branchRequest);
+        assertNotNull(rentalOffice);
+        AssertionUtil.assertBranchRequest(rentalOffice, branchRequest);
     }
 
     @Test
     void getNewBranchTest_null() {
-        assertNull(branchMapper.getNewBranch(null, null));
+        assertNull(branchMapper.getNewBranch(null));
     }
 
 }

@@ -5,6 +5,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface RentalOfficeRepository extends ReactiveMongoRepository<RentalOffice, ObjectId> {
 
@@ -16,4 +17,10 @@ public interface RentalOfficeRepository extends ReactiveMongoRepository<RentalOf
             ]}""")
     Flux<RentalOffice> findAllByFilterInsensitiveCase(String filter);
 
+    @Query(
+            value = """
+                    {'branch.id' : $0}""",
+            delete = true
+    )
+    Mono<Void> deleteByBranchId(ObjectId branchId);
 }

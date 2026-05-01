@@ -1,5 +1,6 @@
 package com.autohubreactive.agency.mapper;
 
+import com.autohubreactive.agency.entity.Branch;
 import com.autohubreactive.agency.entity.RentalOffice;
 import com.autohubreactive.agency.util.AssertionUtil;
 import com.autohubreactive.agency.util.TestUtil;
@@ -19,7 +20,8 @@ class RentalOfficeMapperTest {
 
     @Test
     void mapEntityToDtoTest_success() {
-        RentalOffice rentalOffice = TestUtil.getResourceAsJson("/data/RentalOffice2.json", RentalOffice.class);
+        RentalOffice rentalOffice =
+                TestUtil.getResourceAsJson("/data/RentalOffice2.json", RentalOffice.class);
 
         RentalOfficeResponse rentalOfficeDto = rentalOfficeMapper.mapEntityToDto(rentalOffice);
 
@@ -34,18 +36,20 @@ class RentalOfficeMapperTest {
 
     @Test
     void getNewRentalOfficeTest_success() {
+        Branch branch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
+
         RentalOfficeRequest rentalOfficeDto =
                 TestUtil.getResourceAsJson("/data/RentalOfficeRequest.json", RentalOfficeRequest.class);
 
-        RentalOffice rentalOffice = rentalOfficeMapper.getNewRentalOffice(rentalOfficeDto);
+        RentalOffice newRentalOffice = rentalOfficeMapper.getNewRentalOffice(rentalOfficeDto, branch);
 
-        assertNotNull(rentalOffice);
-        AssertionUtil.assertRentalOfficeRequest(rentalOffice, rentalOfficeDto);
+        assertNotNull(newRentalOffice);
+        AssertionUtil.assertRentalOfficeRequest(newRentalOffice, rentalOfficeDto);
     }
 
     @Test
     void getNewRentalOfficeTest_null() {
-        assertNull(rentalOfficeMapper.getNewRentalOffice(null));
+        assertNull(rentalOfficeMapper.getNewRentalOffice(null, null));
     }
 
 }

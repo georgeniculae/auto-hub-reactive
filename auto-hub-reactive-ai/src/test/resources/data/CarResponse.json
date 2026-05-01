@@ -7,6 +7,6 @@
   "mileage": 270000,
   "carState": "AVAILABLE",
   "amount": 500,
-  "originalBranchId": 1,
-  "actualBranchId": 1
+  "initialRentalOfficeId": "1",
+  "actualRentalOfficeId": "1"
 }

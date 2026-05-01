@@ -15,7 +15,7 @@ public class AssertionUtil {
         assertEquals(bookingResponse.customerUsername(), invoice.getCustomerUsername());
         assertEquals(bookingResponse.customerEmail(), invoice.getCustomerEmail());
         assertEquals(bookingResponse.carId(), invoice.getCarId().toString());
-        assertEquals(bookingResponse.returnBranchId(), invoice.getReturnBranchId().toString());
+        assertEquals(bookingResponse.returnRentalOfficeId(), invoice.getReturnRentalOfficeId().toString());
         assertEquals(bookingResponse.dateFrom(), invoice.getDateFrom());
         assertEquals(bookingResponse.dateTo(), invoice.getDateTo());
     }

@@ -33,7 +33,7 @@ public class Invoice {
 
     private ObjectId receptionistEmployeeId;
 
-    private ObjectId returnBranchId;
+    private ObjectId returnRentalOfficeId;
 
     private ObjectId bookingId;
 

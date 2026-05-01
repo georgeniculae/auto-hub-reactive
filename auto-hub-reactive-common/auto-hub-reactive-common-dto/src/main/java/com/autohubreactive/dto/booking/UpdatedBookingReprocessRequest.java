@@ -1,7 +1,7 @@
 package com.autohubreactive.dto.booking;
 
 import lombok.Builder;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -32,9 +32,9 @@ public record UpdatedBookingReprocessRequest(
 
         BigDecimal rentalCarPrice,
 
-        String rentalBranchId,
+        String pickupRentalOfficeId,
 
-        String returnBranchId,
+        String returnRentalOfficeId,
 
         boolean isCarChanged
 ) {

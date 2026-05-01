@@ -1,7 +1,6 @@
 package com.autohubreactive.agency.mapper;
 
 import com.autohubreactive.agency.entity.Branch;
-import com.autohubreactive.agency.entity.RentalOffice;
 import com.autohubreactive.dto.agency.BranchRequest;
 import com.autohubreactive.dto.agency.BranchResponse;
 import org.apache.commons.lang3.ObjectUtils;
@@ -18,18 +17,20 @@ import org.mapstruct.ReportingPolicy;
 )
 public interface BranchMapper {
 
-    @Mapping(target = "rentalOfficeId", expression = "java(mapObjectIdToString(branch.rentalOffice().id()))")
     BranchResponse mapEntityToDto(Branch branch);
 
-    @Mapping(target = "rentalOffice", expression = "java(rentalOffice)")
-    @Mapping(target = "name", expression = "java(branchRequest.name())")
-    Branch getNewBranch(BranchRequest branchRequest, RentalOffice rentalOffice);
-
-    @Mapping(target = "id", expression = "java(existingBranch.id())")
     @Mapping(target = "name", expression = "java(branchRequest.name())")
     @Mapping(target = "address", expression = "java(branchRequest.address())")
-    @Mapping(target = "rentalOffice", source = "rentalOffice")
-    Branch getUpdatedBranch(Branch existingBranch, BranchRequest branchRequest, RentalOffice rentalOffice);
+    @Mapping(target = "region", expression = "java(branchRequest.region())")
+    @Mapping(target = "phoneNumber", expression = "java(branchRequest.phoneNumber())")
+    Branch getNewBranch(BranchRequest branchRequest);
+
+    @Mapping(target = "id", expression = "java(existingBranchId)")
+    @Mapping(target = "name", expression = "java(branchRequest.name())")
+    @Mapping(target = "region", expression = "java(branchRequest.region())")
+    @Mapping(target = "address", expression = "java(branchRequest.address())")
+    @Mapping(target = "phoneNumber", expression = "java(branchRequest.phoneNumber())")
+    Branch getUpdatedBranch(ObjectId existingBranchId, BranchRequest branchRequest);
 
     default String mapObjectIdToString(ObjectId id) {
         return ObjectUtils.isEmpty(id) ? null : id.toString();

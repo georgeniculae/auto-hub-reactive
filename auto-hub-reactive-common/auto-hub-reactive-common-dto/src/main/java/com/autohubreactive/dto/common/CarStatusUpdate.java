@@ -1,7 +1,7 @@
 package com.autohubreactive.dto.common;
 
 import lombok.Builder;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 @Builder
 public record CarStatusUpdate(
@@ -13,6 +13,7 @@ public record CarStatusUpdate(
 ) {
 
     @Override
+    @NonNull
     public String toString() {
         return "CarStatusUpdate{" + "\n" +
                 "previousCarId=" + carId + "\n" +

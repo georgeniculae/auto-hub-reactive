@@ -1,7 +1,7 @@
 package com.autohubreactive.dto.common;
 
 import lombok.Builder;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 @Builder
 public record BookingClosingDetails(
@@ -9,14 +9,15 @@ public record BookingClosingDetails(
         String bookingId,
 
         @NonNull
-        String returnBranchId
+        String returnRentalOfficeId
 ) {
 
     @Override
+    @NonNull
     public String toString() {
         return "BookingClosingDetails{" + "\n" +
                 "bookingId=" + bookingId + "\n" +
-                "returnBranchId=" + returnBranchId + "\n" +
+                "returnRentalOfficeId=" + returnRentalOfficeId + "\n" +
                 "}";
     }
 

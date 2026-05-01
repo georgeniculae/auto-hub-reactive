@@ -1,7 +1,7 @@
 package com.autohubreactive.dto.customer;
 
 import lombok.Builder;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.time.LocalDate;
 
@@ -30,6 +30,7 @@ public record RegistrationResponse(
 ) {
 
     @Override
+    @NonNull
     public String toString() {
         return "RegistrationResponse{" + "\n" +
                 "username=" + username + "\n" +

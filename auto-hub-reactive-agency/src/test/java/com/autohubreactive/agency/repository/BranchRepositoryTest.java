@@ -2,7 +2,6 @@ package com.autohubreactive.agency.repository;
 
 import com.autohubreactive.agency.entity.Branch;
 import com.autohubreactive.agency.util.TestUtil;
-import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +23,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataMongoTest
 class BranchRepositoryTest {
 
-    private static final Branch BRANCH_1 = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
-    private static final Branch BRANCH_2 = TestUtil.getResourceAsJson("/data/Branch2.json", Branch.class);
+    private static final Branch RENTAL_BRANCH_1 = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
+    private static final Branch RENTAL_BRANCH_2 = TestUtil.getResourceAsJson("/data/Branch2.json", Branch.class);
 
     @Container
     @ServiceConnection
@@ -37,7 +36,7 @@ class BranchRepositoryTest {
     @BeforeEach
     void initCollection() {
         branchRepository.deleteAll()
-                .thenMany(branchRepository.saveAll(List.of(BRANCH_1, BRANCH_2)))
+                .thenMany(branchRepository.saveAll(List.of(RENTAL_BRANCH_1, RENTAL_BRANCH_2)))
                 .blockLast();
     }
 
@@ -50,17 +49,9 @@ class BranchRepositoryTest {
     void findAllByFilterInsensitiveCaseTest_success() {
         branchRepository.findAllByFilterInsensitiveCase("Branch")
                 .as(StepVerifier::create)
-                .assertNext(branch -> assertThat(branch).usingRecursiveComparison().isEqualTo(BRANCH_1))
-                .assertNext(branch -> assertThat(branch).usingRecursiveComparison().isEqualTo(BRANCH_2))
+                .assertNext(branch -> assertThat(branch).usingRecursiveComparison().isEqualTo(RENTAL_BRANCH_1))
+                .assertNext(branch -> assertThat(branch).usingRecursiveComparison().isEqualTo(RENTAL_BRANCH_2))
                 .verifyComplete();
-    }
-
-    @Test
-    void deleteByRentalOfficeIdTest_success() {
-        branchRepository.deleteByRentalOfficeId(new ObjectId("65072050d5d4531e66a0c008"))
-                .as(StepVerifier::create)
-                .expectComplete()
-                .verify();
     }
 
 }

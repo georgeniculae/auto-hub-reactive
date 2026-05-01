@@ -55,8 +55,8 @@ class EmployeeRepositoryTest {
     }
 
     @Test
-    void findAllEmployeesByBranchIdTest_success() {
-        employeeRepository.findAllEmployeesByBranchId(new ObjectId("64f361caf291ae086e179521"))
+    void findAllEmployeesByRentalOfficeIdTest_success() {
+        employeeRepository.findAllEmployeesByRentalOfficeId(new ObjectId("64f361caf291ae086e179521"))
                 .as(StepVerifier::create)
                 .assertNext(employee -> assertThat(employee).usingRecursiveComparison().isEqualTo(EMPLOYEE_1))
                 .verifyComplete();

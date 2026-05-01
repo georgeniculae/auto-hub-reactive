@@ -219,7 +219,7 @@ public class BookingService {
 
     private Mono<Booking> updatedBookingWithClosingDetails(BookingClosingDetails bookingClosingDetails) {
         return findEntityById(bookingClosingDetails.bookingId())
-                .map(existingBooking -> bookingMapper.getClosedBooking(existingBooking, bookingClosingDetails.returnBranchId()));
+                .map(existingBooking -> bookingMapper.getClosedBooking(existingBooking, bookingClosingDetails.returnRentalOfficeId()));
     }
 
     private Mono<Booking> processBookingUpdate(
@@ -308,7 +308,7 @@ public class BookingService {
 
     private Mono<AvailableCarInfo> checkIfCarIsFromRightBranch(BookingRequest updatedBookingRequest,
                                                                AvailableCarInfo availableCarInfo) {
-        if (updatedBookingRequest.rentalBranchId().equals(availableCarInfo.actualBranchId())) {
+        if (updatedBookingRequest.pickupRentalOfficeId().equals(availableCarInfo.actualRentalOfficeId())) {
             return Mono.just(availableCarInfo);
         }
 

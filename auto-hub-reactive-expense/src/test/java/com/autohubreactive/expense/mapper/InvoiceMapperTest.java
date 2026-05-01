@@ -53,7 +53,7 @@ class InvoiceMapperTest {
     @Test
     void mapToInvoiceReprocessRequestTest_success() {
         Invoice invoice = TestUtil.getResourceAsJson("/data/Invoice.json", Invoice.class);
-        invoice.setReturnBranchId(new ObjectId("64f361caf291ae086e179547"));
+        invoice.setReturnRentalOfficeId(new ObjectId("64f361caf291ae086e179547"));
 
         InvoiceReprocessRequest invoiceReprocessRequest = invoiceMapper.mapToInvoiceReprocessRequest(invoice);
 

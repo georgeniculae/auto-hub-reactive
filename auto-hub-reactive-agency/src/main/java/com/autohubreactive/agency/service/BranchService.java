@@ -3,7 +3,7 @@ package com.autohubreactive.agency.service;
 import com.autohubreactive.agency.entity.Branch;
 import com.autohubreactive.agency.mapper.BranchMapper;
 import com.autohubreactive.agency.repository.BranchRepository;
-import com.autohubreactive.agency.repository.EmployeeRepository;
+import com.autohubreactive.agency.repository.RentalOfficeRepository;
 import com.autohubreactive.dto.agency.BranchRequest;
 import com.autohubreactive.dto.agency.BranchResponse;
 import com.autohubreactive.exception.AutoHubException;
@@ -12,6 +12,7 @@ import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
 import com.autohubreactive.lib.util.MongoUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -22,8 +23,7 @@ import reactor.core.publisher.Mono;
 public class BranchService {
 
     private final BranchRepository branchRepository;
-    private final EmployeeRepository employeeRepository;
-    private final RentalOfficeService rentalOfficeService;
+    private final RentalOfficeRepository rentalOfficeRepository;
     private final BranchMapper branchMapper;
 
     public Flux<BranchResponse> findAllBranches() {
@@ -67,12 +67,7 @@ public class BranchService {
     }
 
     public Mono<BranchResponse> saveBranch(BranchRequest branchRequest) {
-        return rentalOfficeService.findEntityById(branchRequest.rentalOfficeId())
-                .flatMap(rentalOffice -> {
-                    Branch newBranch = branchMapper.getNewBranch(branchRequest, rentalOffice);
-
-                    return branchRepository.save(newBranch);
-                })
+        return branchRepository.save(branchMapper.getNewBranch(branchRequest))
                 .map(branchMapper::mapEntityToDto)
                 .onErrorMap(e -> {
                     log.error("Error while saving branch: {}", e.getMessage());
@@ -82,11 +77,8 @@ public class BranchService {
     }
 
     public Mono<BranchResponse> updateBranch(String id, BranchRequest branchRequest) {
-        return Mono.zip(
-                        findEntityById(id),
-                        rentalOfficeService.findEntityById(branchRequest.rentalOfficeId()),
-                        (existingBranch, rentalOffice) -> branchMapper.getUpdatedBranch(existingBranch, branchRequest, rentalOffice)
-                )
+        return findEntityById(id)
+                .map(existingBranch -> branchMapper.getUpdatedBranch(existingBranch.id(), branchRequest))
                 .flatMap(branchRepository::save)
                 .map(branchMapper::mapEntityToDto)
                 .onErrorMap(e -> {
@@ -98,7 +90,7 @@ public class BranchService {
 
     public Mono<Void> deleteBranchById(String id) {
         return branchRepository.deleteById(MongoUtil.getObjectId(id))
-                .then(Mono.defer(() -> employeeRepository.deleteByBranchId(MongoUtil.getObjectId(id))))
+                .then(Mono.defer(() -> rentalOfficeRepository.deleteByBranchId(new ObjectId(id))))
                 .onErrorMap(e -> {
                     log.error("Error while deleting branch: {}", e.getMessage());
 

@@ -102,7 +102,7 @@ public class ExcelParserService {
                 .mileage(Integer.parseInt((String) values.get(CarFields.MILEAGE.ordinal())))
                 .carState(CarState.valueOf(((String) values.get(CarFields.CAR_STATUS.ordinal())).toUpperCase()))
                 .amount(new BigDecimal((String) values.get(CarFields.AMOUNT.ordinal())))
-                .originalBranchId((String) values.get(CarFields.ORIGINAL_BRANCH.ordinal()))
+                .initialBranchId((String) values.get(CarFields.INITIAL_BRANCH.ordinal()))
                 .actualBranchId((String) values.get(CarFields.ACTUAL_BRANCH.ordinal()))
                 .image(getImageData((PictureData) values.get(CarFields.IMAGE.ordinal())))
                 .build();

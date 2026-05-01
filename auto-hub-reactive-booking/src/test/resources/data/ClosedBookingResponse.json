@@ -10,5 +10,5 @@
   "amount": 500,
   "rentalCarPrice": 500,
   "rentalBranchId": "64f361caf291ae086e179547",
-  "returnBranchId": "64f361caf291ae086e179547"
+  "returnRentalOfficeId": "64f361caf291ae086e179547"
 }

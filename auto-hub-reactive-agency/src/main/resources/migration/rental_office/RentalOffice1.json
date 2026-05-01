@@ -1,6 +1,13 @@
 {
   "id": "64f361caf291ae086e179518",
   "name": "Ploiesti Rental Office",
-  "contactAddress": "Ploiesti",
-  "phoneNumber": "0722222222"
+  "city": "Ploiesti",
+  "address": "Ploiesti",
+  "branch": {
+    "id": "64f361caf291ae086e179532",
+    "name": "Ploiesti Branch",
+    "address": "Ploiesti",
+    "region": "Ploiesti",
+    "phoneNumber": "0722222222"
+  }
 }

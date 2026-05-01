@@ -1,9 +1,10 @@
 package com.autohubreactive.agency.service;
 
+import com.autohubreactive.agency.entity.Branch;
 import com.autohubreactive.agency.entity.RentalOffice;
 import com.autohubreactive.agency.mapper.RentalOfficeMapper;
 import com.autohubreactive.agency.mapper.RentalOfficeMapperImpl;
-import com.autohubreactive.agency.repository.BranchRepository;
+import com.autohubreactive.agency.repository.EmployeeRepository;
 import com.autohubreactive.agency.repository.RentalOfficeRepository;
 import com.autohubreactive.agency.util.TestUtil;
 import com.autohubreactive.dto.agency.RentalOfficeRequest;
@@ -38,7 +39,10 @@ class RentalOfficeServiceTest {
     private RentalOfficeRepository rentalOfficeRepository;
 
     @Mock
-    private BranchRepository branchRepository;
+    private BranchService branchService;
+
+    @Mock
+    private EmployeeRepository employeeRepository;
 
     @Spy
     private RentalOfficeMapper rentalOfficeMapper = new RentalOfficeMapperImpl();
@@ -122,6 +126,8 @@ class RentalOfficeServiceTest {
 
     @Test
     void saveRentalOfficeTest_success() {
+        Branch branch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
+
         RentalOffice rentalOffice =
                 TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
 
@@ -131,6 +137,7 @@ class RentalOfficeServiceTest {
         RentalOfficeResponse rentalOfficeResponse =
                 TestUtil.getResourceAsJson("/data/RentalOfficeResponse.json", RentalOfficeResponse.class);
 
+        when(branchService.findEntityById(anyString())).thenReturn(Mono.just(branch));
         when(rentalOfficeRepository.save(any(RentalOffice.class))).thenReturn(Mono.just(rentalOffice));
 
         rentalOfficeService.saveRentalOffice(rentalOfficeRequest)
@@ -144,9 +151,12 @@ class RentalOfficeServiceTest {
 
     @Test
     void saveRentalOfficeTest_errorOnSaving() {
+        Branch branch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
+
         RentalOfficeRequest rentalOfficeRequest =
                 TestUtil.getResourceAsJson("/data/RentalOfficeRequest.json", RentalOfficeRequest.class);
 
+        when(branchService.findEntityById(anyString())).thenReturn(Mono.just(branch));
         when(rentalOfficeRepository.save(any(RentalOffice.class))).thenReturn(Mono.error(new Throwable()));
 
         rentalOfficeService.saveRentalOffice(rentalOfficeRequest)
@@ -157,6 +167,9 @@ class RentalOfficeServiceTest {
 
     @Test
     void updateRentalOfficeTest_success() {
+        Branch branch =
+                TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
+
         RentalOffice rentalOffice =
                 TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
 
@@ -167,6 +180,7 @@ class RentalOfficeServiceTest {
                 TestUtil.getResourceAsJson("/data/RentalOfficeResponse.json", RentalOfficeResponse.class);
 
         when(rentalOfficeRepository.findById(any(ObjectId.class))).thenReturn(Mono.just(rentalOffice));
+        when(branchService.findEntityById(anyString())).thenReturn(Mono.just(branch));
         when(rentalOfficeRepository.save(any(RentalOffice.class))).thenReturn(Mono.just(rentalOffice));
 
         rentalOfficeService.updateRentalOffice("64f361caf291ae086e179518", rentalOfficeRequest)
@@ -177,6 +191,9 @@ class RentalOfficeServiceTest {
 
     @Test
     void updateRentalOfficeTest_errorOnSaving() {
+        Branch branch =
+                TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
+
         RentalOffice rentalOffice =
                 TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
 
@@ -184,6 +201,7 @@ class RentalOfficeServiceTest {
                 TestUtil.getResourceAsJson("/data/RentalOfficeRequest.json", RentalOfficeRequest.class);
 
         when(rentalOfficeRepository.findById(any(ObjectId.class))).thenReturn(Mono.just(rentalOffice));
+        when(branchService.findEntityById(anyString())).thenReturn(Mono.just(branch));
         when(rentalOfficeRepository.save(any(RentalOffice.class))).thenReturn(Mono.error(new Throwable()));
 
         rentalOfficeService.updateRentalOffice("64f361caf291ae086e179518", rentalOfficeRequest)
@@ -221,7 +239,7 @@ class RentalOfficeServiceTest {
     @Test
     void deleteRentalOfficeByIdTest_success() {
         when(rentalOfficeRepository.deleteById(any(ObjectId.class))).thenReturn(Mono.empty());
-        when(branchRepository.deleteByRentalOfficeId(any(ObjectId.class))).thenReturn(Mono.empty());
+        when(employeeRepository.deleteByBranchId(any(ObjectId.class))).thenReturn(Mono.empty());
 
         rentalOfficeService.deleteRentalOfficeById("64f361caf291ae086e179518")
                 .as(StepVerifier::create)

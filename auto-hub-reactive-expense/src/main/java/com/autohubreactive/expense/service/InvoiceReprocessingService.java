@@ -33,7 +33,7 @@ public class InvoiceReprocessingService {
     private BookingClosingDetails getBookingClosingDetails(InvoiceReprocessRequest invoiceReprocessRequest) {
         return BookingClosingDetails.builder()
                 .bookingId(invoiceReprocessRequest.bookingId())
-                .returnBranchId(invoiceReprocessRequest.returnBranchId())
+                .returnRentalOfficeId(invoiceReprocessRequest.returnRentalOfficeId())
                 .build();
     }
 

@@ -69,7 +69,6 @@ class CarHandlerTest {
 
         carHandler.findAllCars(serverRequest)
                 .as(StepVerifier::create)
-                .expectNextMatches(serverResponse -> serverResponse.statusCode().is2xxSuccessful())
                 .verifyComplete();
     }
 

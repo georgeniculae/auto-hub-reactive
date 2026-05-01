@@ -16,8 +16,12 @@ public record RentalOffice(
     String name,
 
     @NonNull
-    String contactAddress,
+    String city,
 
-    String phoneNumber
+    @NonNull
+    String address,
+
+    @NonNull
+    Branch branch
 ) {
 }

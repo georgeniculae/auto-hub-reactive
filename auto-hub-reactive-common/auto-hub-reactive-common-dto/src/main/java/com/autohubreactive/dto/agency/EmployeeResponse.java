@@ -1,7 +1,7 @@
 package com.autohubreactive.dto.agency;
 
 import lombok.Builder;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 @Builder
 public record EmployeeResponse(
@@ -17,17 +17,18 @@ public record EmployeeResponse(
         String jobPosition,
 
         @NonNull
-        String workingBranchId
+        String workingRentalOfficeId
 ) {
 
     @Override
+    @NonNull
     public String toString() {
         return "EmployeeResponse{" + "\n" +
                 "id=" + id + "\n" +
                 "firstName=" + firstName + "\n" +
                 "lastName=" + lastName + "\n" +
                 "jobPosition=" + jobPosition + "\n" +
-                "workingBranchId=" + workingBranchId + "\n" +
+                "workingRentalOfficeId=" + workingRentalOfficeId + "\n" +
                 "}";
     }
 

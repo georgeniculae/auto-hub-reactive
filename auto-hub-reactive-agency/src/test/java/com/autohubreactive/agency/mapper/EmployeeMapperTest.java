@@ -1,7 +1,7 @@
 package com.autohubreactive.agency.mapper;
 
-import com.autohubreactive.agency.entity.Branch;
 import com.autohubreactive.agency.entity.Employee;
+import com.autohubreactive.agency.entity.RentalOffice;
 import com.autohubreactive.agency.util.AssertionUtil;
 import com.autohubreactive.agency.util.TestUtil;
 import com.autohubreactive.dto.agency.EmployeeRequest;
@@ -39,9 +39,10 @@ class EmployeeMapperTest {
         EmployeeRequest employeeRequest =
                 TestUtil.getResourceAsJson("/data/EmployeeRequest.json", EmployeeRequest.class);
 
-        Branch workingBranch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
+        RentalOffice workingRentalOffice =
+                TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
 
-        Employee employee = Assertions.assertDoesNotThrow(() -> employeeMapper.getNewEmployee(employeeRequest, workingBranch));
+        Employee employee = Assertions.assertDoesNotThrow(() -> employeeMapper.getNewEmployee(employeeRequest, workingRentalOffice));
 
         assertNotNull(employeeRequest);
         AssertionUtil.assertEmployeeRequest(employee, employeeRequest);

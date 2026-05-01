@@ -1,9 +1,9 @@
 package com.autohubreactive.lib.util;
 
-public class Constants {
+import lombok.experimental.UtilityClass;
 
-    private Constants() {
-    }
+@UtilityClass
+public class Constants {
 
     public static final String X_API_KEY = "X-API-KEY";
     public static final String X_USERNAME = "X-USERNAME";

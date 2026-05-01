@@ -1,7 +1,7 @@
 package com.autohubreactive.agency.mapper;
 
-import com.autohubreactive.agency.entity.Branch;
 import com.autohubreactive.agency.entity.Car;
+import com.autohubreactive.agency.entity.RentalOffice;
 import com.autohubreactive.agency.util.AssertionUtil;
 import com.autohubreactive.agency.util.TestUtil;
 import com.autohubreactive.dto.agency.CarRequest;
@@ -36,10 +36,14 @@ class CarMapperTest {
     @Test
     void getNewCarTest_success() {
         CarRequest carRequest = TestUtil.getResourceAsJson("/data/CarRequest.json", CarRequest.class);
-        Branch originalBranch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
-        Branch actualBranch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
 
-        Car car = carMapper.getNewCar(carRequest, originalBranch, actualBranch);
+        RentalOffice initialRentalOffice =
+                TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
+
+        RentalOffice actualRentalOffice =
+                TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
+
+        Car car = carMapper.getNewCar(carRequest, initialRentalOffice, actualRentalOffice);
 
         assertNotNull(car);
         AssertionUtil.assertCarRequest(car, carRequest);

@@ -1,9 +1,9 @@
 package com.autohubreactive.emailnotification.util;
 
-public class Constants {
+import lombok.experimental.UtilityClass;
 
-    private Constants() {
-    }
+@UtilityClass
+public class Constants {
 
     public static final String CONTENT_TYPE = "text/plain";
     public static final String SUBJECT = "Invoice Notice";

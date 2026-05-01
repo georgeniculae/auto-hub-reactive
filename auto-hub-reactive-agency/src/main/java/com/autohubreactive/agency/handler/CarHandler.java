@@ -23,6 +23,7 @@ public class CarHandler {
     public Mono<ServerResponse> findAllCars(ServerRequest serverRequest) {
         return carService.findAllCars()
                 .collectList()
+                .filter(ObjectUtils::isNotEmpty)
                 .flatMap(carResponses -> ServerResponse.ok().bodyValue(carResponses));
     }
 
@@ -61,6 +62,13 @@ public class CarHandler {
     @PreAuthorize("hasRole('user')")
     public Mono<ServerResponse> getAllAvailableCars(ServerRequest serverRequest) {
         return carService.getAllAvailableCars()
+                .collectList()
+                .filter(ObjectUtils::isNotEmpty)
+                .flatMap(carResponses -> ServerResponse.ok().bodyValue(carResponses));
+    }
+
+    public Mono<ServerResponse> getAllAvailableCarsByLocation(ServerRequest serverRequest) {
+        return carService.getAllAvailableCarsByLocation(serverRequest.pathVariable(Constants.DESTINATION))
                 .collectList()
                 .filter(ObjectUtils::isNotEmpty)
                 .flatMap(carResponses -> ServerResponse.ok().bodyValue(carResponses));

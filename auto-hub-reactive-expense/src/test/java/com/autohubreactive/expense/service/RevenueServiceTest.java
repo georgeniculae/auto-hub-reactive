@@ -101,7 +101,7 @@ class RevenueServiceTest {
     @Test
     void saveInvoiceAndRevenueTransactionalTest_success() {
         Invoice invoice = TestUtil.getResourceAsJson("/data/Invoice.json", Invoice.class);
-        invoice.setReturnBranchId(new ObjectId("64f361caf291ae086e179547"));
+        invoice.setReturnRentalOfficeId(new ObjectId("64f361caf291ae086e179547"));
         Outbox outbox = TestUtil.getResourceAsJson("/data/Outbox.json", Outbox.class);
         Revenue revenue = TestUtil.getResourceAsJson("/data/Revenue.json", Revenue.class);
 

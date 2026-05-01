@@ -3,6 +3,7 @@ package com.autohubreactive.dto.common;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
+import org.jspecify.annotations.NonNull;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +25,7 @@ public record AuditLogInfoRequest(
 ) {
 
     @Override
+    @NonNull
     public String toString() {
         return "AuditLogInfoRequest{" +
                 "methodName='" + methodName + '\'' +

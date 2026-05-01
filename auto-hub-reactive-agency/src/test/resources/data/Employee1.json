@@ -3,15 +3,17 @@
   "firstName": "Alexandru",
   "lastName": "Oprescu",
   "jobPosition": "accountant",
-  "workingBranch": {
+  "workingRentalOffice": {
     "id": "64f361caf291ae086e179521",
-    "name": "Bucuresti Branch",
-    "address": "Bucuresti",
-    "rentalOffice": {
-      "id": "64f361caf291ae086e179506",
-      "name": "Bucuresti Rental Office",
-      "contactAddress": "Bucuresti",
-      "phoneNumber": "0733333333"
+    "name": "Ploiesti Rental Office",
+    "city": "Ploiesti",
+    "address": "Ploiesti",
+    "branch": {
+      "id": "64f361caf291ae086e179532",
+      "name": "Ploiesti Branch",
+      "address": "Ploiesti",
+      "region": "Ploiesti",
+      "phoneNumber": "0722222222"
     }
   }
 }

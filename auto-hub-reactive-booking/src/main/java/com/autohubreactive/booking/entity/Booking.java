@@ -8,8 +8,8 @@ import lombok.Setter;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
+import org.jspecify.annotations.NonNull;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.lang.NonNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -48,8 +48,8 @@ public class Booking {
 
     private BigDecimal rentalCarPrice;
 
-    private ObjectId rentalBranchId;
+    private ObjectId pickupRentalOfficeId;
 
-    private ObjectId returnBranchId;
+    private ObjectId returnRentalOfficeId;
 
 }

@@ -1,7 +1,7 @@
 package com.autohubreactive.dto.invoice;
 
 import lombok.Builder;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,7 +12,7 @@ public record InvoiceRequest(
         String receptionistEmployeeId,
 
         @NonNull
-        String returnBranchId,
+        String returnRentalOfficeId,
 
         @NonNull
         String bookingId,
@@ -30,9 +30,10 @@ public record InvoiceRequest(
 ) {
 
     @Override
+    @NonNull
     public String toString() {
         return "InvoiceRequest{" + "\n" +
-                "returnBranchId=" + receptionistEmployeeId + "\n" +
+                "returnRentalOfficeId=" + receptionistEmployeeId + "\n" +
                 "bookingId=" + bookingId + "\n" +
                 "carReturnDate=" + carReturnDate + "\n" +
                 "isVehicleDamaged=" + isVehicleDamaged + "\n" +

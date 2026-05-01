@@ -33,9 +33,9 @@ public record Car(
     BigDecimal amount,
 
     @With
-    Branch originalBranch,
+    RentalOffice initialRentalOffice,
 
     @With
-    Branch actualBranch
+    RentalOffice actualRentalOffice
 ) {
 }

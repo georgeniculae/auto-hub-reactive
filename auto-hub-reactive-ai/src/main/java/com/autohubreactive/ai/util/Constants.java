@@ -1,9 +1,9 @@
 package com.autohubreactive.ai.util;
 
-public class Constants {
+import lombok.experimental.UtilityClass;
 
-    private Constants() {
-    }
+@UtilityClass
+public class Constants {
 
     public static final String DESTINATION = "destination";
     public static final String PEOPLE_COUNT = "peopleCount";

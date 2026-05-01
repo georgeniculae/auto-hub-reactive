@@ -3,9 +3,9 @@ package com.autohubreactive.agency.repository;
 import com.autohubreactive.agency.entity.Car;
 import com.autohubreactive.agency.entity.CarStatus;
 import org.bson.types.ObjectId;
+import org.jspecify.annotations.NonNull;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
-import org.springframework.lang.NonNull;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -17,7 +17,7 @@ public interface CarRepository extends ReactiveMongoRepository<Car, ObjectId> {
             fields = """
                     {
                     'id' : 1, 'make' : 1, 'model' : 1, 'bodyType' : 1, 'yearOfProduction' : 1, 'color' : 1,
-                    'mileage' : 1, 'carStatus' : 1, 'amount' : 1, 'originalBranch' : 1, 'actualBranch' : 1}"""
+                    'mileage' : 1, 'carStatus' : 1, 'amount' : 1, 'initialRentalOffice' : 1, 'actualRentalOffice' : 1}"""
     )
     @NonNull
     Mono<Car> findById(@NonNull ObjectId id);
@@ -37,7 +37,7 @@ public interface CarRepository extends ReactiveMongoRepository<Car, ObjectId> {
             fields = """
                     {
                     'id' : 1, 'make' : 1, 'model' : 1, 'bodyType' : 1, 'yearOfProduction' : 1, 'color' : 1,
-                    'mileage' : 1, 'carStatus' : 1, 'amount' : 1, 'originalBranch' : 1, 'actualBranch' : 1}"""
+                    'mileage' : 1, 'carStatus' : 1, 'amount' : 1, 'initialRentalOffice' : 1, 'actualRentalOffice' : 1}"""
     )
     @NonNull
     Mono<Car> findCarByIdAndCarStatus(ObjectId id, CarStatus carStatus);
@@ -48,7 +48,7 @@ public interface CarRepository extends ReactiveMongoRepository<Car, ObjectId> {
             fields = """
                     {
                     'id' : 1, 'make' : 1, 'model' : 1, 'bodyType' : 1, 'yearOfProduction' : 1, 'color' : 1,
-                    'mileage' : 1, 'carStatus' : 1, 'amount' : 1, 'originalBranch' : 1, 'actualBranch' : 1}"""
+                    'mileage' : 1, 'carStatus' : 1, 'amount' : 1, 'initialRentalOffice' : 1, 'actualRentalOffice' : 1}"""
     )
     Flux<Car> findAllByFilterInsensitiveCase(String filter);
 
@@ -57,7 +57,7 @@ public interface CarRepository extends ReactiveMongoRepository<Car, ObjectId> {
             fields = """
                     {
                     'id' : 1, 'make' : 1, 'model' : 1, 'bodyType' : 1, 'yearOfProduction' : 1, 'color' : 1,
-                    'mileage' : 1, 'carStatus' : 1, 'amount' : 1, 'originalBranch' : 1, 'actualBranch' : 1}"""
+                    'mileage' : 1, 'carStatus' : 1, 'amount' : 1, 'initialRentalOffice' : 1, 'actualRentalOffice' : 1}"""
     )
     @NonNull
     Flux<Car> findAll();
@@ -67,7 +67,7 @@ public interface CarRepository extends ReactiveMongoRepository<Car, ObjectId> {
             fields = """
                     {
                     'id' : 1, 'make' : 1, 'model' : 1, 'bodyType' : 1, 'yearOfProduction' : 1, 'color' : 1,
-                    'mileage' : 1, 'carStatus' : 1, 'amount' : 1, 'originalBranch' : 1, 'actualBranch' : 1}"""
+                    'mileage' : 1, 'carStatus' : 1, 'amount' : 1, 'initialRentalOffice' : 1, 'actualRentalOffice' : 1}"""
     )
     @NonNull
     Flux<Car> findAllAvailableCars();
@@ -78,7 +78,7 @@ public interface CarRepository extends ReactiveMongoRepository<Car, ObjectId> {
             fields = """
                     {
                     'id' : 1, 'make' : 1, 'model' : 1, 'bodyType' : 1, 'yearOfProduction' : 1, 'color' : 1,
-                    'mileage' : 1, 'carStatus' : 1, 'amount' : 1, 'originalBranch' : 1, 'actualBranch' : 1}"""
+                    'mileage' : 1, 'carStatus' : 1, 'amount' : 1, 'initialRentalOffice' : 1, 'actualRentalOffice' : 1}"""
     )
     Flux<Car> findCarsByMakeInsensitiveCase(String make);
 

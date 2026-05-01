@@ -1,6 +1,7 @@
 package com.autohubreactive.agency.migration;
 
 import com.autohubreactive.agency.entity.Branch;
+import com.autohubreactive.agency.entity.RentalOffice;
 import com.autohubreactive.agency.util.Constants;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.result.DeleteResult;
@@ -68,7 +69,7 @@ public class BranchInitializerChangeUnit {
     public void rollbackExecution(ClientSession clientSession, MongoDatabase mongoDatabase) {
         SubscriberSync<DeleteResult> subscriber = new MongoSubscriberSync<>();
 
-        mongoDatabase.getCollection(Constants.BRANCH_COLLECTION_NAME, Branch.class)
+        mongoDatabase.getCollection(Constants.BRANCH_COLLECTION_NAME, RentalOffice.class)
                 .deleteMany(clientSession, new Document())
                 .subscribe(subscriber);
 

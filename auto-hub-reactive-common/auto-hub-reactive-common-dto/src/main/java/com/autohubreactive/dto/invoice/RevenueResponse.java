@@ -1,7 +1,7 @@
 package com.autohubreactive.dto.invoice;
 
 import lombok.Builder;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,6 +18,7 @@ public record RevenueResponse(
 ) {
 
     @Override
+    @NonNull
     public String toString() {
         return "RevenueRequest{" + "\n" +
                 "id=" + id + "\n" +

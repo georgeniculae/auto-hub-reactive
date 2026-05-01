@@ -1,9 +1,9 @@
 package com.autohubreactive.booking.util;
 
-public class Constants {
+import lombok.experimental.UtilityClass;
 
-    private Constants() {
-    }
+@UtilityClass
+public class Constants {
 
     public static final String ID = "id";
     public static final String DATE = "date";

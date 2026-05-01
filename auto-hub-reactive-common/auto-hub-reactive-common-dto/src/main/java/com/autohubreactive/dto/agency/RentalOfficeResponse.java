@@ -1,7 +1,7 @@
 package com.autohubreactive.dto.agency;
 
 import lombok.Builder;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 @Builder
 public record RentalOfficeResponse(
@@ -11,19 +11,23 @@ public record RentalOfficeResponse(
         String name,
 
         @NonNull
-        String contactAddress,
+        String address,
 
         @NonNull
-        String phoneNumber
+        String city,
+
+        @NonNull
+        String branchId
 ) {
 
     @Override
+    @NonNull
     public String toString() {
         return "RentalOfficeResponse{" + "\n" +
                 "id=" + id + "\n" +
                 "name=" + name + "\n" +
-                "contactAddress=" + contactAddress + "\n" +
-                "phoneNumber=" + phoneNumber + "\n" +
+                "address=" + address + "\n" +
+                "branchId=" + branchId + "\n" +
                 "}";
     }
 

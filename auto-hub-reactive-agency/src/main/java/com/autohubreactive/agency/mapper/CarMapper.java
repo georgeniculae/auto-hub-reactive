@@ -1,9 +1,9 @@
 package com.autohubreactive.agency.mapper;
 
 import com.autohubreactive.agency.entity.BodyType;
-import com.autohubreactive.agency.entity.Branch;
 import com.autohubreactive.agency.entity.Car;
 import com.autohubreactive.agency.entity.CarStatus;
+import com.autohubreactive.agency.entity.RentalOffice;
 import com.autohubreactive.dto.agency.BodyCategory;
 import com.autohubreactive.dto.agency.CarRequest;
 import com.autohubreactive.dto.agency.CarResponse;
@@ -24,8 +24,8 @@ import org.mapstruct.ReportingPolicy;
 )
 public interface CarMapper {
 
-    @Mapping(target = "originalBranchId", expression = "java(mapObjectIdToString(car.originalBranch().id()))")
-    @Mapping(target = "actualBranchId", expression = "java(mapObjectIdToString(car.actualBranch().id()))")
+    @Mapping(target = "initialRentalOfficeId", expression = "java(mapObjectIdToString(car.initialRentalOffice().id()))")
+    @Mapping(target = "actualRentalOfficeId", expression = "java(mapObjectIdToString(car.actualRentalOffice().id()))")
     @Mapping(target = "bodyCategory", source = "bodyType")
     @Mapping(target = "carState", source = "carStatus")
     CarResponse mapEntityToDto(Car car);
@@ -33,9 +33,9 @@ public interface CarMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "bodyType", expression = "java(mapToBodyType(carRequest.bodyCategory()))")
     @Mapping(target = "carStatus", expression = "java(mapToCarStatus(carRequest.carState()))")
-    @Mapping(target = "originalBranch", expression = "java(originalBranch)")
-    @Mapping(target = "actualBranch", expression = "java(actualBranch)")
-    Car getNewCar(CarRequest carRequest, Branch originalBranch, Branch actualBranch);
+    @Mapping(target = "initialRentalOffice", expression = "java(initialRentalOffice)")
+    @Mapping(target = "actualRentalOffice", expression = "java(actualRentalOffice)")
+    Car getNewCar(CarRequest carRequest, RentalOffice initialRentalOffice, RentalOffice actualRentalOffice);
 
     @Mapping(target = "bodyType", source = "bodyCategory")
     @Mapping(target = "carStatus", source = "carState")
@@ -44,7 +44,7 @@ public interface CarMapper {
     @Mapping(target = "carStatus", source = "carStatus")
     Car getUpdatedCarWithStatus(Car existingCar, CarStatus carStatus);
 
-    @Mapping(target = "actualBranchId", expression = "java(mapObjectIdToString(car.actualBranch().id()))")
+    @Mapping(target = "actualRentalOfficeId", expression = "java(mapObjectIdToString(car.actualRentalOffice().id()))")
     AvailableCarInfo mapToAvailableCarInfo(Car car);
 
     @Mapping(target = "id", expression = "java(existingCarId)")
@@ -56,14 +56,19 @@ public interface CarMapper {
     @Mapping(target = "mileage", expression = "java(updatedCarRequest.mileage())")
     @Mapping(target = "amount", expression = "java(updatedCarRequest.amount())")
     @Mapping(target = "carStatus", expression = "java(mapToCarStatus(updatedCarRequest.carState()))")
-    @Mapping(target = "originalBranch", expression = "java(originalBranch)")
-    @Mapping(target = "actualBranch", expression = "java(actualBranch)")
-    Car getUpdatedCar(ObjectId existingCarId, CarRequest updatedCarRequest, Branch originalBranch, Branch actualBranch);
+    @Mapping(target = "initialRentalOffice", expression = "java(initialRentalOffice)")
+    @Mapping(target = "actualRentalOffice", expression = "java(actualRentalOffice)")
+    Car getUpdatedCar(
+            ObjectId existingCarId,
+            CarRequest updatedCarRequest,
+            RentalOffice initialRentalOffice,
+            RentalOffice actualRentalOffice
+    );
 
     @Mapping(target = "id", expression = "java(car.id())")
-    @Mapping(target = "actualBranch", expression = "java(workingBranch)")
+    @Mapping(target = "actualRentalOffice", expression = "java(workingRentalOffice)")
     @Mapping(target = "carStatus", source = "carStatus")
-    Car getCarAfterBookingClosing(Car car, Branch workingBranch, CarStatus carStatus);
+    Car getCarAfterBookingClosing(Car car, RentalOffice workingRentalOffice, CarStatus carStatus);
 
     default String mapObjectIdToString(ObjectId id) {
         return ObjectUtils.isEmpty(id) ? null : id.toString();

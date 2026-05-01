@@ -1,9 +1,9 @@
 package com.autohubreactive.expense.util;
 
-public class Constants {
+import lombok.experimental.UtilityClass;
 
-    private Constants() {
-    }
+@UtilityClass
+public class Constants {
 
     public static final String DATE_OF_REVENUE = "dateOfRevenue";
     public static final String DATE_FORMAT = "yyyy-MM-dd";

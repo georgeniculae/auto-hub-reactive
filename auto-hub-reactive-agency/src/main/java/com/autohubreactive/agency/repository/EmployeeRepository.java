@@ -14,17 +14,17 @@ public interface EmployeeRepository extends ReactiveMongoRepository<Employee, Ob
             { 'firstName': {$regex: '(?i)?0' } },
             { 'lastName': {$regex: '(?i)?0' } },
             { 'jobPosition': {$regex: '(?i)?0' } },
-            { 'workingBranch.name': {$regex: '(?i)?0' } },
+            { 'workingRentalOffice.name': {$regex: '(?i)?0' } },
             ]}""")
     Flux<Employee> findAllByFilterInsensitiveCase(String filter);
 
     @Query("""
-            {'workingBranch.id': ?0}""")
-    Flux<Employee> findAllEmployeesByBranchId(ObjectId id);
+            {'workingRentalOffice.id': ?0}""")
+    Flux<Employee> findAllEmployeesByRentalOfficeId(ObjectId id);
 
     @Query(
             value = """
-                    {'branch.id' : $0}""",
+                    {'rentalOffice.id' : $0}""",
             delete = true
     )
     Mono<Void> deleteByBranchId(ObjectId id);

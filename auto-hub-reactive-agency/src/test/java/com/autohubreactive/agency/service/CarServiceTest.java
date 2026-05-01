@@ -1,9 +1,9 @@
 package com.autohubreactive.agency.service;
 
-import com.autohubreactive.agency.entity.Branch;
 import com.autohubreactive.agency.entity.Car;
 import com.autohubreactive.agency.entity.CarStatus;
 import com.autohubreactive.agency.entity.Employee;
+import com.autohubreactive.agency.entity.RentalOffice;
 import com.autohubreactive.agency.mapper.CarMapper;
 import com.autohubreactive.agency.mapper.CarMapperImpl;
 import com.autohubreactive.agency.repository.CarRepository;
@@ -60,7 +60,7 @@ class CarServiceTest {
     private CarRepository carRepository;
 
     @Mock
-    private BranchService branchService;
+    private RentalOfficeService rentalOfficeService;
 
     @Mock
     private EmployeeService employeeService;
@@ -285,7 +285,7 @@ class CarServiceTest {
 
     @Test
     void saveCarTest_success() {
-        Branch branch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
+        RentalOffice rentalOffice = TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
         Car car = TestUtil.getResourceAsJson("/data/Car1.json", Car.class);
         CarRequest carRequest = TestUtil.getResourceAsJson("/data/CarRequest.json", CarRequest.class);
         CarResponse carResponse = TestUtil.getResourceAsJson("/data/CarResponse.json", CarResponse.class);
@@ -294,7 +294,7 @@ class CarServiceTest {
 
         when(objectMapper.readValue(anyString(), eq(CarRequest.class))).thenReturn(carRequest);
         when(carRequestValidator.validateBody(any())).thenReturn(Mono.just(carRequest));
-        when(branchService.findEntityById(anyString())).thenReturn(Mono.just(branch));
+        when(rentalOfficeService.findEntityById(anyString())).thenReturn(Mono.just(rentalOffice));
         when(carRepository.save(any(Car.class))).thenReturn(Mono.just(car));
         when(reactiveGridFsTemplate.store(any(), anyString()))
                 .thenReturn(Mono.just(new ObjectId("65e8cf871b2c27702941b7a1")));
@@ -307,7 +307,7 @@ class CarServiceTest {
 
     @Test
     void saveCarTest_noCarImage_success() {
-        Branch branch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
+        RentalOffice rentalOffice = TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
         Car car = TestUtil.getResourceAsJson("/data/Car1.json", Car.class);
         CarRequest carRequest = TestUtil.getResourceAsJson("/data/CarRequest.json", CarRequest.class);
         CarResponse carResponse = TestUtil.getResourceAsJson("/data/CarResponse.json", CarResponse.class);
@@ -316,7 +316,7 @@ class CarServiceTest {
 
         when(objectMapper.readValue(anyString(), eq(CarRequest.class))).thenReturn(carRequest);
         when(carRequestValidator.validateBody(any())).thenReturn(Mono.just(carRequest));
-        when(branchService.findEntityById(anyString())).thenReturn(Mono.just(branch));
+        when(rentalOfficeService.findEntityById(anyString())).thenReturn(Mono.just(rentalOffice));
         when(carRepository.save(any(Car.class))).thenReturn(Mono.just(car));
 
         carService.saveCar(multivalueMap.toSingleValueMap())
@@ -327,13 +327,13 @@ class CarServiceTest {
 
     @Test
     void saveCarTest_errorOnSaving() {
-        Branch branch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
+        RentalOffice rentalOffice = TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
         CarRequest carRequest = TestUtil.getResourceAsJson("/data/CarRequest.json", CarRequest.class);
         MultiValueMap<String, Part> multivalueMap = TestData.getCarRequestMultivalueMap();
 
         when(objectMapper.readValue(anyString(), eq(CarRequest.class))).thenReturn(carRequest);
         when(carRequestValidator.validateBody(any())).thenReturn(Mono.just(carRequest));
-        when(branchService.findEntityById(anyString())).thenReturn(Mono.just(branch));
+        when(rentalOfficeService.findEntityById(anyString())).thenReturn(Mono.just(rentalOffice));
         when(carRepository.save(any(Car.class))).thenReturn(Mono.error(new Throwable()));
 
         carService.saveCar(multivalueMap.toSingleValueMap())
@@ -344,7 +344,7 @@ class CarServiceTest {
 
     @Test
     void uploadCarsTest_success() {
-        Branch branch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
+        RentalOffice rentalOffice = TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
 
         Car car = TestUtil.getResourceAsJson("/data/UploadedCar.json", Car.class);
 
@@ -357,7 +357,7 @@ class CarServiceTest {
         Flux<DataBuffer> dataBuffer = DataBufferUtils.read(path, new DefaultDataBufferFactory(), 131072);
 
         when(filePart.content()).thenReturn(dataBuffer);
-        when(branchService.findEntityById(anyString())).thenReturn(Mono.just(branch));
+        when(rentalOfficeService.findEntityById(anyString())).thenReturn(Mono.just(rentalOffice));
         when(excelParserService.extractDataFromExcel(any(InputStream.class))).thenReturn(List.of(excelCarRequest));
         when(carRepository.save(any(Car.class))).thenReturn(Mono.just(car));
         when(reactiveGridFsTemplate.store(any(), anyString()))
@@ -371,14 +371,14 @@ class CarServiceTest {
 
     @Test
     void uploadCarsTest_errorOnSavingCars() {
-        Branch branch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
+        RentalOffice rentalOffice = TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
         ExcelCarRequest excelCarRequest = TestData.getExcelCarRequest();
 
         Path path = Paths.get("src/test/resources/file/Cars.xlsx");
         Flux<DataBuffer> dataBuffer = DataBufferUtils.read(path, new DefaultDataBufferFactory(), 131072);
 
         when(filePart.content()).thenReturn(dataBuffer);
-        when(branchService.findEntityById(anyString())).thenReturn(Mono.just(branch));
+        when(rentalOfficeService.findEntityById(anyString())).thenReturn(Mono.just(rentalOffice));
         when(excelParserService.extractDataFromExcel(any(InputStream.class))).thenReturn(List.of(excelCarRequest));
         when(carRepository.save(any(Car.class))).thenReturn(Mono.error(new AutoHubException("error")));
 
@@ -390,7 +390,7 @@ class CarServiceTest {
 
     @Test
     void updateCarTest_success() {
-        Branch branch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
+        RentalOffice rentalOffice = TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
         Car car = TestUtil.getResourceAsJson("/data/Car1.json", Car.class);
         CarRequest carRequest = TestUtil.getResourceAsJson("/data/CarRequest.json", CarRequest.class);
         CarResponse carResponse = TestUtil.getResourceAsJson("/data/CarResponse.json", CarResponse.class);
@@ -398,7 +398,7 @@ class CarServiceTest {
 
         when(objectMapper.readValue(anyString(), eq(CarRequest.class))).thenReturn(carRequest);
         when(carRequestValidator.validateBody(any())).thenReturn(Mono.just(carRequest));
-        when(branchService.findEntityById(anyString())).thenReturn(Mono.just(branch));
+        when(rentalOfficeService.findEntityById(anyString())).thenReturn(Mono.just(rentalOffice));
         when(carRepository.findById(any(ObjectId.class))).thenReturn(Mono.just(car));
         when(carRepository.save(any(Car.class))).thenReturn(Mono.just(car));
         when(reactiveGridFsTemplate.store(any(), anyString()))
@@ -412,14 +412,14 @@ class CarServiceTest {
 
     @Test
     void updateCarTest_errorOnSaving() {
-        Branch branch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
+        RentalOffice rentalOffice = TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
         Car car = TestUtil.getResourceAsJson("/data/Car1.json", Car.class);
         CarRequest carRequest = TestUtil.getResourceAsJson("/data/CarRequest.json", CarRequest.class);
         MultiValueMap<String, Part> multivalueMap = TestData.getCarRequestMultivalueMap();
 
         when(objectMapper.readValue(anyString(), eq(CarRequest.class))).thenReturn(carRequest);
         when(carRequestValidator.validateBody(any())).thenReturn(Mono.just(carRequest));
-        when(branchService.findEntityById(anyString())).thenReturn(Mono.just(branch));
+        when(rentalOfficeService.findEntityById(anyString())).thenReturn(Mono.just(rentalOffice));
         when(carRepository.findById(any(ObjectId.class))).thenReturn(Mono.just(car));
         when(carRepository.save(any(Car.class))).thenReturn(Mono.error(new Throwable()));
 

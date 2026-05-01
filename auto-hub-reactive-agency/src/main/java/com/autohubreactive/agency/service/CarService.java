@@ -1,9 +1,9 @@
 package com.autohubreactive.agency.service;
 
-import com.autohubreactive.agency.entity.Branch;
 import com.autohubreactive.agency.entity.Car;
 import com.autohubreactive.agency.entity.CarStatus;
 import com.autohubreactive.agency.entity.Employee;
+import com.autohubreactive.agency.entity.RentalOffice;
 import com.autohubreactive.agency.mapper.CarMapper;
 import com.autohubreactive.agency.repository.CarRepository;
 import com.autohubreactive.agency.util.Constants;
@@ -52,7 +52,7 @@ import java.util.Map;
 public class CarService {
 
     private final CarRepository carRepository;
-    private final BranchService branchService;
+    private final RentalOfficeService rentalOfficeService;
     private final EmployeeService employeeService;
     private final ExcelParserService excelParserService;
     private final ReactiveGridFsTemplate reactiveGridFsTemplate;
@@ -110,6 +110,10 @@ public class CarService {
 
                     return ExceptionUtil.handleException(e);
                 });
+    }
+
+    public Flux<CarResponse> getAllAvailableCarsByLocation(String destination) {
+        return null;
     }
 
     public Flux<CarResponse> findCarsByFilterInsensitiveCase(String filter) {
@@ -256,7 +260,7 @@ public class CarService {
     private Mono<ObjectId> saveExcelImage(ExcelCarRequest excelCarRequest, Car car) {
         return Mono.just(excelCarRequest.image())
                 .filter(image -> image.length > 0)
-            .flatMap(image -> saveCarImage(getImageAsDataBuffer(image), car.id().toString()));
+                .flatMap(image -> saveCarImage(getImageAsDataBuffer(image), car.id().toString()));
     }
 
     private Flux<DataBuffer> getImageAsDataBuffer(byte[] bytes) {
@@ -284,9 +288,9 @@ public class CarService {
 
     private Mono<Car> setupNewCar(CarRequest carRequest) {
         return Mono.zip(
-                branchService.findEntityById(carRequest.originalBranchId()),
-                branchService.findEntityById(carRequest.actualBranchId()),
-                (originalBranch, actualBranch) -> carMapper.getNewCar(carRequest, originalBranch, actualBranch)
+                rentalOfficeService.findEntityById(carRequest.initialRentalOfficeId()),
+                rentalOfficeService.findEntityById(carRequest.actualRentalOfficeId()),
+                (initialRentalOffice, actualRentalOffice) -> carMapper.getNewCar(carRequest, initialRentalOffice, actualRentalOffice)
         );
     }
 
@@ -312,15 +316,15 @@ public class CarService {
     private Mono<Car> setupUpdatedCar(String id, CarRequest updatedCarRequest) {
         return Mono.zip(
                         findEntityById(id),
-                        branchService.findEntityById(updatedCarRequest.originalBranchId()),
-                        branchService.findEntityById(updatedCarRequest.actualBranchId())
+                        rentalOfficeService.findEntityById(updatedCarRequest.initialRentalOfficeId()),
+                        rentalOfficeService.findEntityById(updatedCarRequest.actualRentalOfficeId())
                 )
                 .map(carDetails -> {
                     Car existingCar = carDetails.getT1();
-                    Branch originalBranch = carDetails.getT2();
-                    Branch actualBranch = carDetails.getT3();
+                    RentalOffice initialRentalOffice = carDetails.getT2();
+                    RentalOffice actualRentalOffice = carDetails.getT3();
 
-                    return carMapper.getUpdatedCar(existingCar.id(), updatedCarRequest, originalBranch, actualBranch);
+                    return carMapper.getUpdatedCar(existingCar.id(), updatedCarRequest, initialRentalOffice, actualRentalOffice);
                 });
     }
 
@@ -336,7 +340,7 @@ public class CarService {
         CarState carState = carUpdateDetails.carState();
         CarStatus carStatus = CarStatus.valueOf(carState.name());
 
-      return carMapper.getCarAfterBookingClosing(car, employee.workingBranch(), carStatus);
+        return carMapper.getCarAfterBookingClosing(car, employee.workingRentalOffice(), carStatus);
     }
 
     private Mono<ObjectId> saveCarImage(Flux<DataBuffer> dataBufferFlux, String carId) {
@@ -355,18 +359,18 @@ public class CarService {
 
     private Mono<Car> createNewCarFromExcelData(ExcelCarRequest excelCarRequest) {
         return Mono.zip(
-                branchService.findEntityById(excelCarRequest.originalBranchId()),
-                branchService.findEntityById(excelCarRequest.actualBranchId()),
-                (originalBranch, actualBranch) -> generateCar(excelCarRequest, originalBranch, actualBranch));
+                rentalOfficeService.findEntityById(excelCarRequest.initialBranchId()),
+                rentalOfficeService.findEntityById(excelCarRequest.actualBranchId()),
+                (initialRentalOffice, actualRentalOffice) -> generateCar(excelCarRequest, initialRentalOffice, actualRentalOffice));
     }
 
-    private Car generateCar(ExcelCarRequest excelCarRequest, Branch originalBranch, Branch actualBranch) {
+    private Car generateCar(ExcelCarRequest excelCarRequest, RentalOffice initialRentalOffice, RentalOffice actualRentalOffice) {
         Car car = carMapper.mapExcelCarRequestToEntity(excelCarRequest);
 
         return car.toBuilder()
-            .actualBranch(actualBranch)
-            .originalBranch(originalBranch)
-            .build();
+                .actualRentalOffice(actualRentalOffice)
+                .initialRentalOffice(initialRentalOffice)
+                .build();
     }
 
     private AutoHubResponseStatusException getCarNotAvailableException() {

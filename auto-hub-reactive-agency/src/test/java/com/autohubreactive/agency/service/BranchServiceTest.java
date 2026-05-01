@@ -1,11 +1,10 @@
 package com.autohubreactive.agency.service;
 
 import com.autohubreactive.agency.entity.Branch;
-import com.autohubreactive.agency.entity.RentalOffice;
 import com.autohubreactive.agency.mapper.BranchMapper;
 import com.autohubreactive.agency.mapper.BranchMapperImpl;
 import com.autohubreactive.agency.repository.BranchRepository;
-import com.autohubreactive.agency.repository.EmployeeRepository;
+import com.autohubreactive.agency.repository.RentalOfficeRepository;
 import com.autohubreactive.agency.util.TestUtil;
 import com.autohubreactive.dto.agency.BranchRequest;
 import com.autohubreactive.dto.agency.BranchResponse;
@@ -38,10 +37,7 @@ class BranchServiceTest {
     private BranchRepository branchRepository;
 
     @Mock
-    private RentalOfficeService rentalOfficeService;
-
-    @Mock
-    private EmployeeRepository employeeRepository;
+    private RentalOfficeRepository rentalOfficeRepository;
 
     @Spy
     private BranchMapper branchMapper = new BranchMapperImpl();
@@ -157,9 +153,6 @@ class BranchServiceTest {
         BranchResponse branchResponse =
                 TestUtil.getResourceAsJson("/data/BranchResponse.json", BranchResponse.class);
 
-        RentalOffice rentalOffice = TestUtil.getResourceAsJson("/data/RentalOffice2.json", RentalOffice.class);
-
-        when(rentalOfficeService.findEntityById(anyString())).thenReturn(Mono.just(rentalOffice));
         when(branchRepository.save(any(Branch.class))).thenReturn(Mono.just(branch));
 
         branchService.saveBranch(branchRequest)
@@ -173,10 +166,6 @@ class BranchServiceTest {
         BranchRequest branchRequest =
                 TestUtil.getResourceAsJson("/data/BranchRequest.json", BranchRequest.class);
 
-        RentalOffice rentalOffice =
-                TestUtil.getResourceAsJson("/data/RentalOffice2.json", RentalOffice.class);
-
-        when(rentalOfficeService.findEntityById(anyString())).thenReturn(Mono.just(rentalOffice));
         when(branchRepository.save(any(Branch.class))).thenReturn(Mono.error(new Throwable()));
 
         branchService.saveBranch(branchRequest)
@@ -195,9 +184,6 @@ class BranchServiceTest {
         BranchResponse branchResponse =
                 TestUtil.getResourceAsJson("/data/BranchResponse.json", BranchResponse.class);
 
-        RentalOffice rentalOffice = TestUtil.getResourceAsJson("/data/RentalOffice2.json", RentalOffice.class);
-
-        when(rentalOfficeService.findEntityById(anyString())).thenReturn(Mono.just(rentalOffice));
         when(branchRepository.findById(any(ObjectId.class))).thenReturn(Mono.just(branch));
         when(branchRepository.save(any(Branch.class))).thenReturn(Mono.just(branch));
 
@@ -214,11 +200,8 @@ class BranchServiceTest {
         BranchRequest branchRequest =
                 TestUtil.getResourceAsJson("/data/BranchRequest.json", BranchRequest.class);
 
-        RentalOffice rentalOffice = TestUtil.getResourceAsJson("/data/RentalOffice2.json", RentalOffice.class);
-
-        when(rentalOfficeService.findEntityById(anyString())).thenReturn(Mono.just(rentalOffice));
         when(branchRepository.findById(any(ObjectId.class))).thenReturn(Mono.just(branch));
-        when(branchRepository.save(branch)).thenReturn(Mono.error(new Throwable()));
+        when(branchRepository.save(any(Branch.class))).thenReturn(Mono.error(new Throwable()));
 
         branchService.updateBranch("64f361caf291ae086e179547", branchRequest)
                 .as(StepVerifier::create)
@@ -229,7 +212,7 @@ class BranchServiceTest {
     @Test
     void deleteBranchByIdTest_success() {
         when(branchRepository.deleteById(any(ObjectId.class))).thenReturn(Mono.empty());
-        when(employeeRepository.deleteByBranchId(any(ObjectId.class))).thenReturn(Mono.empty());
+        when(rentalOfficeRepository.deleteByBranchId(any(ObjectId.class))).thenReturn(Mono.empty());
 
         branchService.deleteBranchById("64f361caf291ae086e179547")
                 .as(StepVerifier::create)

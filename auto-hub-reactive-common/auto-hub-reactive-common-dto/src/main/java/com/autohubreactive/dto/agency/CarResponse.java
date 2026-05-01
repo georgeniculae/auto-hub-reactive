@@ -2,7 +2,7 @@ package com.autohubreactive.dto.agency;
 
 import com.autohubreactive.dto.common.CarState;
 import lombok.Builder;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.math.BigDecimal;
 
@@ -35,13 +35,14 @@ public record CarResponse(
         BigDecimal amount,
 
         @NonNull
-        String originalBranchId,
+        String initialRentalOfficeId,
 
         @NonNull
-        String actualBranchId
+        String actualRentalOfficeId
 ) {
 
     @Override
+    @NonNull
     public String toString() {
         return "CarResponse{" + "\n" +
                 "id=" + id +
@@ -53,8 +54,8 @@ public record CarResponse(
                 "mileage=" + mileage + "\n" +
                 "carState=" + carState + "\n" +
                 "amount=" + amount + "\n" +
-                "originalBranchId=" + originalBranchId + "\n" +
-                "actualBranchId=" + actualBranchId + "\n" +
+                "initialRentalOfficeId=" + initialRentalOfficeId + "\n" +
+                "actualRentalOfficeId=" + actualRentalOfficeId + "\n" +
                 "}";
     }
 

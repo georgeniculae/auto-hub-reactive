@@ -38,8 +38,8 @@ public class TestData {
                         getFormFieldPart("mileage", "270000", stringToDataBuffer("270000")),
                         getFormFieldPart("carState", "AVAILABLE", stringToDataBuffer("AVAILABLE")),
                         getFormFieldPart("amount", "500", stringToDataBuffer("500")),
-                        getFormFieldPart("originalBranchId", "64f361caf291ae086e179547", stringToDataBuffer("64f361caf291ae086e179547")),
-                        getFormFieldPart("actualBranchId", "64f361caf291ae086e179547", stringToDataBuffer("64f361caf291ae086e179547"))
+                        getFormFieldPart("initialRentalOfficeId", "64f361caf291ae086e179547", stringToDataBuffer("64f361caf291ae086e179547")),
+                        getFormFieldPart("actualRentalOfficeId", "64f361caf291ae086e179547", stringToDataBuffer("64f361caf291ae086e179547"))
                 )
         );
 
@@ -59,8 +59,8 @@ public class TestData {
                         getFormFieldPart("mileage", "270000", stringToDataBuffer("270000")),
                         getFormFieldPart("carState", "AVAILABLE", stringToDataBuffer("AVAILABLE")),
                         getFormFieldPart("amount", "500", stringToDataBuffer("500")),
-                        getFormFieldPart("originalBranchId", "64f361caf291ae086e179547", stringToDataBuffer("64f361caf291ae086e179547")),
-                        getFormFieldPart("actualBranchId", "64f361caf291ae086e179547", stringToDataBuffer("64f361caf291ae086e179547"))
+                        getFormFieldPart("initialRentalOfficeId", "64f361caf291ae086e179547", stringToDataBuffer("64f361caf291ae086e179547")),
+                        getFormFieldPart("actualRentalOfficeId", "64f361caf291ae086e179547", stringToDataBuffer("64f361caf291ae086e179547"))
                 )
         );
 
@@ -80,7 +80,7 @@ public class TestData {
                 .mileage(270000)
                 .carState(CarState.AVAILABLE)
                 .amount(BigDecimal.valueOf(500))
-                .originalBranchId("64f361caf291ae086e179547")
+                .initialBranchId("64f361caf291ae086e179547")
                 .actualBranchId("64f361caf291ae086e179547")
                 .image(new Binary(getImageContent(getFilePart("image", "image", imageDataBuffer))).getData())
                 .build();

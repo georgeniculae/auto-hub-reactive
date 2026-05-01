@@ -2,7 +2,7 @@ package com.autohubreactive.dto.common;
 
 import com.autohubreactive.dto.booking.BookingState;
 import lombok.Builder;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -34,12 +34,13 @@ public record BookingResponse(
         BigDecimal rentalCarPrice,
 
         @NonNull
-        String rentalBranchId,
+        String pickupRentalOfficeId,
 
-        String returnBranchId
+        String returnRentalOfficeId
 ) {
 
     @Override
+    @NonNull
     public String toString() {
         return "BookingResponse{" + "\n" +
                 "id=" + id + "\n" +
@@ -50,8 +51,8 @@ public record BookingResponse(
                 "dateFrom=" + dateFrom + "\n" +
                 "dateTo=" + dateTo + "\n" +
                 "rentalCarPrice=" + rentalCarPrice + "\n" +
-                "rentalBranchId=" + rentalBranchId + "\n" +
-                "returnBranchId=" + returnBranchId + "\n" +
+                "pickupRentalOfficeId=" + pickupRentalOfficeId + "\n" +
+                "returnRentalOfficeId=" + returnRentalOfficeId + "\n" +
                 "}";
     }
 

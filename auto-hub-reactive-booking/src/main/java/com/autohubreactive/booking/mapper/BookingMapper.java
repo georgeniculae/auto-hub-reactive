@@ -31,7 +31,7 @@ public interface BookingMapper {
     @Mapping(target = "customerEmail", expression = "java(authenticationInfo.email())")
     @Mapping(target = "actualCarId", expression = "java(mapStringToObjectId(availableCarInfo.id()))")
     @Mapping(target = "dateOfBooking", expression = "java(getDateOfBooking())")
-    @Mapping(target = "rentalBranchId", expression = "java(mapStringToObjectId(availableCarInfo.actualBranchId()))")
+    @Mapping(target = "pickupRentalOfficeId", expression = "java(mapStringToObjectId(availableCarInfo.actualRentalOfficeId()))")
     @Mapping(target = "status", constant = "IN_PROGRESS")
     @Mapping(target = "rentalCarPrice", expression = "java(availableCarInfo.amount())")
     Booking getNewBooking(BookingRequest bookingRequest, AvailableCarInfo availableCarInfo, AuthenticationInfo authenticationInfo);
@@ -42,9 +42,9 @@ public interface BookingMapper {
     @Mapping(target = "carId", source = "actualCarId")
     BookingResponse mapToBookingResponse(UpdatedBookingReprocessRequest createdBookingReprocessRequest);
 
-    @Mapping(target = "returnBranchId", source = "returnBranchId")
+    @Mapping(target = "returnRentalOfficeId", source = "returnRentalOfficeId")
     @Mapping(target = "status", constant = "CLOSED")
-    Booking getClosedBooking(Booking existingBooking, String returnBranchId);
+    Booking getClosedBooking(Booking existingBooking, String returnRentalOfficeId);
 
     @Mapping(target = "dateFrom", source = "dateFrom")
     @Mapping(target = "dateTo", source = "dateTo")
@@ -57,7 +57,7 @@ public interface BookingMapper {
     @Mapping(target = "actualCarId", expression = "java(mapStringToObjectId(availableCarInfo.id()))")
     @Mapping(target = "previousCarId", expression = "java(existingBooking.getActualCarId())")
     @Mapping(target = "rentalCarPrice", expression = "java(availableCarInfo.amount())")
-    @Mapping(target = "rentalBranchId", expression = "java(mapStringToObjectId(availableCarInfo.actualBranchId()))")
+    @Mapping(target = "pickupRentalOfficeId", expression = "java(mapStringToObjectId(availableCarInfo.actualRentalOfficeId()))")
     Booking getUpdatedBookingWithNewData(
             Booking existingBooking,
             BookingRequest updatedBookingRequest,

@@ -1,7 +1,7 @@
 package com.autohubreactive.dto.booking;
 
 import lombok.Builder;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.time.LocalDate;
 
@@ -20,17 +20,18 @@ public record BookingRequest(
         LocalDate dateTo,
 
         @NonNull
-        String rentalBranchId
+        String pickupRentalOfficeId
 ) {
 
     @Override
+    @NonNull
     public String toString() {
         return "BookingRequest{" + "\n" +
                 "dateOfBooking=" + dateOfBooking + "\n" +
                 "carId=" + carId + "\n" +
                 "dateFrom=" + dateFrom + "\n" +
                 "dateTo=" + dateTo + "\n" +
-                "rentalBranchId=" + rentalBranchId + "\n" +
+                "pickupRentalOfficeId=" + pickupRentalOfficeId + "\n" +
                 "}";
     }
 

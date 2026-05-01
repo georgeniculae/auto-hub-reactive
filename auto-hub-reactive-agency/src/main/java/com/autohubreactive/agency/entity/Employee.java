@@ -21,6 +21,7 @@ public record Employee(
     @NonNull
     String jobPosition,
 
-    Branch workingBranch
+    @NonNull
+    RentalOffice workingRentalOffice
 ) {
 }

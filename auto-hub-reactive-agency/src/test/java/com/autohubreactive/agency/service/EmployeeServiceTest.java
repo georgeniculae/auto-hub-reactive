@@ -1,7 +1,7 @@
 package com.autohubreactive.agency.service;
 
-import com.autohubreactive.agency.entity.Branch;
 import com.autohubreactive.agency.entity.Employee;
+import com.autohubreactive.agency.entity.RentalOffice;
 import com.autohubreactive.agency.mapper.EmployeeMapper;
 import com.autohubreactive.agency.mapper.EmployeeMapperImpl;
 import com.autohubreactive.agency.repository.EmployeeRepository;
@@ -37,7 +37,7 @@ class EmployeeServiceTest {
     private EmployeeRepository employeeRepository;
 
     @Mock
-    private BranchService branchService;
+    private RentalOfficeService rentalOfficeService;
 
     @Spy
     private EmployeeMapper employeeMapper = new EmployeeMapperImpl();
@@ -124,9 +124,9 @@ class EmployeeServiceTest {
         EmployeeResponse employeeResponse =
                 TestUtil.getResourceAsJson("/data/EmployeeResponse.json", EmployeeResponse.class);
 
-        Branch branch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
+        RentalOffice rentalOffice = TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
 
-        when(branchService.findEntityById(anyString())).thenReturn(Mono.just(branch));
+        when(rentalOfficeService.findEntityById(anyString())).thenReturn(Mono.just(rentalOffice));
         when(employeeRepository.save(any(Employee.class))).thenReturn(Mono.just(employee));
 
         employeeService.saveEmployee(employeeRequest)
@@ -142,9 +142,10 @@ class EmployeeServiceTest {
         EmployeeRequest employeeRequest =
                 TestUtil.getResourceAsJson("/data/EmployeeRequest.json", EmployeeRequest.class);
 
-        Branch branch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
+        RentalOffice rentalOffice =
+                TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
 
-        when(branchService.findEntityById(anyString())).thenReturn(Mono.just(branch));
+        when(rentalOfficeService.findEntityById(anyString())).thenReturn(Mono.just(rentalOffice));
         when(employeeRepository.save(any(Employee.class))).thenReturn(Mono.error(new Throwable()));
 
         employeeService.saveEmployee(employeeRequest)
@@ -165,9 +166,10 @@ class EmployeeServiceTest {
         EmployeeResponse employeeResponse =
                 TestUtil.getResourceAsJson("/data/EmployeeResponse.json", EmployeeResponse.class);
 
-        Branch branch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
+        RentalOffice rentalOffice =
+                TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
 
-        when(branchService.findEntityById(anyString())).thenReturn(Mono.just(branch));
+        when(rentalOfficeService.findEntityById(anyString())).thenReturn(Mono.just(rentalOffice));
         when(employeeRepository.findById(any(ObjectId.class))).thenReturn(Mono.just(employee));
         when(employeeRepository.save(any(Employee.class))).thenReturn(Mono.just(employee));
 
@@ -184,9 +186,10 @@ class EmployeeServiceTest {
         EmployeeRequest employeeRequest =
                 TestUtil.getResourceAsJson("/data/EmployeeRequest.json", EmployeeRequest.class);
 
-        Branch branch = TestUtil.getResourceAsJson("/data/Branch1.json", Branch.class);
+        RentalOffice rentalOffice =
+                TestUtil.getResourceAsJson("/data/RentalOffice1.json", RentalOffice.class);
 
-        when(branchService.findEntityById(anyString())).thenReturn(Mono.just(branch));
+        when(rentalOfficeService.findEntityById(anyString())).thenReturn(Mono.just(rentalOffice));
         when(employeeRepository.findById(any(ObjectId.class))).thenReturn(Mono.just(employee));
         when(employeeRepository.save(any(Employee.class))).thenReturn(Mono.error(new Throwable()));
 
@@ -205,7 +208,7 @@ class EmployeeServiceTest {
         EmployeeResponse employeeResponse =
                 TestUtil.getResourceAsJson("/data/EmployeeResponse.json", EmployeeResponse.class);
 
-        when(employeeRepository.findAllEmployeesByBranchId(any(ObjectId.class))).thenReturn(Flux.fromIterable(employees));
+        when(employeeRepository.findAllEmployeesByRentalOfficeId(any(ObjectId.class))).thenReturn(Flux.fromIterable(employees));
 
         employeeService.findEmployeesByBranchId("64f361caf291ae086e179521")
                 .as(StepVerifier::create)
@@ -215,7 +218,7 @@ class EmployeeServiceTest {
 
     @Test
     void findEmployeesByBranchIdTest_errorOnFindingByBranchId() {
-        when(employeeRepository.findAllEmployeesByBranchId(any(ObjectId.class))).thenReturn(Flux.error(new Throwable()));
+        when(employeeRepository.findAllEmployeesByRentalOfficeId(any(ObjectId.class))).thenReturn(Flux.error(new Throwable()));
 
         employeeService.findEmployeesByBranchId("64f361caf291ae086e179584")
                 .as(StepVerifier::create)

@@ -73,7 +73,7 @@ public class OutboxService {
     private BookingClosingDetails getBookingClosingDetails(Invoice invoice) {
         return BookingClosingDetails.builder()
                 .bookingId(invoice.getBookingId().toString())
-                .returnBranchId(invoice.getReturnBranchId().toString())
+                .returnRentalOfficeId(invoice.getReturnRentalOfficeId().toString())
                 .build();
     }
 
