@@ -180,9 +180,9 @@ import java.lang.annotation.Target;
                 ),
                 @RouterOperation(
                         method = RequestMethod.GET,
-                        path = "/available",
+                        path = "/cars/available",
                         beanClass = CarHandler.class,
-                        beanMethod = "findAllAvailableCars",
+                        beanMethod = "getAllAvailableCars",
                         operation = @Operation(
                                 operationId = "findAllAvailableCars",
                                 responses = {
@@ -205,6 +205,41 @@ import java.lang.annotation.Target;
                                                 content = @Content(schema = @Schema())
                                         )
                                 }
+                        )
+                ),
+                @RouterOperation(
+                        method = RequestMethod.GET,
+                        path = "/cars/available/{location}",
+                        beanClass = CarHandler.class,
+                        beanMethod = "getAllAvailableCarsByLocation",
+                        operation = @Operation(
+                                operationId = "getAllAvailableCarsByLocation",
+                                responses = {
+                                        @ApiResponse(
+                                                responseCode = "200",
+                                                description = "Successful",
+                                                content = @Content(
+                                                        array = @ArraySchema(schema = @Schema(implementation = CarResponse.class)),
+                                                        mediaType = MediaType.APPLICATION_JSON_VALUE
+                                                )
+                                        ),
+                                        @ApiResponse(
+                                                responseCode = "400",
+                                                description = "Bad Request",
+                                                content = @Content(schema = @Schema())
+                                        ),
+                                        @ApiResponse(
+                                                responseCode = "500",
+                                                description = "Internal Server Error",
+                                                content = @Content(schema = @Schema())
+                                        )
+                                },
+                                parameters = @Parameter(
+                                        name = "location",
+                                        in = ParameterIn.PATH,
+                                        required = true,
+                                        content = @Content(schema = @Schema(implementation = String.class))
+                                )
                         )
                 ),
                 @RouterOperation(

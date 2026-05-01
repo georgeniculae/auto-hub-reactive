@@ -68,7 +68,7 @@ public class CarHandler {
     }
 
     public Mono<ServerResponse> getAllAvailableCarsByLocation(ServerRequest serverRequest) {
-        return carService.getAllAvailableCarsByLocation(serverRequest.pathVariable(Constants.DESTINATION))
+        return carService.getAllAvailableCarsByLocation(serverRequest.pathVariable(Constants.LOCATION))
                 .collectList()
                 .filter(ObjectUtils::isNotEmpty)
                 .flatMap(carResponses -> ServerResponse.ok().bodyValue(carResponses));

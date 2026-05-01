@@ -10,7 +10,7 @@ public class Constants {
     public static final String ID = "id";
     public static final String MAKE = "make";
     public static final String FILTER = "filter";
-    public static final String DESTINATION = "destination";
+    public static final String LOCATION = "location";
     public static final String FILE = "file";
     public static final String BRANCHES_REQUEST_MAPPING = "/branches";
     public static final String CARS_REQUEST_MAPPING = "/cars";
