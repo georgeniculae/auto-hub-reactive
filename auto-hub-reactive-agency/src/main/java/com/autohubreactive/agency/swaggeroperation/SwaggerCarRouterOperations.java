@@ -180,7 +180,7 @@ import java.lang.annotation.Target;
                 ),
                 @RouterOperation(
                         method = RequestMethod.GET,
-                        path = "/cars/available",
+                        path = "/cars/availability",
                         beanClass = CarHandler.class,
                         beanMethod = "getAllAvailableCars",
                         operation = @Operation(
@@ -209,7 +209,7 @@ import java.lang.annotation.Target;
                 ),
                 @RouterOperation(
                         method = RequestMethod.GET,
-                        path = "/cars/available/{location}",
+                        path = "/cars/availability/{location}",
                         beanClass = CarHandler.class,
                         beanMethod = "getAllAvailableCarsByLocation",
                         operation = @Operation(
