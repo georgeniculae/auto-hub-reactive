@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpStatusCode;
@@ -23,7 +24,8 @@ public class RequestTraceGatewayFilterFactory extends AbstractGatewayFilterFacto
     }
 
     @Override
-    public GatewayFilter apply(ServiceIdConfig serviceIdConfig) {
+    @NonNull
+    public GatewayFilter apply(@NonNull ServiceIdConfig serviceIdConfig) {
         return (exchange, chain) -> Mono.just(createMutatedServerWebExchange(serviceIdConfig, exchange))
                 .flatMap(chain::filter)
                 .onErrorResume(e -> {

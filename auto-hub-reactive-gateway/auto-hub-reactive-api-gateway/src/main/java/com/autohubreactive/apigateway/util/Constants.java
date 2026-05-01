@@ -21,6 +21,7 @@ public class Constants {
     public static final String X_SERVICE_ID = "X-SERVICE-ID";
     public static final String X_PATH = "X-PATH";
     public static final String FALLBACK = "fallback";
+    public static final String LOCATION = "location";
     public static final String ACTUATOR = "actuator";
     public static final String SWAGGER = "swagger";
     public static final String V3 = "v3";

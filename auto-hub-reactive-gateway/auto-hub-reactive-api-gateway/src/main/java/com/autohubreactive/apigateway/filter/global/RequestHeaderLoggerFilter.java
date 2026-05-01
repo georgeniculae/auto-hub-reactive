@@ -3,6 +3,7 @@ package com.autohubreactive.apigateway.filter.global;
 import com.autohubreactive.apigateway.util.Constants;
 import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -18,7 +19,8 @@ import reactor.core.publisher.Mono;
 public class RequestHeaderLoggerFilter implements GlobalFilter, Ordered {
 
     @Override
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+    @NonNull
+    public Mono<Void> filter(@NonNull ServerWebExchange exchange, @NonNull GatewayFilterChain chain) {
         return Mono.just(exchange)
                 .map(webExchange -> webExchange.getRequest().getHeaders())
                 .doOnNext(this::logHeaders)

@@ -33,9 +33,9 @@ public class SecurityConfig {
                 .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
                 .authorizeExchange(
                         request -> request.pathMatchers(
+                                        "/actuator/**",
                                         "/definition/**",
-                                        "/register",
-                                        "/actuator/**"
+                                        "/register"
                                 )
                                 .permitAll()
                                 .anyExchange()

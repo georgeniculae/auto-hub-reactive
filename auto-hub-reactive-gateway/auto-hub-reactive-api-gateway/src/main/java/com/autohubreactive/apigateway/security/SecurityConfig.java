@@ -34,14 +34,15 @@ public class SecurityConfig {
                 .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
                 .authorizeExchange(
                         request -> request.pathMatchers(
+                                        "/actuator/**",
                                         "/agency/definition/**",
                                         "/agency/cars/availability/location/**",
                                         "/ai/definition/**",
                                         "/bookings/definition/**",
                                         "/customers/definition/**",
                                         "/customers/register",
-                                        "/expense/definition/**",
-                                        "/actuator/**")
+                                        "/expense/definition/**"
+                                )
                                 .permitAll()
                                 .anyExchange()
                                 .authenticated()

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -41,7 +42,8 @@ public class RequestHeaderModifierFilter implements GlobalFilter, Ordered {
     private String apikey;
 
     @Override
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+    @NonNull
+    public Mono<Void> filter(@NonNull ServerWebExchange exchange, @NonNull GatewayFilterChain chain) {
         return Mono.just(exchange)
                 .flatMap(serverWebExchange -> forwardRequest(exchange, chain, serverWebExchange))
                 .onErrorResume(e -> {
@@ -72,6 +74,7 @@ public class RequestHeaderModifierFilter implements GlobalFilter, Ordered {
         String path = serverHttpRequest.getPath().value();
 
         return !path.contains(Constants.REGISTER_PATH) &&
+                !path.contains(Constants.LOCATION) &&
                 !path.contains(Constants.DEFINITION_PATH) &&
                 !path.contains(Constants.FALLBACK);
     }
@@ -112,7 +115,7 @@ public class RequestHeaderModifierFilter implements GlobalFilter, Ordered {
 
     private Mono<List<String>> getRoles(Jwt jwt) {
         return jwtAuthenticationTokenConverter.extractGrantedAuthorities(jwt)
-                .map(GrantedAuthority::getAuthority)
+                .mapNotNull(GrantedAuthority::getAuthority)
                 .collectList()
                 .switchIfEmpty(Mono.just(List.of()));
     }

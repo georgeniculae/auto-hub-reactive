@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jspecify.annotations.NonNull;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -33,7 +34,8 @@ public class RequestValidatorFilter implements GlobalFilter, Ordered {
     private final OpenApiCache openApiCache;
 
     @Override
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+    @NonNull
+    public Mono<Void> filter(@NonNull ServerWebExchange exchange, @NonNull GatewayFilterChain chain) {
         return Mono.just(exchange)
                 .flatMap(serverWebExchange -> forwardRequest(chain, serverWebExchange))
                 .onErrorResume(e -> {
@@ -63,7 +65,7 @@ public class RequestValidatorFilter implements GlobalFilter, Ordered {
     private boolean isRequestValidatable(ServerHttpRequest serverHttpRequest) {
         String path = serverHttpRequest.getPath().value();
 
-        return !path.contains(Constants.DEFINITION) && !path.contains(Constants.ACTUATOR) && !path.contains(Constants.FALLBACK);
+        return !path.contains(Constants.DEFINITION) && !path.contains(Constants.ACTUATOR) ;
     }
 
     private Mono<Void> filterValidatedRequest(ServerWebExchange exchange, GatewayFilterChain chain) {

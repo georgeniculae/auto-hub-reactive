@@ -3,6 +3,7 @@ package com.autohubreactive.apigateway.filter.global;
 import com.autohubreactive.lib.exceptionhandling.ExceptionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.cloud.gateway.filter.factory.rewrite.ModifyRequestBodyGatewayFilterFactory;
@@ -21,7 +22,8 @@ public class RequestBodyModifierFilter implements GlobalFilter, Ordered {
     private final ModifyRequestBodyGatewayFilterFactory modifyRequestBodyGatewayFilterFactory;
 
     @Override
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+    @NonNull
+    public Mono<Void> filter(@NonNull ServerWebExchange exchange, @NonNull GatewayFilterChain chain) {
         return modifyRequestBodyGatewayFilterFactory.apply(getRewriteFunction())
                 .filter(exchange, chain)
                 .onErrorResume(e -> {

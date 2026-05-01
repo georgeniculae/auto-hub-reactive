@@ -33,8 +33,8 @@ public class SecurityConfig {
                 .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
                 .authorizeExchange(
                         request -> request.pathMatchers(
-                                        "/definition/**",
                                         "/actuator/**",
+                                        "/definition/**",
                                         "/cars/availability/location/**"
                                 )
                                 .permitAll()
