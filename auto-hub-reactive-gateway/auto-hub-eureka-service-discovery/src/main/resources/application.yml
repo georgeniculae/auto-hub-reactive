@@ -22,14 +22,13 @@ eureka:
     registry-fetch-interval-seconds: 5
     healthcheck:
       enabled: true
+    service-url:
+      defaultZone: http://${EUREKA_USER}:${EUREKA_PASSWORD}@localhost:8861/eureka/
   instance:
     hostname: localhost
     lease-renewal-interval-in-seconds: 8
-    status-page-url-path: http://localhost:8861/eureka/info
-    health-check-url-path: http://localhost:8861/eureka/health
-    secure-port-enabled: true
-    non-secure-port-enabled: false
-    secure-port: 8861
+    status-page-url-path: /actuator/info
+    health-check-url-path: /actuator/health
     prefer-ip-address: true
   server:
     wait-time-in-ms-when-sync-empty: 0
