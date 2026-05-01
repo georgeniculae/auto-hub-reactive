@@ -91,4 +91,5 @@ public interface CarRepository extends ReactiveMongoRepository<Car, ObjectId> {
                     'mileage' : 1, 'carStatus' : 1, 'amount' : 1, 'initialRentalOffice' : 1, 'actualRentalOffice' : 1}"""
     )
     Flux<Car> findByRentalOfficeCity(String destination);
+
 }
